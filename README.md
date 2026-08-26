@@ -53,7 +53,7 @@ statement or a `CustomizationID`.
 
 Implementation therefore waits on a document that establishes **publication status**, not only
 content. If only a draft or a data dictionary exists, this package remains a documented
-skeleton. See [`specs/sources.md`](specs/sources.md) for the document list.
+skeleton. See [`specs/README.md`](specs/README.md) for the document list.
 
 ---
 

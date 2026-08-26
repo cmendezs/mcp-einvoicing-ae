@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<gc:Codelist xmlns:gc="http://docs.oasis-open.org/codelist/ns/genericode/1.0/">
+  <gc:Identification>
+    <gc:ShortName Lang="en">AE VAT category codes</gc:ShortName>
+    <gc:Version>D.16B</gc:Version>
+  </gc:Identification>
+  <gc:ColumnSet>
+    <gc:Column Id="id" Use="required">
+      <gc:ShortName>Identifier</gc:ShortName>
+      <gc:Data Type="string"/>
+    </gc:Column>
+    <gc:Column Id="name" Use="optional">
+      <gc:ShortName>Name</gc:ShortName>
+      <gc:Data Type="string"/>
+    </gc:Column>
+    <gc:Column Id="description" Use="optional">
+      <gc:ShortName>Description</gc:ShortName>
+      <gc:Data Type="string"/>
+    </gc:Column>
+    <gc:Key Id="idKey">
+      <gc:ColumnRef Ref="id"/>
+    </gc:Key>
+  </gc:ColumnSet>
+  <gc:SimpleCodeList>
+    <gc:Row>
+      <gc:Value ColumnRef="id">
+        <gc:SimpleValue>S</gc:SimpleValue>
+      </gc:Value>
+      <gc:Value ColumnRef="name">
+        <gc:SimpleValue>Standard rate</gc:SimpleValue>
+      </gc:Value>
+      <gc:Value ColumnRef="description">
+        <gc:SimpleValue>Code specifying the standard rate.</gc:SimpleValue>
+      </gc:Value>
+    </gc:Row>
+    <gc:Row>
+      <gc:Value ColumnRef="id">
+        <gc:SimpleValue>E</gc:SimpleValue>
+      </gc:Value>
+      <gc:Value ColumnRef="name">
+        <gc:SimpleValue>Exempt from tax</gc:SimpleValue>
+      </gc:Value>
+      <gc:Value ColumnRef="description">
+        <gc:SimpleValue>Code specifying that taxes are not applicable.</gc:SimpleValue>
+      </gc:Value>
+    </gc:Row>
+    <gc:Row>
+      <gc:Value ColumnRef="id">
+        <gc:SimpleValue>O</gc:SimpleValue>
+      </gc:Value>
+      <gc:Value ColumnRef="name">
+        <gc:SimpleValue>Services outside scope of tax / Not subject to tax</gc:SimpleValue>
+      </gc:Value>
+      <gc:Value ColumnRef="description">
+        <gc:SimpleValue>Code specifying that taxes are not applicable to the services and/or not subject to VAT</gc:SimpleValue>
+      </gc:Value>
+    </gc:Row>
+    <gc:Row>
+      <gc:Value ColumnRef="id">
+        <gc:SimpleValue>AE</gc:SimpleValue>
+      </gc:Value>
+      <gc:Value ColumnRef="name">
+        <gc:SimpleValue>VAT Reverse Charge</gc:SimpleValue>
+      </gc:Value>
+      <gc:Value ColumnRef="description">
+        <gc:SimpleValue>Code specifying that the standard VAT rate is levied from the invoicee.</gc:SimpleValue>
+      </gc:Value>
+    </gc:Row>
+    <gc:Row>
+      <gc:Value ColumnRef="id">
+        <gc:SimpleValue>Z</gc:SimpleValue>
+      </gc:Value>
+      <gc:Value ColumnRef="name">
+        <gc:SimpleValue>Zero rated</gc:SimpleValue>
+      </gc:Value>
+      <gc:Value ColumnRef="description">
+        <gc:SimpleValue>Code specifying that the goods and/or services are at a zero rate.</gc:SimpleValue>
+      </gc:Value>
+    </gc:Row>
+    <gc:Row>
+      <gc:Value ColumnRef="id">
+        <gc:SimpleValue>Ν</gc:SimpleValue>
+      </gc:Value>
+      <gc:Value ColumnRef="name">
+        <gc:SimpleValue>Standard rate additional VAT</gc:SimpleValue>
+      </gc:Value>
+      <gc:Value ColumnRef="description">
+        <gc:SimpleValue>Standard VAT calculated for an additional taxable base when the additional taxable base is not included in the document totals.</gc:SimpleValue>
+      </gc:Value>
+    </gc:Row>
+  </gc:SimpleCodeList>
+</gc:Codelist>

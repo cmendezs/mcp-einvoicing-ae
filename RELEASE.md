@@ -53,7 +53,7 @@ those entries under the new version heading.
 
 1. PINT AE publication status is unconfirmed. It was absent from the published OpenPeppol
    jurisdiction PINT list at the last local verification (2026-06-29).
-2. `specs/sources.md` still holds `[NEED:]` rows. Audit gate CHECK 5 requires one authority
+2. `specs/README.md` still holds `[NEED:]` rows. Audit gate CHECK 5 requires one authority
    URL per standard, so `audit/audit_vs_core.py` will not pass.
 3. No tools, models, or validators exist. This package is a documented skeleton by design
    until gate 1 closes.

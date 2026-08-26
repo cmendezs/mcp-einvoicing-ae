@@ -49,7 +49,3 @@ Thumbs.db
 
 # MCP publisher CLI binary (downloaded at release time, not part of source)
 mcp-publisher
-
-# Normative spec material: keep text sources tracked, exclude large binaries
-specs/**/*.pdf
-specs/**/*.zip

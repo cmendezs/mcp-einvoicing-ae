@@ -19,6 +19,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   under `specs/`, and PINT AE was absent from the published OpenPeppol
   jurisdiction PINT list at the last local verification (2026-06-29). Publication
   status must be established from a supplied document before any model code is
-  written. See `specs/sources.md`.
+  written. See `specs/README.md`.
 
 <!-- No release has been published yet. The first entry moves here on v0.1.0. -->
