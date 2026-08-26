@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-08-26T14:36:08.511809+00:00",
+  "generated_at": "2026-08-26T22:14:44.300868+00:00",
   "pkg_name": "mcp-einvoicing-ae",
-  "pkg_version": "0.0.0-dev",
+  "pkg_version": "0.1.0",
   "core_version": "1.21.0",
   "core_version_compatible": true,
   "exit_code": 2,
-  "total_blocking": 3,
+  "total_blocking": 2,
   "total_warnings": 1,
   "checks": [
     {
@@ -14,7 +14,7 @@
       "passed": false,
       "skipped": false,
       "skip_reason": "",
-      "blocking_count": 2,
+      "blocking_count": 1,
       "warning_count": 0,
       "findings": [
         {
@@ -26,10 +26,17 @@
         },
         {
           "check_id": "CHECK_0",
-          "tag": "[MISSING]",
-          "severity": "BLOCKING",
-          "symbol": "mcp_einvoicing_ae.server",
-          "message": "Could not import the server module: No module named 'mcp_einvoicing_ae'"
+          "tag": "[OK]",
+          "severity": "OK",
+          "symbol": "server.mcp",
+          "message": "server.mcp is present."
+        },
+        {
+          "check_id": "CHECK_0",
+          "tag": "[OK]",
+          "severity": "OK",
+          "symbol": "server.main",
+          "message": "server.main is present."
         }
       ]
     },
