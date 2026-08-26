@@ -46,32 +46,37 @@ One subdirectory per standard/system, since more than one has accumulated:
 
 | Standard | Version | Authority URL | Retrieved |
 |---|---|---|---|
-| PINT AE (billing) | 1.0.4 (2026-06-02, "Status: Final") | [NEED: OpenPeppol PINT AE documentation portal URL — not stated inside the supplied documents themselves] | 2026-08-26 |
-| PINT AE self-billing | Same release train as PINT AE billing (see `pint-ae-self-billing/common/docs/pint-ae-self-billing-release-notes.pdf` for its own version history) | [NEED: as above] | 2026-08-26 |
-| Peppol AE TDD (tax data document, 5th-corner reporting) | 1.0.3 (2026-05-25, "Status: Final") | [NEED: as above] | 2026-08-26 |
-| UAE Electronic Invoicing Guidelines | V1.1, 01 June 2026 | [NEED: FTA / u.ae publication page URL] | 2026-08-26 |
-| UAE Electronic Invoice — mandatory fields | V1.0, 23 Feb 2026 | [NEED: as above] | 2026-08-26 |
-| Considerations for selecting an ASP | V1.0, 23 Feb 2024 | [NEED: as above] | 2026-08-26 |
-| Federal Decree-Law No. 46 of 2021 (Electronic Transactions and Trust Services) | n/a | [NEED: UAE Ministry of Justice / official gazette URL] | 2026-08-26 |
-| VAT Decree-Law No. 8 of 2017 | n/a (unofficial translation) | [NEED: FTA official gazette URL] | 2026-08-26 |
-| Ministerial Decision No. 243 of 2025 (Electronic Invoicing System) | n/a | [NEED:] | 2026-08-26 |
-| Ministerial Decision No. 244 of 2025 (Implementation of the Electronic Invoicing System) | n/a | [NEED:] | 2026-08-26 |
-| Ministerial Decision — Eligibility and Accreditation procedure for Service Providers (No. 64 of 2025) | n/a | [NEED:] | 2026-08-26 |
-| Ministerial Resolution No. 56 of 2026 (amending Resolution No. 64 of 2025) | n/a | [NEED:] | 2026-08-26 |
-| Ministerial Resolution No. 66 of 2026 (amending Resolution No. 244 of 2025) | n/a | [NEED:] | 2026-08-26 |
-| Cabinet Decision No. 106 of 2025 (Violations and Penalties, e-Invoicing) | n/a | [NEED:] | 2026-08-26 |
+| PINT AE (billing) | 1.0.4 (2026-06-02, "Status: Final") | https://docs.peppol.eu/poac/ae/ | 2026-08-26 (docs); URL added 2026-08-27 |
+| PINT AE self-billing | Same release train as PINT AE billing (see `pint-ae-self-billing/common/docs/pint-ae-self-billing-release-notes.pdf` for its own version history) | https://docs.peppol.eu/poac/ae/ | 2026-08-26 (docs); URL added 2026-08-27 |
+| Peppol AE TDD (tax data document, 5th-corner reporting) | 1.0.3 (2026-05-25, "Status: Final") | https://docs.peppol.eu/poac/ae/ | 2026-08-26 (docs); URL added 2026-08-27 |
+| UAE Electronic Invoicing Guidelines | V1.1, 01 June 2026 | https://u.ae/en/information-and-services/business/important-digital-services/digital-invoicing | 2026-08-26 (docs); URL added 2026-08-27 |
+| UAE Electronic Invoice — mandatory fields | V1.0, 23 Feb 2026 | https://u.ae/en/information-and-services/business/important-digital-services/digital-invoicing | 2026-08-26 (docs); URL added 2026-08-27 |
+| Considerations for selecting an ASP | V1.0, 23 Feb 2024 | https://u.ae/en/information-and-services/business/important-digital-services/digital-invoicing | 2026-08-26 (docs); URL added 2026-08-27 |
+| UAE FTA e-Invoicing compliance page (statutory rules, EmaraTax onboarding, Pre-Approved ASP list) | n/a | https://tax.gov.ae/en/taxes/Vat/uae.einvoicing.aspx | 2026-08-27 |
+| Federal Decree-Law No. 46 of 2021 (Electronic Transactions and Trust Services) | n/a | [NEED: UAE legislation/gazette portal URL — none of the three URLs supplied so far is a legislation portal] | 2026-08-26 |
+| VAT Decree-Law No. 8 of 2017 | n/a (unofficial translation) | [NEED: as above] | 2026-08-26 |
+| Ministerial Decision No. 243 of 2025 (Electronic Invoicing System) | n/a | [NEED: as above] | 2026-08-26 |
+| Ministerial Decision No. 244 of 2025 (Implementation of the Electronic Invoicing System) | n/a | [NEED: as above] | 2026-08-26 |
+| Ministerial Decision — Eligibility and Accreditation procedure for Service Providers (No. 64 of 2025) | n/a | [NEED: as above] | 2026-08-26 |
+| Ministerial Resolution No. 56 of 2026 (amending Resolution No. 64 of 2025) | n/a | [NEED: as above] | 2026-08-26 |
+| Ministerial Resolution No. 66 of 2026 (amending Resolution No. 244 of 2025) | n/a | [NEED: as above] | 2026-08-26 |
+| Cabinet Decision No. 106 of 2025 (Violations and Penalties, e-Invoicing) | n/a | [NEED: as above] | 2026-08-26 |
 
-The `[NEED:]` markers in the "Authority URL" column reflect that these documents were supplied
-as local files without an accompanying source URL captured at download time — not that the
-standard/version itself is unconfirmed. Fill in the URL if/when the user provides it; do not
-guess or web-fetch it (per project convention).
+**2026-08-27 update:** the user supplied three authority URLs in chat — the OpenPeppol PINT AE
+documentation portal, the UAE government digital-invoicing portal (u.ae), and the FTA's
+e-invoicing compliance page (tax.gov.ae) — resolving the Authority URL cell for the three
+technical specs and the three FTA guidance PDFs above, plus adding a dedicated row for the FTA
+compliance page itself. Per project convention, these URLs are recorded as citations for facts
+already established from the local documents; their page content was **not** fetched or read to
+extract new facts (no WebFetch/WebSearch was used). The 8 legal-instrument rows still need a
+distinct legislation/gazette-portal URL — none of the three supplied URLs is that portal.
 
 ## Pending specs
 
 | Document | Status | Notes |
 |---|---|---|
 | OASIS UBL 2.1 base XSD (Invoice / CreditNote) | `[NEED:]` | PINT AE's examples reference these via `schemaLocation` but the base OASIS schemas were not included in any of the three supplied ZIPs. Needed for local wire-schema validation. |
-| Independent OpenPeppol jurisdiction-registry confirmation | `[NEED:]` | The UAE Peppol Authority's own "Status: Final" release notes and the FTA's "published on its website" statement are strong evidence PINT AE is published, but no OpenPeppol governance/registry page was among the supplied documents. Not blocking (see gate note above), but worth closing out if a session is ever permitted to check it. |
+| Independent OpenPeppol jurisdiction-registry confirmation | `[NEED:]` | The UAE Peppol Authority's own "Status: Final" release notes and the FTA's "published on its website" statement are strong evidence PINT AE is published. The likely registry URL is now known (https://docs.peppol.eu/poac/ae/, supplied 2026-08-27), but its content has not been read or fetched by this assistant — per project convention, normative sources are read from user-supplied local files or user-pasted text only, never fetched. Not blocking (see gate note above). Closes out if the user visits the page and reports what it says, or pastes its content. |
 | TDD transport mechanism | `[NEED:]` | None of the supplied TDD documents state whether the 5th-corner reporting document travels over the same AS4/Peppol channel as the PINT AE invoice or a separate channel. |
 
 ## Non-file sources

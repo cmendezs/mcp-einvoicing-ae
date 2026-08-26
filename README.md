@@ -10,9 +10,10 @@
 
 ---
 
-> **Scaffold stage — not yet published.** This repository contains the package skeleton only.
-> No tools, models, or validators are implemented yet, and no release has been tagged.
-> See [Current status](#current-status) for what is blocking implementation.
+> **Specs supplied, package not yet published.** The PINT AE / TDD publication-status gate
+> resolved on 2026-08-26 once normative specifications and FTA guidelines were supplied. No
+> model, validator, or tool code exists yet, and no release has been tagged.
+> See [Current status](#current-status) for what is still blocking implementation.
 
 ---
 
@@ -28,44 +29,58 @@ shared validation engine, EN 16931 abstractions, and Peppol network utilities.
 
 ## Current status
 
-The package is a scaffold, and it stays a scaffold for longer than its sibling packages by
-design. Beyond the usual missing-specification gate, the UAE profile itself is not confirmed
-as published.
+Normative specifications and FTA guidelines were supplied on 2026-08-26, resolving the
+publication-status gate and the invoice-tree pathway. Model, validator, and tool code do not
+exist yet — a core-gap check in the shared `mcp-einvoicing-core` library is required first.
 
 | Area | Status |
 |---|---|
 | Repository, CI, governance docs | Done |
 | Package skeleton (`src/` layout, server entry point) | Done |
-| PINT AE publication status | **Unconfirmed** |
-| Normative specifications under `specs/` | **Missing** |
-| Supported standards and profile URNs | Blocked |
-| Invoice model and validators | Blocked |
+| PINT AE publication status | **Confirmed** (2026-08-26) |
+| Normative specifications under `specs/` | **Supplied** (2026-08-26) |
+| Invoice-tree pathway | **Confirmed** — `EN16931Invoice` |
+| Supported standards and profile URNs | **Known** — see below |
+| Core-gap check (`mcp-einvoicing-core`) | Pending |
+| Invoice model and validators | Blocked (pending core-gap check) |
 | MCP tools | Blocked |
 | First release (`v0.1.0`) | Blocked |
 
-### The publication gate
+### The publication gate — resolved 2026-08-26
 
-At the last verification of the OpenPeppol jurisdiction PINT documentation index (2026-06-29),
+At the prior verification of the OpenPeppol jurisdiction PINT documentation index (2026-06-29),
 the published jurisdiction profiles were the EU, Singapore, Australia and New Zealand, Japan,
-and Malaysia. The UAE was absent from that list. Public descriptions of a "PINT AE" profile
-exist, but a description is not a normative specification and cannot establish a conformance
-statement or a `CustomizationID`.
+and Malaysia; the UAE was absent. Documents supplied on 2026-08-26 resolve this: the UAE Peppol
+Authority's own release notes record PINT AE (billing) at **"Status: Final"**, version 1.0.4,
+released 2026-06-02, and the Peppol AE Tax Data Document (TDD — the 5th-corner reporting
+document) at **"Status: Final"**, version 1.0.3, released 2026-05-25. The FTA's own June 2026
+guideline states directly that the PINT-AE billing specifications *"are published on its
+website."*
 
-Implementation therefore waits on a document that establishes **publication status**, not only
-content. If only a draft or a data dictionary exists, this package remains a documented
-skeleton. See [`specs/README.md`](specs/README.md) for the document list.
+One caveat remains open: this is the specialization publisher's own release-status label, not an
+independently observed OpenPeppol governance-registry page — strong evidence, not full
+certainty. Full detail and citations: [`specs/README.md`](specs/README.md) and the monorepo's
+[`context-library/countries/ae.md`](https://github.com/cmendezs/mcp-einvoicing/blob/main/context-library/countries/ae.md).
 
 ---
 
 ## Supported standards
 
-`[NEED: confirm from a published PINT AE specification]`
+- **PINT AE (billing)** — UBL 2.1, `CustomizationID: urn:peppol:pint:billing-1@ae-1`,
+  `ProfileID: urn:peppol:bis:billing`. Version 1.0.4 (2026-06-02).
+- **PINT AE (self-billing)** — `CustomizationID: urn:peppol:pint:selfbilling-1@ae-1`,
+  `ProfileID: urn:peppol:bis:selfbilling`.
+- **Peppol AE TDD** (Tax Data Document) — the 5th-corner reporting document sent to the FTA; its
+  own XML namespace (`urn:peppol:schema:taxdata:1.0`), not a UBL invoice. Version 1.0.3
+  (2026-05-25).
 
-The UAE programme is described as a decentralized Peppol **5-corner** model routed through
-Accredited Service Providers, which adds a tax-authority reporting leg beyond the 4-corner
-exchange used elsewhere in this family. The wire syntax, profile URNs, EN 16931 conformance
-relationship, and whether a JSON binding is normative alongside XML are all unresolved. This
-section is filled in from the specification, not from memory.
+The UAE programme is a decentralized Peppol **5-corner** model routed through Accredited Service
+Providers, adding a tax-authority reporting leg (the TDD above) beyond the 4-corner exchange used
+elsewhere in this family. The invoice-tree pathway is confirmed `EN16931Invoice` (PINT AE is a
+UBL 2.1 CIUS of EN 16931-1:2017) — no JSON binding was found in the supplied specifications.
+Model code, validators, and tools await a core-gap check (`TaxIdentifier.validate_ae_trn()`,
+PINT AE profile-registry constants, and the TDD transport mechanism are the known gaps). Full
+detail: [`specs/README.md`](specs/README.md).
 
 ---
 
