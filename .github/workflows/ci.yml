@@ -1,0 +1,95 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "pyproject.toml"
+
+      - name: Set up Python ${{ matrix.python-version }}
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: uv sync --all-extras --no-sources
+
+      - name: Run tests
+        run: uv run pytest --tb=short
+
+  lint:
+    name: Lint & type check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "pyproject.toml"
+
+      - name: Set up Python
+        run: uv python install 3.11
+
+      - name: Install dependencies
+        run: uv sync --all-extras --no-sources
+
+      - name: Ruff check
+        run: uv run ruff check src/mcp_einvoicing_ae/ tests/ audit/
+
+      - name: Ruff format check
+        run: uv run ruff format --check src/mcp_einvoicing_ae/ tests/ audit/
+
+      - name: Mypy
+        run: uv run mypy src
+
+  audit:
+    name: Core compliance audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          cache-dependency-glob: "pyproject.toml"
+
+      - name: Set up Python
+        run: uv python install 3.11
+
+      - name: Install dependencies
+        # --upgrade: audit against the latest compatible core release, not
+        # whatever the committed uv.lock happens to pin.
+        run: uv sync --all-extras --no-sources --upgrade
+
+      - name: Run pre-publish audit
+        # Exit 2 = blocking failures → job fails. Exit 1 = warnings only → passes.
+        run: uv run python audit/audit_vs_core.py --output audit/report.json --fail-on blocking
+
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-report
+          path: audit/report.json

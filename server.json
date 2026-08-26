@@ -1,0 +1,28 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.cmendezs/mcp-einvoicing-ae",
+  "description": "MCP server for United Arab Emirates electronic invoicing",
+  "repository": {
+    "url": "https://github.com/cmendezs/mcp-einvoicing-ae",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "mcp-einvoicing-ae",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "LOG_LEVEL",
+          "description": "Logging level: DEBUG, INFO (default), WARNING, or ERROR",
+          "isRequired": false,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

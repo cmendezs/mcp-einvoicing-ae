@@ -1,0 +1,94 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcp-einvoicing-ae"
+version = "0.1.0"
+description = "MCP server for United Arab Emirates electronic invoicing"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Christophe Mendez" }]
+# [NEED: standard keywords — "peppol", "pint-ae", "ubl", "en16931" may only be added once a
+# published PINT AE specification is supplied under specs/ and recorded in specs/sources.md.
+# PINT AE was absent from the published OpenPeppol jurisdiction PINT list verified 2026-06-29;
+# see the publication gate in context-library/countries/ae.md.]
+keywords = [
+    "mcp",
+    "model-context-protocol",
+    "einvoicing",
+    "e-invoicing",
+    "uae",
+    "united-arab-emirates",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+requires-python = ">=3.11"
+# The upper-bound pin on mcp-einvoicing-core is mandatory: uv bug #9811 strips version
+# pins from built wheel metadata, so this is the only protection downstream consumers have.
+dependencies = [
+    "mcp-einvoicing-core>=1.20.0,<2.0.0",
+    "pydantic>=2.0.0",
+    "lxml>=5.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=5.0.0",
+    "ruff>=0.4.0",
+    "mypy>=1.10.0",
+    "lxml-stubs>=0.5.1",
+    "pre-commit>=4.5.1",
+]
+
+[project.scripts]
+mcp-einvoicing-ae = "mcp_einvoicing_ae.server:main"
+
+[project.urls]
+Homepage = "https://github.com/cmendezs/mcp-einvoicing-ae"
+Repository = "https://github.com/cmendezs/mcp-einvoicing-ae"
+Issues = "https://github.com/cmendezs/mcp-einvoicing-ae/issues"
+Changelog = "https://github.com/cmendezs/mcp-einvoicing-ae/blob/main/CHANGELOG.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_einvoicing_ae"]
+
+[tool.hatch.build.targets.sdist]
+exclude = ["mcp-publisher", "dist/", ".github/"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "--cov=mcp_einvoicing_ae --cov-report=term-missing"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+ignore = ["N999", "E501"]  # E501: OVERRIDE-REASON comments in audit scripts are intentionally verbose
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["mcp_einvoicing_core", "mcp_einvoicing_core.*"]
+ignore_missing_imports = true

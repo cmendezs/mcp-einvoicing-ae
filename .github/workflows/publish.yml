@@ -1,0 +1,125 @@
+name: Publish to PyPI
+
+on:
+  push:
+    tags:
+      - "v*"
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+permissions:
+  contents: write   # write required to create GitHub Releases
+  id-token: write   # required for OIDC trusted publisher (PyPI)
+
+jobs:
+  # ── 1. Pre-publish audit gate (mandatory; never remove) ────────────────────
+  audit:
+    name: Pre-publish audit vs mcp-einvoicing-core
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install 3.11
+
+      - name: Install dependencies
+        run: uv sync --all-extras --no-sources
+
+      - name: Run pre-publish audit
+        # Exit 2 = blocking failures → job fails → publish is blocked.
+        run: uv run python audit/audit_vs_core.py --output audit/report.json --fail-on blocking
+
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-report
+          path: audit/report.json
+
+  # ── 2. Build distribution ──────────────────────────────────────────────────
+  build:
+    name: Build distribution
+    needs: audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install 3.11
+
+      - name: Install dependencies
+        run: uv sync --all-extras --no-sources
+
+      - name: Generate tool reference
+        # Regenerate docs/TOOLS.md from the live tool registry at release time.
+        run: uv run python scripts/gen_tool_reference.py
+
+      - name: Build wheel and sdist
+        run: uv build --no-sources
+
+      - name: Assert mcp-einvoicing-core upper-bound pin in wheel METADATA
+        # Regression check for uv bug #9811: built wheel must retain the <2.0.0 pin.
+        run: |
+          python - <<'PYEOF'
+          import zipfile, glob, sys, re
+          whl = glob.glob('dist/*.whl')
+          assert whl, 'No wheel found in dist/'
+          with zipfile.ZipFile(whl[0]) as z:
+              m = next((n for n in z.namelist() if n.endswith('.dist-info/METADATA')), None)
+              assert m, 'No METADATA file found in wheel'
+              content = z.read(m).decode()
+          ok = any(re.search(r'Requires-Dist: mcp-einvoicing-core.*<', l) for l in content.splitlines())
+          sys.exit(0 if ok else 'ERROR: mcp-einvoicing-core upper-bound pin missing from wheel METADATA')
+          PYEOF
+
+      - name: Upload distribution packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-packages
+          path: dist/
+
+  # ── 3. Publish to PyPI ─────────────────────────────────────────────────────
+  publish:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/mcp-einvoicing-ae
+    steps:
+      - name: Download distribution packages
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-packages
+          path: dist/
+
+      - name: Publish to PyPI via trusted publisher (OIDC)
+        uses: pypa/gh-action-pypi-publish@release/v1
+        # No API token needed — uses GitHub OIDC trusted publisher.
+
+  # ── 4. Create GitHub Release ───────────────────────────────────────────────
+  release:
+    name: Create GitHub Release
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "${{ github.ref_name }}" \
+            --generate-notes
