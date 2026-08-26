@@ -51,7 +51,7 @@ _PACKAGE = "mcp-einvoicing-ae"
 _MODULE = "mcp_einvoicing_ae"
 _ROOT = Path(__file__).resolve().parent.parent
 _PYPROJECT = _ROOT / "pyproject.toml"
-_SOURCES = _ROOT / "specs" / "sources.md"
+_SOURCES = _ROOT / "specs" / "README.md"
 
 # ---------------------------------------------------------------------------
 # CHECK 1 configuration — country-specific constants
@@ -150,8 +150,8 @@ def run_check_5() -> CheckResult:
                 check_id="CHECK_5",
                 tag="[MISSING]",
                 severity=SEVERITY_BLOCKING,
-                symbol="specs/sources.md",
-                message="specs/sources.md is absent. One authority URL per standard is required.",
+                symbol="specs/README.md",
+                message="specs/README.md is absent. One authority URL per standard is required.",
             )
         )
         return result
@@ -164,7 +164,7 @@ def run_check_5() -> CheckResult:
                 check_id="CHECK_5",
                 tag="[NEED]",
                 severity=SEVERITY_BLOCKING,
-                symbol="specs/sources.md",
+                symbol="specs/README.md",
                 message=(
                     f"{unresolved} unresolved [NEED:] marker(s) remain. Every standard needs an "
                     "authority URL and a retrieval date before this package can publish."
@@ -177,7 +177,7 @@ def run_check_5() -> CheckResult:
                 check_id="CHECK_5",
                 tag="[OK]",
                 severity=SEVERITY_OK,
-                symbol="specs/sources.md",
+                symbol="specs/README.md",
                 message="All spec sources carry an authority URL and a retrieval date.",
             )
         )
