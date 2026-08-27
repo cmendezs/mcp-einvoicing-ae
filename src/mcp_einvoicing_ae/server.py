@@ -1,27 +1,38 @@
-"""MCP server entry point for mcp-einvoicing-ae.
+"""MCP server entry point — registers UAE (PINT AE / Peppol AE TDD) tools."""
 
-Scaffold stage: no tools are registered yet.
-
-[NEED: tool registration]
-No normative specification has been supplied under specs/, and PINT AE was
-absent from the published OpenPeppol jurisdiction PINT list at the last local
-verification (2026-06-29). See the publication gate in
-context-library/countries/ae.md. This package stays a skeleton until that
-status is established from a supplied document.
-"""
+from typing import Any
 
 from mcp_einvoicing_core import EInvoicingMCPServer
+
+from mcp_einvoicing_ae.tools.generation import AEDocumentGenerator
+from mcp_einvoicing_ae.tools.parsing import parse_invoice_ae
+from mcp_einvoicing_ae.tools.validation import AEDocumentValidator
+
+_generator = AEDocumentGenerator()
+_validator = AEDocumentValidator()
+
+
+def _register_ae_tools(mcp: Any) -> None:
+    """Register all UAE e-invoicing tools onto the shared FastMCP instance."""
+    mcp.tool()(_generator.generate_invoice_ae)
+    mcp.tool()(_validator.validate_invoice_ae)
+    mcp.tool()(_validator.validate_tdd_ae)
+    mcp.tool()(parse_invoice_ae)
+
 
 mcp = EInvoicingMCPServer(
     "mcp-einvoicing-ae",
     instructions=(
-        "Tools for United Arab Emirates electronic invoicing. "
-        "This server is a scaffold: no tools are registered yet. Tool "
-        "implementation is blocked until a published PINT AE specification is "
-        "supplied under specs/ and the compliance values are recorded in "
-        "context-library/countries/ae.md."
+        "Tools for United Arab Emirates electronic invoicing: PINT AE "
+        "(billing + self-billing) UBL 2.1 invoice generation, validation, "
+        "and parsing, plus Peppol AE Tax Data Document (TDD) validation. "
+        "Schematron validation requires the optional 'xslt2' extra "
+        "(saxonche) — see README. TDD schema (XSD) validation is currently "
+        "unavailable; validate_tdd_ae runs Schematron only and flags this "
+        "explicitly in its result."
     ),
 )
+mcp.register_plugin(_register_ae_tools, "ae")
 
 
 def main() -> None:

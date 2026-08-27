@@ -42,6 +42,16 @@ One subdirectory per standard/system, since more than one has accumulated:
 - `tdd/` — the Peppol AE Tax Data Document (the 5th-corner reporting document sent to the FTA):
   XSD (`common/peppol-tdd-1.0.0.xsd`), schematron, codelists, examples, and `common/docs/`.
 
+**2026-08-27 (Phase D):** five compiled `.xslt` stylesheets and the TDD XSD were copied from here
+into `src/mcp_einvoicing_ae/rules/` for wheel bundling, mirroring `mcp-einvoicing-de`'s `rules/`
+pattern (`specs/` itself is dev-reference-only, never published — see
+`context-library/decisions/specs-directory-convention.md`). Only one copy per profile is bundled:
+`pint-ae/trn-invoice/schematron/PINT-jurisdiction-aligned-rules.xslt` and
+`pint-ae/trn-creditnote/schematron/PINT-jurisdiction-aligned-rules.xslt` are byte-identical
+(confirmed 2026-08-27), as are the two profiles' own `trn-invoice`/`trn-creditnote` UBL-validation
+stylesheets and the billing/self-billing jurisdiction-aligned rules — see
+`src/mcp_einvoicing_ae/validators/schematron.py`'s module docstring for the full breakdown.
+
 ## Sources and versions
 
 | Standard | Version | Authority URL | Retrieved |
@@ -108,11 +118,18 @@ fetched or browsed by this assistant.
 
 ## Pending specs
 
+None of the three items below block the v0.1.0 publish — this release ships document models,
+Schematron-based validation, and generate/validate/parse MCP tools; none of it depends on the
+missing pieces described here. Each is tracked with full detail in
+`context-library/countries/ae.md` ("Known gaps and open items") and
+`context-library/roadmap-2026.md`, and will be revisited when it becomes load-bearing for a
+future release.
+
 | Document | Status | Notes |
 |---|---|---|
-| OASIS UBL 2.1 base XSD (Invoice / CreditNote) | `[NEED:]` | PINT AE's examples reference these via `schemaLocation` but the base OASIS schemas were not included in any of the three supplied ZIPs. Needed for local wire-schema validation. |
-| Independent OpenPeppol jurisdiction-registry confirmation | `[NEED:]` | The UAE Peppol Authority's own "Status: Final" release notes and the FTA's "published on its website" statement are strong evidence PINT AE is published. The likely registry URL is now known (https://docs.peppol.eu/poac/ae/, supplied 2026-08-27), but its content has not been read or fetched by this assistant — per project convention, normative sources are read from user-supplied local files or user-pasted text only, never fetched. Not blocking (see gate note above). Closes out if the user visits the page and reports what it says, or pastes its content. |
-| TDD transport mechanism | `[NEED:]` | None of the supplied TDD documents state whether the 5th-corner reporting document travels over the same AS4/Peppol channel as the PINT AE invoice or a separate channel. |
+| OASIS UBL 2.1 base XSD (Invoice / CreditNote) | `[DEFERRED — not bundled]` | PINT AE's examples reference these via `schemaLocation`, but the base OASIS schemas were not included in any of the three supplied ZIPs. As a direct consequence, `tdd_xsd_validator()` cannot compile `peppol-tdd-1.0.0.xsd` standalone and raises `ValueError` — documented explicitly in that function's docstring and in every `validate_tdd_ae` tool result. Schematron-level validation (both PINT AE invoices and the TDD) does not depend on this schema and is unaffected. Revisit when local XSD-level wire validation is required. |
+| Independent OpenPeppol jurisdiction-registry confirmation | `[NOT BLOCKING]` | The UAE Peppol Authority's own "Status: Final" release notes and the FTA's "published on its website" statement are strong, dated, regulator-sourced evidence that PINT AE is published — sufficient corroboration for this release. The likely registry URL is known (https://docs.peppol.eu/poac/ae/, supplied 2026-08-27), but its content has not been read or fetched by this assistant, per project convention (normative sources come from user-supplied local files or user-pasted text only, never a fetch). Upgrades from "strong evidence" to "independently confirmed" if the user visits the page and reports or pastes its content. |
+| TDD transport mechanism | `[DEFERRED — out of scope for this release]` | None of the supplied TDD documents state whether the 5th-corner reporting document travels over the same AS4/Peppol channel as the PINT AE invoice or a separate channel. `mcp_einvoicing_ae/models/tdd.py` deliberately implements no transport binding, and no transport code ships in this version — this becomes relevant only once a transport implementation is added, and Phase C (2026-08-27) already confirmed it is a documentation question, not a core-library gap (`PeppolTransmitter`/`BaseEInvoicingClient` already accept either answer generically). |
 
 ## Non-file sources
 

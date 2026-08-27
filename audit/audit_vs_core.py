@@ -10,17 +10,14 @@ Exit codes:
     1  Warnings only (non-blocking)
     2  Blocking failures found
 
-Scaffold-stage note
--------------------
-This package has no models, validators, or tools yet. CHECK 0 below records the
-gates that block implementation and fails the audit while any of them is open,
-which is the intended state: the package must not publish.
-
-CHECK 1 (core interface coverage) and CHECK 3 (invoice field alignment) are
-deliberately deferred while CHECK 0 is failing. Running CHECK 1 against an empty
-package reports every core symbol as missing, which buries the real signal. Both
-activate once ``_IS_EN16931_FAMILY`` and ``_PRIMARY_INVOICE_CLASS`` are set from
-context-library/countries/ae.md, at which point the deferral branch is removed.
+Phase D status (2026-08-27)
+---------------------------
+The invoice-tree pathway is resolved (``_IS_EN16931_FAMILY = True``,
+``AEInvoice``), so CHECK 1 (core interface coverage) now runs for real instead
+of being deferred. Models (``AEInvoice``, ``AEParty``, ``AETaxDataDocument``),
+the Schematron/XSD validators, and the profile-registry registration exist;
+tools (MCP-exposed generate/validate/parse functions) do not yet — CHECK 0's
+server-module checks still gate on that.
 
 CHECK 4 (version compatibility) and CHECK 5 (spec sources) are meaningful now and
 run unconditionally.
@@ -57,18 +54,23 @@ _SOURCES = _ROOT / "specs" / "README.md"
 # CHECK 1 configuration — country-specific constants
 # ---------------------------------------------------------------------------
 
-# [NEED: invoice-tree pathway]
-# Read the pathway from context-library/countries/ae.md once a normative specification is
-# supplied under specs/. Setting this from memory is prohibited: the value must
-# come from the specification's conformance statement.
-#
-# ``None`` makes core skip the canonical invoice-tree sub-check, so CHECK 0
-# below raises the unresolved pathway as a BLOCKING finding in its place.
-_IS_EN16931_FAMILY: bool | None = None
-_PRIMARY_INVOICE_CLASS: tuple[str, str] | None = None
+# Invoice-tree pathway, resolved 2026-08-27 (Phase D) per
+# context-library/countries/ae.md "Invoice-tree pathway": PINT AE's
+# CustomizationID/ProfileID (urn:peppol:pint:billing-1@ae-1 /
+# urn:peppol:bis:billing) are a UBL 2.1 CIUS of EN 16931-1:2017 — the
+# EN16931Invoice pathway per CLAUDE.md's "any PINT-* format uses EN16931Invoice"
+# rule. This is set together with the AEInvoice model class itself, per
+# CLAUDE.md: "do not change it without a corresponding model refactor."
+_IS_EN16931_FAMILY: bool | None = True
+_PRIMARY_INVOICE_CLASS: tuple[str, str] | None = ("mcp_einvoicing_ae.models.invoice", "AEInvoice")
 
 _MODULES: list[str] = [
     f"{_MODULE}.server",
+    f"{_MODULE}.models.invoice",
+    f"{_MODULE}.models.party",
+    f"{_MODULE}.models.tdd",
+    f"{_MODULE}.standards.pint_ae",
+    f"{_MODULE}.validators.schematron",
 ]
 
 _INTENTIONAL_OVERRIDES: dict[str, set[str]] = {}

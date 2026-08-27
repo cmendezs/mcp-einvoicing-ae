@@ -10,10 +10,10 @@
 
 ---
 
-> **Specs supplied, package not yet published.** The PINT AE / TDD publication-status gate
-> resolved on 2026-08-26 once normative specifications and FTA guidelines were supplied. No
-> model, validator, or tool code exists yet, and no release has been tagged.
-> See [Current status](#current-status) for what is still blocking implementation.
+> **Models, validators, and MCP tools implemented; package not yet published.** The PINT AE / TDD
+> publication-status gate resolved on 2026-08-26; `AEInvoice`, `AEParty`, `AETaxDataDocument`,
+> the bundled Schematron/XSD validators, and the `generate`/`validate`/`parse` MCP tools all
+> landed 2026-08-27. A tagged release is still pending — see [Current status](#current-status).
 
 ---
 
@@ -30,8 +30,10 @@ shared validation engine, EN 16931 abstractions, and Peppol network utilities.
 ## Current status
 
 Normative specifications and FTA guidelines were supplied on 2026-08-26, resolving the
-publication-status gate and the invoice-tree pathway. Model, validator, and tool code do not
-exist yet — a core-gap check in the shared `mcp-einvoicing-core` library is required first.
+publication-status gate and the invoice-tree pathway. The core-gap check (2026-08-27) added
+`TaxIdentifier.validate_ae_trn()` to `mcp-einvoicing-core` v1.22.0 and confirmed the profile-URN
+and TDD-transport questions were not core gaps at all. Model, validator, and MCP tool code all
+landed the same day.
 
 | Area | Status |
 |---|---|
@@ -41,10 +43,13 @@ exist yet — a core-gap check in the shared `mcp-einvoicing-core` library is re
 | Normative specifications under `specs/` | **Supplied** (2026-08-26) |
 | Invoice-tree pathway | **Confirmed** — `EN16931Invoice` |
 | Supported standards and profile URNs | **Known** — see below |
-| Core-gap check (`mcp-einvoicing-core`) | Pending |
-| Invoice model and validators | Blocked (pending core-gap check) |
-| MCP tools | Blocked |
-| First release (`v0.1.0`) | Blocked |
+| Core-gap check (`mcp-einvoicing-core`) | **Done** — `TaxIdentifier.validate_ae_trn()`, core v1.22.0 |
+| `AEInvoice` / `AEParty` (billing + self-billing) | **Implemented** (2026-08-27) |
+| `AETaxDataDocument` (Peppol AE TDD model) | **Implemented** — schema-level (XSD) validation blocked on the missing base OASIS UBL schema; Schematron validation unaffected |
+| Bundled Schematron validators (PINT AE + TDD) | **Implemented** — 4 stylesheets, XSLT 2.0 (`saxonche`/`[xslt2]` extra) |
+| `profile_registry` registration (PINT AE URNs) | **Done** |
+| MCP tools (generate / validate / parse) | **Implemented** (2026-08-27) — see [Tools](#tools) |
+| First release (`v0.1.0`) | Blocked — pending version bump, lockfile regen, and tag/publish (Phase E) |
 
 ### The publication gate — resolved 2026-08-26
 
@@ -78,8 +83,15 @@ The UAE programme is a decentralized Peppol **5-corner** model routed through Ac
 Providers, adding a tax-authority reporting leg (the TDD above) beyond the 4-corner exchange used
 elsewhere in this family. The invoice-tree pathway is confirmed `EN16931Invoice` (PINT AE is a
 UBL 2.1 CIUS of EN 16931-1:2017) — no JSON binding was found in the supplied specifications.
-Model code, validators, and tools await a core-gap check (`TaxIdentifier.validate_ae_trn()`,
-PINT AE profile-registry constants, and the TDD transport mechanism are the known gaps). Full
+
+`AEInvoice` reuses `mcp_einvoicing_core.wire_formats.EN16931UBLSerializer`/`EN16931UBLParser`
+directly rather than a bespoke serializer, since `profile`/`business_process` hold the real
+Peppol URNs. `AEParty.vat_id` carries the 15-digit TRN, format-validated via
+`TaxIdentifier.validate_ae_trn()` (core v1.22.0); the Peppol participant ID (TIN) is auto-derived
+as its first 10 digits. `AETaxDataDocument` models the TDD's mandatory fields but is not a UBL
+invoice and is not built on `AEInvoice`. MCP tools reuse this stack directly — see
+[Tools](#tools) for what's covered and what isn't. The TDD transport channel (same AS4 channel as
+the invoice, or a separate one) remains an open documentation question, not a code gap. Full
 detail: [`specs/README.md`](specs/README.md).
 
 ---
@@ -142,7 +154,16 @@ once the specification documents them. See [`.env.example`](.env.example).
 
 ## Tools
 
-None yet. The server starts and registers zero tools at this stage.
+| Tool | Description |
+|---|---|
+| `generate_invoice_ae` | Generate a PINT AE UBL 2.1 invoice XML (billing or self-billing) from structured data. Only the EN 16931 core field set is emitted — `AEParty.trade_license_number` has no mapping in core's generic UBL serializer yet and is dropped from the output. |
+| `validate_invoice_ae` | Validate a PINT AE UBL 2.1 invoice against the bundled Schematron rules (UBL structural rules + `ibr-*-ae` jurisdiction rules). Requires the `xslt2` extra. |
+| `validate_tdd_ae` | Validate a Peppol AE Tax Data Document (TDD) against its bundled Schematron rules. Schematron-level only — schema (XSD) validation is unavailable pending the base OASIS UBL schema; every result flags this explicitly. Requires the `xslt2` extra. |
+| `parse_invoice_ae` | Parse a PINT AE UBL 2.1 invoice XML into a structured dict (EN 16931 core field set only — AE-specific extensions such as `trade_license_number` are not extracted). |
+
+All four tools require `mcp-einvoicing-ae[xslt2]` (bundles `saxonche`) for the Schematron
+validators to load; without it, `validate_invoice_ae`/`validate_tdd_ae` return an explicit
+"unavailable" result rather than a silent pass.
 
 The tool reference in [`docs/TOOLS.md`](docs/TOOLS.md) is generated from the running server:
 

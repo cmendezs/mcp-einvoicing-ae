@@ -1,28 +1,28 @@
 {
-  "generated_at": "2026-08-27T07:38:26.307413+00:00",
+  "generated_at": "2026-08-27T15:42:04.352291+00:00",
   "pkg_name": "mcp-einvoicing-ae",
   "pkg_version": "0.1.0",
-  "core_version": "1.21.0",
+  "core_version": "1.23.0",
   "core_version_compatible": true,
-  "exit_code": 2,
-  "total_blocking": 2,
-  "total_warnings": 1,
+  "exit_code": 1,
+  "total_blocking": 0,
+  "total_warnings": 138,
   "checks": [
     {
       "check_id": "CHECK_0",
       "name": "Scaffold gates",
-      "passed": false,
+      "passed": true,
       "skipped": false,
       "skip_reason": "",
-      "blocking_count": 1,
+      "blocking_count": 0,
       "warning_count": 0,
       "findings": [
         {
           "check_id": "CHECK_0",
-          "tag": "[NEED]",
-          "severity": "BLOCKING",
+          "tag": "[OK]",
+          "severity": "OK",
           "symbol": "_IS_EN16931_FAMILY",
-          "message": "Invoice-tree pathway is unresolved. Set it from the conformance statement recorded in context-library/countries/ae.md, never from memory. No model code may be written while this is None."
+          "message": "Invoice-tree pathway declared."
         },
         {
           "check_id": "CHECK_0",
@@ -47,14 +47,1050 @@
       "skipped": false,
       "skip_reason": "",
       "blocking_count": 0,
-      "warning_count": 1,
+      "warning_count": 138,
       "findings": [
         {
           "check_id": "CHECK_1",
-          "tag": "[DEFERRED]",
+          "tag": "[MISSING]",
           "severity": "WARNING",
-          "symbol": "mcp-einvoicing-ae",
-          "message": "Deferred while the invoice-tree pathway is unresolved (CHECK 0). Running coverage against a package with no models reports every core symbol as missing and hides the real gate."
+          "symbol": "mcp_einvoicing_core.base_server.ABC",
+          "message": "Core symbol 'ABC' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.Any",
+          "message": "Core symbol 'Any' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.BaseDocumentGenerator",
+          "message": "Core symbol 'BaseDocumentGenerator' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.BaseDocumentParser",
+          "message": "Core symbol 'BaseDocumentParser' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.BaseDocumentValidator",
+          "message": "Core symbol 'BaseDocumentValidator' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.BaseLifecycleManager",
+          "message": "Core symbol 'BaseLifecycleManager' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.BaseModel",
+          "message": "Core symbol 'BaseModel' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.BasePartyValidator",
+          "message": "Core symbol 'BasePartyValidator' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.Callable",
+          "message": "Core symbol 'Callable' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.DocumentValidationResult",
+          "message": "Core symbol 'DocumentValidationResult' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[OK]",
+          "severity": "OK",
+          "symbol": "mcp_einvoicing_core.base_server.EInvoicingMCPServer",
+          "message": "Imported and used."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.FastMCP",
+          "message": "Core symbol 'FastMCP' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.Field",
+          "message": "Core symbol 'Field' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.Generic",
+          "message": "Core symbol 'Generic' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.InvoiceDocument",
+          "message": "Core symbol 'InvoiceDocument' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.InvoiceParty",
+          "message": "Core symbol 'InvoiceParty' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.SubmitResult",
+          "message": "Core symbol 'SubmitResult' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.TaxIdValidationResult",
+          "message": "Core symbol 'TaxIdValidationResult' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.TypeVar",
+          "message": "Core symbol 'TypeVar' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.abstractmethod",
+          "message": "Core symbol 'abstractmethod' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.assert_not_read_only",
+          "message": "Core symbol 'assert_not_read_only' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.scrub",
+          "message": "Core symbol 'scrub' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.digital_signature.ABC",
+          "message": "Core symbol 'ABC' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.digital_signature.BaseDocumentSigner",
+          "message": "Core symbol 'BaseDocumentSigner' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.digital_signature.CAdESSigner",
+          "message": "Core symbol 'CAdESSigner' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.digital_signature.CAdESSignerConfig",
+          "message": "Core symbol 'CAdESSignerConfig' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.digital_signature.XAdESEPESSigner",
+          "message": "Core symbol 'XAdESEPESSigner' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.digital_signature.XAdESSignerConfig",
+          "message": "Core symbol 'XAdESSignerConfig' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.digital_signature.XMLDSigSigner",
+          "message": "Core symbol 'XMLDSigSigner' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.digital_signature.XMLDSigSignerConfig",
+          "message": "Core symbol 'XMLDSigSignerConfig' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.digital_signature.abstractmethod",
+          "message": "Core symbol 'abstractmethod' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.digital_signature.dataclass",
+          "message": "Core symbol 'dataclass' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.digital_signature.datetime",
+          "message": "Core symbol 'datetime' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.digital_signature.field",
+          "message": "Core symbol 'field' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.digital_signature.load_certificate_der",
+          "message": "Core symbol 'load_certificate_der' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.digital_signature.safe_fromstring",
+          "message": "Core symbol 'safe_fromstring' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.download_rules.DownloadSpec",
+          "message": "Core symbol 'DownloadSpec' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.download_rules.Path",
+          "message": "Core symbol 'Path' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.download_rules.dataclass",
+          "message": "Core symbol 'dataclass' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.download_rules.download_artefacts",
+          "message": "Core symbol 'download_artefacts' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.download_rules.entry_points",
+          "message": "Core symbol 'entry_points' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.download_rules.field",
+          "message": "Core symbol 'field' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.download_rules.main",
+          "message": "Core symbol 'main' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.en16931.BaseModel",
+          "message": "Core symbol 'BaseModel' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.en16931.Decimal",
+          "message": "Core symbol 'Decimal' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.en16931.EN16931Address",
+          "message": "Core symbol 'EN16931Address' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.en16931.EN16931AllowanceCharge",
+          "message": "Core symbol 'EN16931AllowanceCharge' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[OK]",
+          "severity": "OK",
+          "symbol": "mcp_einvoicing_core.en16931.EN16931Invoice",
+          "message": "Imported and used."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[OK]",
+          "severity": "OK",
+          "symbol": "mcp_einvoicing_core.en16931.EN16931LineItem",
+          "message": "Imported and used."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[OK]",
+          "severity": "OK",
+          "symbol": "mcp_einvoicing_core.en16931.EN16931Party",
+          "message": "Imported and used."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.en16931.EN16931PaymentMeans",
+          "message": "Core symbol 'EN16931PaymentMeans' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.en16931.EN16931Tax",
+          "message": "Core symbol 'EN16931Tax' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.en16931.Field",
+          "message": "Core symbol 'Field' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.en16931.date",
+          "message": "Core symbol 'date' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.en16931.field_validator",
+          "message": "Core symbol 'field_validator' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.en16931.model_validator",
+          "message": "Core symbol 'model_validator' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.exceptions.AuthenticationError",
+          "message": "Core symbol 'AuthenticationError' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.exceptions.DocumentGenerationError",
+          "message": "Core symbol 'DocumentGenerationError' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.exceptions.EInvoicingError",
+          "message": "Core symbol 'EInvoicingError' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.exceptions.PartyValidationError",
+          "message": "Core symbol 'PartyValidationError' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.exceptions.PlatformError",
+          "message": "Core symbol 'PlatformError' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.exceptions.SchematronValidationError",
+          "message": "Core symbol 'SchematronValidationError' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.exceptions.ValidationError",
+          "message": "Core symbol 'ValidationError' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.exceptions.XSDValidationError",
+          "message": "Core symbol 'XSDValidationError' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.Any",
+          "message": "Core symbol 'Any' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.AuthMode",
+          "message": "Core symbol 'AuthMode' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.AuthenticationError",
+          "message": "Core symbol 'AuthenticationError' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.BaseEInvoicingClient",
+          "message": "Core symbol 'BaseEInvoicingClient' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.BaseEInvoicingConfig",
+          "message": "Core symbol 'BaseEInvoicingConfig' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.BaseModel",
+          "message": "Core symbol 'BaseModel' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.BaseSettings",
+          "message": "Core symbol 'BaseSettings' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.Field",
+          "message": "Core symbol 'Field' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.JWSConfig",
+          "message": "Core symbol 'JWSConfig' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.OAuthConfig",
+          "message": "Core symbol 'OAuthConfig' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.OAuthValues",
+          "message": "Core symbol 'OAuthValues' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.Path",
+          "message": "Core symbol 'Path' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.PlatformError",
+          "message": "Core symbol 'PlatformError' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.StrEnum",
+          "message": "Core symbol 'StrEnum' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.TokenCache",
+          "message": "Core symbol 'TokenCache' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.compute_retry_delay",
+          "message": "Core symbol 'compute_retry_delay' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.field_validator",
+          "message": "Core symbol 'field_validator' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.parsedate_to_datetime",
+          "message": "Core symbol 'parsedate_to_datetime' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.urlparse",
+          "message": "Core symbol 'urlparse' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.models.BaseModel",
+          "message": "Core symbol 'BaseModel' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.models.Decimal",
+          "message": "Core symbol 'Decimal' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.models.DocumentValidationResult",
+          "message": "Core symbol 'DocumentValidationResult' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.models.Field",
+          "message": "Core symbol 'Field' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.models.InvoiceDocument",
+          "message": "Core symbol 'InvoiceDocument' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.models.InvoiceLineItem",
+          "message": "Core symbol 'InvoiceLineItem' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.models.InvoiceParty",
+          "message": "Core symbol 'InvoiceParty' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.models.PartyAddress",
+          "message": "Core symbol 'PartyAddress' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.models.PaymentTerms",
+          "message": "Core symbol 'PaymentTerms' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.models.TaxIdValidationResult",
+          "message": "Core symbol 'TaxIdValidationResult' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[OK]",
+          "severity": "OK",
+          "symbol": "mcp_einvoicing_core.models.TaxIdentifier",
+          "message": "Imported and used."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.models.VATSummary",
+          "message": "Core symbol 'VATSummary' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.models.field_validator",
+          "message": "Core symbol 'field_validator' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.models.model_validator",
+          "message": "Core symbol 'model_validator' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.pdf.PDFEmbedder",
+          "message": "Core symbol 'PDFEmbedder' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.peppol.Callable",
+          "message": "Core symbol 'Callable' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.peppol.PeppolEnvironment",
+          "message": "Core symbol 'PeppolEnvironment' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.peppol.PeppolLookupResult",
+          "message": "Core symbol 'PeppolLookupResult' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.peppol.PeppolParticipantId",
+          "message": "Core symbol 'PeppolParticipantId' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.peppol.PeppolSMPClient",
+          "message": "Core symbol 'PeppolSMPClient' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.peppol.PeppolServiceInfo",
+          "message": "Core symbol 'PeppolServiceInfo' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.peppol.PlatformError",
+          "message": "Core symbol 'PlatformError' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.peppol.StrEnum",
+          "message": "Core symbol 'StrEnum' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.peppol.dataclass",
+          "message": "Core symbol 'dataclass' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.peppol.field",
+          "message": "Core symbol 'field' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.peppol.resolve_naptr",
+          "message": "Core symbol 'resolve_naptr' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.peppol.safe_fromstring",
+          "message": "Core symbol 'safe_fromstring' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.profile_registry.ProfileEntry",
+          "message": "Core symbol 'ProfileEntry' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.profile_registry.ProfileRegistry",
+          "message": "Core symbol 'ProfileRegistry' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.profile_registry.dataclass",
+          "message": "Core symbol 'dataclass' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.profile_registry.set_profile_registry",
+          "message": "Core symbol 'set_profile_registry' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.qr.generate_qr_png_base64",
+          "message": "Core symbol 'generate_qr_png_base64' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.schematron.ABC",
+          "message": "Core symbol 'ABC' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.schematron.BaseJSONValidator",
+          "message": "Core symbol 'BaseJSONValidator' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[OK]",
+          "severity": "OK",
+          "symbol": "mcp_einvoicing_core.schematron.BaseStructuredValidator",
+          "message": "Imported and used."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.schematron.BaseXSDValidator",
+          "message": "Core symbol 'BaseXSDValidator' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.schematron.Path",
+          "message": "Core symbol 'Path' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[OK]",
+          "severity": "OK",
+          "symbol": "mcp_einvoicing_core.schematron.SaxonSchematronValidator",
+          "message": "Imported and used."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.schematron.SchematronValidator",
+          "message": "Core symbol 'SchematronValidator' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[OK]",
+          "severity": "OK",
+          "symbol": "mcp_einvoicing_core.schematron.ValidationMessage",
+          "message": "Imported and used."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[OK]",
+          "severity": "OK",
+          "symbol": "mcp_einvoicing_core.schematron.ValidationResult",
+          "message": "Imported and used."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.schematron.XSDValidator",
+          "message": "Core symbol 'XSDValidator' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.schematron.abstractmethod",
+          "message": "Core symbol 'abstractmethod' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.schematron.dataclass",
+          "message": "Core symbol 'dataclass' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.schematron.field",
+          "message": "Core symbol 'field' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.schematron.get_xslt_version",
+          "message": "Core symbol 'get_xslt_version' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[OK]",
+          "severity": "OK",
+          "symbol": "mcp_einvoicing_core.schematron.load_schematron_validator",
+          "message": "Imported and used."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.schematron.safe_fromstring",
+          "message": "Core symbol 'safe_fromstring' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.schematron.safe_parser",
+          "message": "Core symbol 'safe_parser' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.xml_utils.Any",
+          "message": "Core symbol 'Any' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.xml_utils.Decimal",
+          "message": "Core symbol 'Decimal' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.xml_utils.filter_empty_values",
+          "message": "Core symbol 'filter_empty_values' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.xml_utils.format_amount",
+          "message": "Core symbol 'format_amount' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.xml_utils.format_error",
+          "message": "Core symbol 'format_error' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.xml_utils.format_quantity",
+          "message": "Core symbol 'format_quantity' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.xml_utils.mark_untrusted",
+          "message": "Core symbol 'mark_untrusted' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.xml_utils.mark_untrusted_fields",
+          "message": "Core symbol 'mark_untrusted_fields' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.xml_utils.resolve_xml_input",
+          "message": "Core symbol 'resolve_xml_input' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.xml_utils.safe_fromstring",
+          "message": "Core symbol 'safe_fromstring' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.xml_utils.safe_parser",
+          "message": "Core symbol 'safe_parser' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.xml_utils.validate_date_iso",
+          "message": "Core symbol 'validate_date_iso' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.xml_utils.validate_iban",
+          "message": "Core symbol 'validate_iban' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.xml_utils.xml_element",
+          "message": "Core symbol 'xml_element' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.xml_utils.xml_escape",
+          "message": "Core symbol 'xml_escape' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.xml_utils.xml_optional",
+          "message": "Core symbol 'xml_optional' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[OK]",
+          "severity": "OK",
+          "symbol": "AEInvoice \u2192 EN16931Invoice",
+          "message": "AEInvoice correctly extends EN16931Invoice (canonical invoice tree, EN 16931 family pathway)."
         }
       ]
     },
@@ -72,25 +1108,25 @@
           "tag": "[OK]",
           "severity": "OK",
           "symbol": "mcp-einvoicing-core",
-          "message": "Installed: 1.21.0 | Declared range: is mandatory: uv bug #9811 strips version | Compatible: True"
+          "message": "Installed: 1.23.0 | Declared range: is mandatory: uv bug #9811 strips version | Compatible: True"
         }
       ]
     },
     {
       "check_id": "CHECK_5",
       "name": "Spec sources",
-      "passed": false,
+      "passed": true,
       "skipped": false,
       "skip_reason": "",
-      "blocking_count": 1,
+      "blocking_count": 0,
       "warning_count": 0,
       "findings": [
         {
           "check_id": "CHECK_5",
-          "tag": "[NEED]",
-          "severity": "BLOCKING",
+          "tag": "[OK]",
+          "severity": "OK",
           "symbol": "specs/README.md",
-          "message": "3 unresolved [NEED:] marker(s) remain. Every standard needs an authority URL and a retrieval date before this package can publish."
+          "message": "All spec sources carry an authority URL and a retrieval date."
         }
       ]
     }
