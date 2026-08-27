@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-27T07:22:16.849543+00:00",
+  "generated_at": "2026-08-27T07:38:26.307413+00:00",
   "pkg_name": "mcp-einvoicing-ae",
   "pkg_version": "0.1.0",
   "core_version": "1.21.0",
@@ -90,7 +90,7 @@
           "tag": "[NEED]",
           "severity": "BLOCKING",
           "symbol": "specs/README.md",
-          "message": "5 unresolved [NEED:] marker(s) remain. Every standard needs an authority URL and a retrieval date before this package can publish."
+          "message": "3 unresolved [NEED:] marker(s) remain. Every standard needs an authority URL and a retrieval date before this package can publish."
         }
       ]
     }
