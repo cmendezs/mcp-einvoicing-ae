@@ -10,17 +10,17 @@
 
 ---
 
-> **Models, validators, and MCP tools implemented; package not yet published.** The PINT AE / TDD
-> publication-status gate resolved on 2026-08-26; `AEInvoice`, `AEParty`, `AETaxDataDocument`,
-> the bundled Schematron/XSD validators, and the `generate`/`validate`/`parse` MCP tools all
-> landed 2026-08-27. A tagged release is still pending — see [Current status](#current-status).
+> **v0.1.0 published 2026-08-27 — first release.** `AEInvoice`, `AEParty`, `AETaxDataDocument`,
+> the bundled Schematron/XSD validators, and the `generate`/`validate`/`parse` MCP tools are all
+> implemented and live on PyPI and the MCP registry. See [Current status](#current-status) for
+> what's still open (none of it blocks this release).
 
 ---
 
 ## Introduction
 
 `mcp-einvoicing-ae` is an [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server
-that will expose tools for United Arab Emirates electronic invoicing. It is part of the
+that exposes tools for United Arab Emirates electronic invoicing. It is part of the
 `mcp-einvoicing-*` family of country-specific servers, all built on
 [`mcp-einvoicing-core`](https://github.com/cmendezs/mcp-einvoicing-core), which provides the
 shared validation engine, EN 16931 abstractions, and Peppol network utilities.
@@ -33,7 +33,7 @@ Normative specifications and FTA guidelines were supplied on 2026-08-26, resolvi
 publication-status gate and the invoice-tree pathway. The core-gap check (2026-08-27) added
 `TaxIdentifier.validate_ae_trn()` to `mcp-einvoicing-core` v1.22.0 and confirmed the profile-URN
 and TDD-transport questions were not core gaps at all. Model, validator, and MCP tool code all
-landed the same day.
+landed the same day, and `v0.1.0` published the same week.
 
 | Area | Status |
 |---|---|
@@ -49,7 +49,7 @@ landed the same day.
 | Bundled Schematron validators (PINT AE + TDD) | **Implemented** — 4 stylesheets, XSLT 2.0 (`saxonche`/`[xslt2]` extra) |
 | `profile_registry` registration (PINT AE URNs) | **Done** |
 | MCP tools (generate / validate / parse) | **Implemented** (2026-08-27) — see [Tools](#tools) |
-| First release (`v0.1.0`) | Blocked — pending version bump, lockfile regen, and tag/publish (Phase E) |
+| First release (`v0.1.0`) | **Published** (2026-08-27) — PyPI and MCP registry |
 
 ### The publication gate — resolved 2026-08-26
 
@@ -104,7 +104,7 @@ detail: [`specs/README.md`](specs/README.md).
 - [`mcp-einvoicing-core`](https://github.com/cmendezs/mcp-einvoicing-core) (installed
   automatically as a dependency)
 
-### Using `uvx` (recommended, once published)
+### Using `uvx` (recommended)
 
 ```bash
 uvx mcp-einvoicing-ae

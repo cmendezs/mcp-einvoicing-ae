@@ -47,19 +47,24 @@ those entries under the new version heading.
 
 ---
 
-## Pre-release gate for this package
+## Release history
 
-`v0.1.0` is **not** ready to tag. Three gates are open:
+**`v0.1.0`** — published 2026-08-27 (first release). The three gates that previously blocked
+this release are now closed:
 
-1. PINT AE publication status is unconfirmed. It was absent from the published OpenPeppol
-   jurisdiction PINT list at the last local verification (2026-06-29).
-2. `specs/README.md` still holds `[NEED:]` rows. Audit gate CHECK 5 requires one authority
-   URL per standard, so `audit/audit_vs_core.py` will not pass.
-3. No tools, models, or validators exist. This package is a documented skeleton by design
-   until gate 1 closes.
+1. PINT AE publication status confirmed 2026-08-26 — see `context-library/countries/ae.md`
+   "PINT AE publication gate".
+2. `specs/README.md`'s `[NEED:]` rows were resolved editorially: the base OASIS UBL 2.1 XSD and
+   the TDD transport channel are tracked as deferred, non-blocking open items (neither affects
+   what ships in v0.1.0); the OpenPeppol jurisdiction-registry page is documented as strong,
+   not yet independently confirmed, evidence. `audit/audit_vs_core.py --fail-on blocking`
+   passes.
+3. `AEInvoice`/`AEParty`/`AETaxDataDocument` models, four bundled Schematron validators, and the
+   `generate_invoice_ae`/`validate_invoice_ae`/`validate_tdd_ae`/`parse_invoice_ae` MCP tools
+   are implemented and registered.
 
-The PyPI pending publisher is already registered, so the first `v0.1.0` tag push will
-authenticate correctly once these gates close.
+The PyPI pending publisher was registered before the `v0.1.0` tag push, so OIDC authenticated
+correctly on the first release.
 
 ---
 

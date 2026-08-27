@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-08-27
+
 ### Added
 - Initial package scaffold: `src/` layout, governance documents, CI and publish
   workflows, audit directory, and a stdio MCP server entry point with no tools
@@ -26,7 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   requiring the `xslt2` optional extra (`saxonche`). `_IS_EN16931_FAMILY`
   flipped to `True` in `audit/audit_vs_core.py`. (2026-08-27)
 - Core dependency bumped to `mcp-einvoicing-core>=1.22.0,<2.0.0` for
-  `TaxIdentifier.validate_ae_trn()`.
+  `TaxIdentifier.validate_ae_trn()`, then to `>=1.23.0,<2.0.0` at release time to match the
+  latest published core version.
 - MCP tools registered on the server: `generate_invoice_ae`, `validate_invoice_ae`,
   `validate_tdd_ae`, `parse_invoice_ae`. Generation and parsing reuse
   `mcp_einvoicing_core.wire_formats.EN16931UBLSerializer`/`EN16931UBLParser` directly
@@ -46,4 +49,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   supplied source; not a core gap either way, but blocks a transport
   implementation until resolved.
 
-<!-- No release has been published yet. The first entry moves here on v0.1.0. -->
+[0.1.0]: https://github.com/cmendezs/mcp-einvoicing-ae/releases/tag/v0.1.0
