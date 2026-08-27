@@ -53,23 +53,26 @@ One subdirectory per standard/system, since more than one has accumulated:
 | UAE Electronic Invoice — mandatory fields | V1.0, 23 Feb 2026 | https://u.ae/en/information-and-services/business/important-digital-services/digital-invoicing | 2026-08-26 (docs); URL added 2026-08-27 |
 | Considerations for selecting an ASP | V1.0, 23 Feb 2024 | https://u.ae/en/information-and-services/business/important-digital-services/digital-invoicing | 2026-08-26 (docs); URL added 2026-08-27 |
 | UAE FTA e-Invoicing compliance page (statutory rules, EmaraTax onboarding, Pre-Approved ASP list) | n/a | https://tax.gov.ae/en/taxes/Vat/uae.einvoicing.aspx | 2026-08-27 |
-| Federal Decree-Law No. 46 of 2021 (Electronic Transactions and Trust Services) | n/a | [NEED: UAE legislation/gazette portal URL — none of the three URLs supplied so far is a legislation portal] | 2026-08-26 |
+| Federal Decree-Law No. 46 of 2021 (Electronic Transactions and Trust Services) | n/a | [NEED: legislation/gazette portal URL — not hosted on the MOF e-invoicing initiative page] | 2026-08-26 |
 | VAT Decree-Law No. 8 of 2017 | n/a (unofficial translation) | [NEED: as above] | 2026-08-26 |
-| Ministerial Decision No. 243 of 2025 (Electronic Invoicing System) | n/a | [NEED: as above] | 2026-08-26 |
-| Ministerial Decision No. 244 of 2025 (Implementation of the Electronic Invoicing System) | n/a | [NEED: as above] | 2026-08-26 |
-| Ministerial Decision — Eligibility and Accreditation procedure for Service Providers (No. 64 of 2025) | n/a | [NEED: as above] | 2026-08-26 |
-| Ministerial Resolution No. 56 of 2026 (amending Resolution No. 64 of 2025) | n/a | [NEED: as above] | 2026-08-26 |
-| Ministerial Resolution No. 66 of 2026 (amending Resolution No. 244 of 2025) | n/a | [NEED: as above] | 2026-08-26 |
-| Cabinet Decision No. 106 of 2025 (Violations and Penalties, e-Invoicing) | n/a | [NEED: as above] | 2026-08-26 |
+| Ministerial Decision No. 243 of 2025 (Electronic Invoicing System) | n/a | https://mof.gov.ae/en/about-us/initiatives/einvoicing/ | 2026-08-26 (doc); URL added 2026-08-27 |
+| Ministerial Decision No. 244 of 2025 (Implementation of the Electronic Invoicing System) | n/a | https://mof.gov.ae/en/about-us/initiatives/einvoicing/ | 2026-08-26 (doc); URL added 2026-08-27 |
+| Ministerial Decision — Eligibility and Accreditation procedure for Service Providers (No. 64 of 2025) | n/a | https://mof.gov.ae/en/about-us/initiatives/einvoicing/ | 2026-08-26 (doc); URL added 2026-08-27 |
+| Ministerial Resolution No. 56 of 2026 (amending Resolution No. 64 of 2025) | n/a | https://mof.gov.ae/en/about-us/initiatives/einvoicing/ | 2026-08-26 (doc); URL added 2026-08-27 |
+| Ministerial Resolution No. 66 of 2026 (amending Resolution No. 244 of 2025) | n/a | https://mof.gov.ae/en/about-us/initiatives/einvoicing/ | 2026-08-26 (doc); URL added 2026-08-27 |
+| Cabinet Decision No. 106 of 2025 (Violations and Penalties, e-Invoicing) | n/a | https://mof.gov.ae/en/about-us/initiatives/einvoicing/ | 2026-08-26 (doc); URL added 2026-08-27 |
 
-**2026-08-27 update:** the user supplied three authority URLs in chat — the OpenPeppol PINT AE
-documentation portal, the UAE government digital-invoicing portal (u.ae), and the FTA's
-e-invoicing compliance page (tax.gov.ae) — resolving the Authority URL cell for the three
-technical specs and the three FTA guidance PDFs above, plus adding a dedicated row for the FTA
-compliance page itself. Per project convention, these URLs are recorded as citations for facts
-already established from the local documents; their page content was **not** fetched or read to
-extract new facts (no WebFetch/WebSearch was used). The 8 legal-instrument rows still need a
-distinct legislation/gazette-portal URL — none of the three supplied URLs is that portal.
+**2026-08-27 update (round 2):** the user identified
+`https://mof.gov.ae/en/about-us/initiatives/einvoicing/` as the Ministry of Finance page hosting
+the Legislative Documents section, and pasted that page's own document cards (title text plus
+file size, e.g. "Ministerial Resolution No. (66) of 2026 ... (85 KB, PDF)") confirming it lists
+six of the eight legal instruments: Ministerial Decisions 243 and 244 of 2025, the SP
+eligibility/accreditation decision, Ministerial Resolutions 56 and 66 of 2026, and Cabinet
+Decision 106 of 2025. Recorded as a citation for facts already established from the local PDFs;
+the page itself was not fetched or browsed. Federal Decree-Law No. 46 of 2021 and VAT Decree-Law
+No. 8 of 2017 did not appear among the six cards shown and still need their own
+legislation/gazette-portal URL — they are general UAE legislation, not e-invoicing-initiative
+documents, so a different MOF/legislation-portal page likely hosts them.
 
 ## Pending specs
 
