@@ -53,8 +53,8 @@ One subdirectory per standard/system, since more than one has accumulated:
 | UAE Electronic Invoice — mandatory fields | V1.0, 23 Feb 2026 | https://u.ae/en/information-and-services/business/important-digital-services/digital-invoicing | 2026-08-26 (docs); URL added 2026-08-27 |
 | Considerations for selecting an ASP | V1.0, 23 Feb 2024 | https://u.ae/en/information-and-services/business/important-digital-services/digital-invoicing | 2026-08-26 (docs); URL added 2026-08-27 |
 | UAE FTA e-Invoicing compliance page (statutory rules, EmaraTax onboarding, Pre-Approved ASP list) | n/a | https://tax.gov.ae/en/taxes/Vat/uae.einvoicing.aspx | 2026-08-27 |
-| Federal Decree-Law No. 46 of 2021 (Electronic Transactions and Trust Services) | n/a | [NEED: legislation/gazette portal URL — not hosted on the MOF e-invoicing initiative page] | 2026-08-26 |
-| VAT Decree-Law No. 8 of 2017 | n/a (unofficial translation) | [NEED: as above] | 2026-08-26 |
+| Federal Decree-Law No. 46 of 2021 (Electronic Transactions and Trust Services) | n/a | [NEED: legislation/gazette portal URL — not hosted on the MOF e-invoicing initiative page, and absent from the u.ae digital-invoicing page's own legal-reference list] | 2026-08-26 |
+| VAT Decree-Law No. 8 of 2017 | n/a (unofficial translation) | https://u.ae/en/information-and-services/business/important-digital-services/digital-invoicing | 2026-08-26 (doc); URL added 2026-08-27 |
 | Ministerial Decision No. 243 of 2025 (Electronic Invoicing System) | n/a | https://mof.gov.ae/en/about-us/initiatives/einvoicing/ | 2026-08-26 (doc); URL added 2026-08-27 |
 | Ministerial Decision No. 244 of 2025 (Implementation of the Electronic Invoicing System) | n/a | https://mof.gov.ae/en/about-us/initiatives/einvoicing/ | 2026-08-26 (doc); URL added 2026-08-27 |
 | Ministerial Decision — Eligibility and Accreditation procedure for Service Providers (No. 64 of 2025) | n/a | https://mof.gov.ae/en/about-us/initiatives/einvoicing/ | 2026-08-26 (doc); URL added 2026-08-27 |
@@ -74,6 +74,18 @@ No. 8 of 2017 did not appear among the six cards shown and still need their own
 legislation/gazette-portal URL — they are general UAE legislation, not e-invoicing-initiative
 documents, so a different MOF/legislation-portal page likely hosts them.
 
+**2026-08-27 update (round 3):** the user pasted the "Electronic Invoicing System" section of
+`https://u.ae/en/information-and-services/business/important-digital-services/digital-invoicing`
+(the same page already cited for the three FTA guidance PDFs). That section links VAT Decree-Law
+No. 8 of 2017 directly (labeled "PDF, 1 MB", consistent with the file already held at
+`specs/legal/VAT-Decree-Law-No-8-of-2017.pdf`) — resolving its Authority URL above — and also
+links Ministerial Decision No. 243 of 2025 (already resolved via the MOF page; this is a second,
+consistent citation, not a conflict). It also names a document not previously in this list:
+**Federal Decree-Law No. 14 of 2023 (Concerning the Modern Technology-based Trade)**. This is a
+distinct instrument from Federal Decree-Law No. 46 of 2021 already tracked above — see the new
+"Pending specs" row below. As before, the page itself was not fetched or browsed; only the
+titles and labels the user pasted were used.
+
 ## Pending specs
 
 | Document | Status | Notes |
@@ -81,6 +93,7 @@ documents, so a different MOF/legislation-portal page likely hosts them.
 | OASIS UBL 2.1 base XSD (Invoice / CreditNote) | `[NEED:]` | PINT AE's examples reference these via `schemaLocation` but the base OASIS schemas were not included in any of the three supplied ZIPs. Needed for local wire-schema validation. |
 | Independent OpenPeppol jurisdiction-registry confirmation | `[NEED:]` | The UAE Peppol Authority's own "Status: Final" release notes and the FTA's "published on its website" statement are strong evidence PINT AE is published. The likely registry URL is now known (https://docs.peppol.eu/poac/ae/, supplied 2026-08-27), but its content has not been read or fetched by this assistant — per project convention, normative sources are read from user-supplied local files or user-pasted text only, never fetched. Not blocking (see gate note above). Closes out if the user visits the page and reports what it says, or pastes its content. |
 | TDD transport mechanism | `[NEED:]` | None of the supplied TDD documents state whether the 5th-corner reporting document travels over the same AS4/Peppol channel as the PINT AE invoice or a separate channel. |
+| Federal Decree-Law No. 14 of 2023 (Concerning the Modern Technology-based Trade) | `[NEED:]` | Named on the u.ae digital-invoicing page (2026-08-27) alongside VAT Decree-Law No. 8 of 2017 and Ministerial Decision No. 243 of 2025 as a legal basis for e-invoicing. No PDF has been supplied yet, and its relevance relative to the already-tracked Federal Decree-Law No. 46 of 2021 (Electronic Transactions and Trust Services) has not been assessed — they may be complementary, not alternatives. Do not assume either supersedes the other without reading both texts. |
 
 ## Non-file sources
 
