@@ -10,10 +10,12 @@
 
 ---
 
-> **v0.1.0 published 2026-08-27 — first release.** `AEInvoice`, `AEParty`, `AETaxDataDocument`,
-> the bundled Schematron/XSD validators, and the `generate`/`validate`/`parse` MCP tools are all
-> implemented and live on PyPI and the MCP registry. See [Current status](#current-status) for
-> what's still open (none of it blocks this release).
+> **v0.2.0 published 2026-08-28.** `AEInvoice`, `AEParty`, `AETaxDataDocument`, and the
+> `generate`/`validate`/`parse` MCP tools are live on PyPI and the MCP registry.
+> `validate_invoice_ae` now checks core's shared CEN EN16931 base Schematron rather than the
+> self-compiled OpenPeppol-derived stylesheets v0.1.0 bundled without confirmed redistribution
+> rights; `validate_tdd_ae` currently reports "unavailable" — see
+> [Supported standards](#supported-standards) and [Tools](#tools) below.
 
 ---
 
@@ -45,11 +47,12 @@ landed the same day, and `v0.1.0` published the same week.
 | Supported standards and profile URNs | **Known** — see below |
 | Core-gap check (`mcp-einvoicing-core`) | **Done** — `TaxIdentifier.validate_ae_trn()`, core v1.22.0 |
 | `AEInvoice` / `AEParty` (billing + self-billing) | **Implemented** (2026-08-27) |
-| `AETaxDataDocument` (Peppol AE TDD model) | **Implemented** — schema-level (XSD) validation blocked on the missing base OASIS UBL schema; Schematron validation unaffected |
-| Bundled Schematron validators (PINT AE + TDD) | **Implemented** — 4 stylesheets, XSLT 2.0 (`saxonche`/`[xslt2]` extra) |
+| `AETaxDataDocument` (Peppol AE TDD model) | **Implemented** — no validation available (see below) |
+| Invoice validation (`validate_invoice_ae`) | **CEN EN16931 base only** (v0.2.0, 2026-08-28) — the PINT AE jurisdiction overlay and TDD Schematron/XSD v0.1.0 bundled had no confirmed redistribution rights and were removed; see [Supported standards](#supported-standards) |
 | `profile_registry` registration (PINT AE URNs) | **Done** |
 | MCP tools (generate / validate / parse) | **Implemented** (2026-08-27) — see [Tools](#tools) |
 | First release (`v0.1.0`) | **Published** (2026-08-27) — PyPI and MCP registry |
+| Licensing fix release (`v0.2.0`) | **Published** (2026-08-28) — see [`CHANGELOG.md`](CHANGELOG.md) |
 
 ### The publication gate — resolved 2026-08-26
 
@@ -93,6 +96,16 @@ invoice and is not built on `AEInvoice`. MCP tools reuse this stack directly —
 [Tools](#tools) for what's covered and what isn't. The TDD transport channel (same AS4 channel as
 the invoice, or a separate one) remains an open documentation question, not a code gap. Full
 detail: [`specs/README.md`](specs/README.md).
+
+**Validation scope, as of v0.2.0:** `validate_invoice_ae` checks the CEN EN16931 base Schematron
+only (structural + arithmetic/totals rules, shared with `mcp-einvoicing-be`/`mcp-ksef-pl`) — not
+the PINT AE jurisdiction overlay (`ibr-*-ae` rules). `BR-CO-09` (VAT identifier must carry an ISO
+3166-1 alpha-2 prefix) is expected to fire on every genuine AE invoice, since UAE TRNs carry no
+country prefix; this is disclosed in every result, not a defect in your data. `validate_tdd_ae`
+currently has no validation available at all. v0.1.0 bundled five self-compiled files derived
+from OpenPeppol's PINT AE and TDD Schematron/XSD sources with no confirmed redistribution
+rights — removed in v0.2.0. See [`CHANGELOG.md`](CHANGELOG.md) and this monorepo's
+[`context-library/decisions/peppol-schematron-artifact.md`](https://github.com/cmendezs/mcp-einvoicing/blob/main/context-library/decisions/peppol-schematron-artifact.md).
 
 ---
 
@@ -157,13 +170,13 @@ once the specification documents them. See [`.env.example`](.env.example).
 | Tool | Description |
 |---|---|
 | `generate_invoice_ae` | Generate a PINT AE UBL 2.1 invoice XML (billing or self-billing) from structured data. Only the EN 16931 core field set is emitted — `AEParty.trade_license_number` has no mapping in core's generic UBL serializer yet and is dropped from the output. |
-| `validate_invoice_ae` | Validate a PINT AE UBL 2.1 invoice against the bundled Schematron rules (UBL structural rules + `ibr-*-ae` jurisdiction rules). Requires the `xslt2` extra. |
-| `validate_tdd_ae` | Validate a Peppol AE Tax Data Document (TDD) against its bundled Schematron rules. Schematron-level only — schema (XSD) validation is unavailable pending the base OASIS UBL schema; every result flags this explicitly. Requires the `xslt2` extra. |
+| `validate_invoice_ae` | Validate a PINT AE UBL 2.1 invoice against core's shared CEN EN16931 base Schematron (structural + arithmetic/totals rules only — not the PINT AE jurisdiction overlay). Requires the `xslt2` extra. |
+| `validate_tdd_ae` | Always returns an explicit "unavailable" result — no licensed validation artifact is currently available for the Peppol AE Tax Data Document (TDD). |
 | `parse_invoice_ae` | Parse a PINT AE UBL 2.1 invoice XML into a structured dict (EN 16931 core field set only — AE-specific extensions such as `trade_license_number` are not extracted). |
 
-All four tools require `mcp-einvoicing-ae[xslt2]` (bundles `saxonche`) for the Schematron
-validators to load; without it, `validate_invoice_ae`/`validate_tdd_ae` return an explicit
-"unavailable" result rather than a silent pass.
+`generate_invoice_ae`/`validate_invoice_ae`/`parse_invoice_ae` require `mcp-einvoicing-ae[xslt2]`
+(bundles `saxonche`) for the base Schematron validator to load; without it, `validate_invoice_ae`
+returns an explicit "unavailable" result rather than a silent pass.
 
 The tool reference in [`docs/TOOLS.md`](docs/TOOLS.md) is generated from the running server:
 

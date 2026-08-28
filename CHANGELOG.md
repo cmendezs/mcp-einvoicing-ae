@@ -9,6 +9,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-08-28
+
+### Fixed
+- **Removed unlicensed bundled OpenPeppol-derived Schematron/XSD artifacts.**
+  v0.1.0 shipped five self-compiled files with no confirmed redistribution
+  rights: `pint-ubl-billing.xslt`, `pint-ubl-selfbilling.xslt`,
+  `pint-jurisdiction-ae.xslt`, `peppol-ae-tdd.xslt`, and
+  `peppol-tdd-1.0.0.xsd`. v0.1.0's docstrings argued the licensing blocker
+  in `context-library/decisions/peppol-schematron-artifact.md` was "moot"
+  here because the source files were supplied directly by the user rather
+  than fetched from the web — that reasoning was wrong: being user-supplied
+  only avoids Claude autonomously retrieving copyrighted material, it does
+  not confer redistribution rights to bundle the content into a published
+  wheel. Same gap already identified and fixed for `mcp-invoicenow-sg`
+  v0.2.0, and already blocked-and-labeled honestly for `mcp-einvoicing-be`/
+  `mcp-ksef-pl`'s Peppol overlay.
+
+### Changed
+- **`validate_invoice_ae` now runs core's shared, licensing-clean CEN
+  EN16931 base Schematron** (`en16931_base_schematron_validator()` — the
+  same artifact `mcp-einvoicing-be` v0.8.0 / `mcp-ksef-pl` v0.6.0 consume)
+  in place of the two removed PINT AE stylesheets. Unlike
+  `mcp-invoicenow-sg` (blocked by an unsourced GST-category crosswalk), AE
+  has no equivalent blocker — `AEInvoice`'s tax category codes are already
+  UNCL5305-derived (`Aligned-TaxCategoryCodes.gc`) and its `TaxScheme/ID` is
+  already the literal `"VAT"` (core's unmodified `EN16931UBLSerializer`).
+  Every result now carries `EN16931_BASE_ONLY_SCOPE_WARNING` (PINT-AE
+  jurisdiction rules are not checked) and
+  `EN16931_BASE_KNOWN_LIMITATIONS_WARNING` (`BR-CO-09` is expected to fire
+  on every genuine AE invoice — UAE TRNs carry no ISO 3166-1 alpha-2
+  prefix, confirmed against the government-supplied example fixture).
+- **`validate_tdd_ae` now always returns an explicit `engine="unavailable"`
+  result.** No licensing-clean substitute exists for the removed
+  `peppol_ae_tdd` Schematron and `peppol-tdd-1.0.0.xsd` — the Peppol AE TDD
+  is a distinct document type from an EN16931 UBL invoice, and core
+  provides no TDD validation capability at all.
+- **Known coverage loss, documented not silent**: the PINT-AE jurisdiction
+  overlay (`ibr-*-ae` rules) and all TDD validation are no longer checked.
+  See `EN16931_BASE_ONLY_SCOPE_WARNING` and `_TDD_VALIDATION_UNAVAILABLE` in
+  `tools/validation.py`.
+
 ## [0.1.0] - 2026-08-27
 
 ### Added
@@ -49,4 +90,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   supplied source; not a core gap either way, but blocks a transport
   implementation until resolved.
 
+[0.2.0]: https://github.com/cmendezs/mcp-einvoicing-ae/releases/tag/v0.2.0
 [0.1.0]: https://github.com/cmendezs/mcp-einvoicing-ae/releases/tag/v0.1.0

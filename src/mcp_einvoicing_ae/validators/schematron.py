@@ -1,100 +1,77 @@
-"""PINT AE / Peppol AE TDD Schematron validator for mcp-einvoicing-ae.
+"""Schematron validation support for mcp-einvoicing-ae.
 
-Extends mcp_einvoicing_core.SchematronValidator with a stylesheet key map for
-the UAE rule sets. All XSLT files are bundled inside the package under
-``mcp_einvoicing_ae/rules/`` (copied from the user-supplied ``specs/`` at
-2026-08-27; the licensing blocker on OpenPeppol Schematron redistribution
-(CORE-PEPPOL-SCHEMATRON-1) does not apply here since these files were
-supplied directly, not fetched — see context-library/decisions and
-context-library/countries/ae.md "Known gaps and open items").
+v0.1.0 bundled four self-compiled OpenPeppol-derived stylesheets under
+``mcp_einvoicing_ae/rules/`` (``pint-ubl-billing.xslt``,
+``pint-ubl-selfbilling.xslt``, ``pint-jurisdiction-ae.xslt``,
+``peppol-ae-tdd.xslt``, plus ``peppol-tdd-1.0.0.xsd`` for XSD-level TDD
+checks). None of the underlying ``.sch``/``.xsd`` sources under ``specs/``
+carry a redistribution grant — same finding
+``context-library/decisions/peppol-schematron-artifact.md`` already made for
+``mcp-einvoicing-be``/``mcp-ksef-pl``'s Peppol BIS 3.0 overlay and
+``mcp-invoicenow-sg``'s PINT-SG overlay. v0.1.0's own module docstring argued
+this was "moot" here because the files were supplied directly by the user
+rather than fetched from the web — that reasoning was wrong: being
+user-supplied only means Claude did not autonomously retrieve copyrighted
+material (a separate, process-level concern), it says nothing about whether
+this project holds redistribution rights to bundle the content into a
+published PyPI wheel. All five files are removed in v0.2.0.
 
-Bundled rule sources (from mcp-einvoicing-ae/specs/, retrieved 2026-08-26):
-- PINT AE billing / self-billing: same compiled UBL/PINT structural rules for
-  both Invoice and CreditNote document types within a profile (confirmed
-  byte-identical between trn-invoice/ and trn-creditnote/ on 2026-08-27), so
-  only one stylesheet per profile is bundled.
-- The `ibr-*-ae` jurisdiction-aligned rules are identical between the billing
-  and self-billing profiles (confirmed byte-identical on 2026-08-27) — a
-  single bundled stylesheet covers both.
-- Peppol AE TDD: its own single Schematron, distinct namespace/document.
+What replaces PINT AE structural/jurisdiction validation:
+``mcp_einvoicing_core.schematron_artifacts.en16931_base_schematron_validator()``
+(core >=1.18.0) — the same licensing-clean, EUPL 1.2-sourced CEN EN16931 base
+Schematron (``BR-*`` rules only) that ``mcp-einvoicing-be`` v0.8.0 and
+``mcp-ksef-pl`` v0.6.0 already consume. Unlike ``mcp-invoicenow-sg`` (blocked
+by an unsourced GST-category-to-UNCL5305 crosswalk), AE has no equivalent
+blocker: ``AEInvoice`` uses the ``Aligned-TaxCategoryCodes.gc`` codelist,
+which the "Aligned" name itself signals as UNCL5305-derived (confirmed by
+example values ``S``/``AE``/``E``/``O``/``Z`` — see
+``context-library/countries/ae.md``), and AE's serializer is core's own
+``EN16931UBLSerializer`` unmodified, which already emits ``TaxScheme/ID``
+as the literal ``"VAT"`` (verified in
+``mcp-einvoicing-core/src/mcp_einvoicing_core/wire_formats.py``) — no GST/VAT
+rewrite step like SG's ``_gst_to_vat_for_base_validation`` is needed.
+
+Known, permanent scope limitation (not a data bug): ``BR-CO-09`` ("the Seller
+VAT identifier... shall have a prefix in accordance with ISO code ISO
+3166-1 alpha-2") fires on every genuine AE invoice, because UAE Tax
+Registration Numbers (see ``TaxIdentifier.validate_ae_trn()``) are bare
+15-digit numerics with no country-code prefix — confirmed directly against
+the government-supplied
+``specs/pint-ae/trn-invoice/example/Standard tax invoice.xml`` fixture,
+whose ``PartyTaxScheme/CompanyID`` values (``198765432102003``,
+``134567890123003``) carry no ISO prefix. This is a structural mismatch
+between an EU-designed rule and a non-EU jurisdiction, not something a
+validation-only data transform can correct (unlike SG's TaxScheme/ID
+mismatch, which was a literal renaming and a genuine mapping between clean
+equivalents). ``EN16931_BASE_KNOWN_LIMITATIONS_WARNING`` in
+``tools/validation.py`` discloses this on every result rather than silently
+filtering the finding out of ``errors``.
+
+What is NOT replaced: the PINT-AE jurisdiction overlay (the ``ibr-*-ae``
+rules removed with ``pint-jurisdiction-ae.xslt``) and Peppol AE TDD
+validation (``peppol-ae-tdd.xslt`` / ``peppol-tdd-1.0.0.xsd``) have no
+licensing-clean substitute anywhere in core or elsewhere in this monorepo —
+core provides no TDD capability at all (grepped
+``context-library/core-state.md``, no match). ``validate_tdd_ae`` in
+``tools/validation.py`` now always returns an explicit
+``engine="unavailable"`` result rather than silently omitting the check.
+Both gaps stay blocked on the same external OpenPeppol licensing question as
+``[CORE-PEPPOL-SCHEMATRON-1]`` in ``context-library/roadmap-2026.md``.
 """
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Literal
+from mcp_einvoicing_core.schematron import BaseStructuredValidator
+from mcp_einvoicing_core.schematron_artifacts import en16931_base_schematron_validator
 
-from mcp_einvoicing_core.schematron import (
-    BaseStructuredValidator,
-    SaxonSchematronValidator,
-    ValidationMessage,
-    ValidationResult,
-    load_schematron_validator,
-)
-from mcp_einvoicing_core.schematron import (
-    XSDValidator as _CoreXSDValidator,
-)
-
-__all__ = [
-    "SchematronValidator",
-    "SaxonSchematronValidator",
-    "ValidationMessage",
-    "ValidationResult",
-    "tdd_xsd_validator",
-]
-
-_RULES_DIR = Path(__file__).parent.parent / "rules"
-
-StylesheetKey = Literal[
-    "pint_ubl_billing",
-    "pint_ubl_selfbilling",
-    "pint_jurisdiction_ae",
-    "peppol_ae_tdd",
-]
-
-_STYLESHEET_MAP: dict[str, Path] = {
-    "pint_ubl_billing": _RULES_DIR / "pint-ubl-billing.xslt",
-    "pint_ubl_selfbilling": _RULES_DIR / "pint-ubl-selfbilling.xslt",
-    "pint_jurisdiction_ae": _RULES_DIR / "pint-jurisdiction-ae.xslt",
-    "peppol_ae_tdd": _RULES_DIR / "peppol-ae-tdd.xslt",
-}
-
-_TDD_XSD_PATH = _RULES_DIR / "peppol-tdd-1.0.0.xsd"
+__all__ = ["en16931_base_validator"]
 
 
-def SchematronValidator(stylesheet_key: StylesheetKey) -> BaseStructuredValidator:  # noqa: N802
-    """Factory: return the right validator backend for a bundled stylesheet key.
-
-    Delegates version detection and backend dispatch to core's
-    ``load_schematron_validator()``.
+def en16931_base_validator() -> BaseStructuredValidator:
+    """Return core's bundled, licensing-clean CEN EN16931 base Schematron validator.
 
     Raises:
-        ValueError:        If the key is unknown.
-        FileNotFoundError: If the XSLT file is missing from the package.
-        ImportError:       If an XSLT 2.0+ stylesheet is requested without
-                           the optional ``saxonche`` extra installed.
+        ImportError: If the optional ``saxonche`` extra (XSLT 3.0 engine) is
+            not installed.
     """
-    stylesheet_path = _STYLESHEET_MAP.get(stylesheet_key)
-    if stylesheet_path is None:
-        raise ValueError(
-            f"Unknown stylesheet key: {stylesheet_key!r}. Valid keys: {sorted(_STYLESHEET_MAP)}"
-        )
-    return load_schematron_validator(stylesheet_path)
-
-
-def tdd_xsd_validator() -> _CoreXSDValidator:
-    """Return an ``XSDValidator`` for the Peppol AE Tax Data Document schema.
-
-    The TDD is not a UBL invoice and is not covered by the EN 16931/PINT
-    Schematron rules above — schema-level (XSD) validation plus its own
-    ``peppol_ae_tdd`` Schematron are the two checks available for it.
-
-    Currently raises ``ValueError``: ``peppol-tdd-1.0.0.xsd`` imports the base
-    OASIS ``UnqualifiedDataTypes-2`` schema, which was not included in any
-    supplied ZIP (see context-library/countries/ae.md "Wire format caps and
-    constraints", still `[NEED:]` as of 2026-08-27). lxml cannot compile the
-    schema standalone until that base schema is supplied. Schematron-level
-    validation via ``SchematronValidator("peppol_ae_tdd")`` is unaffected —
-    it operates on the XML directly and does not require XSD compilation.
-    """
-    return _CoreXSDValidator(_TDD_XSD_PATH)
+    return en16931_base_schematron_validator()

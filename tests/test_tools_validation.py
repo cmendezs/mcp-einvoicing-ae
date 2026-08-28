@@ -1,13 +1,10 @@
 """Tests for AEDocumentValidator.validate_invoice_ae / validate_tdd_ae.
 
-Uses the real bundled Schematron stylesheets against the supplied example
-documents (saxonche is installed in this workspace venv — confirmed via
-tests/test_validators_schematron.py). Not asserting `valid=True` for the
-bundled examples: they are documentation fixtures, not guaranteed
-schematron-clean (same stance as test_validators_schematron.py). The useful
-assertions here are that both rule sets actually run and that the combined
-result/warnings shape is correct — including the "unavailable" fallback path
-when a stylesheet fails to load.
+v0.2.0 replaced the two bundled PINT AE stylesheets in validate_invoice_ae
+with core's shared CEN EN16931 base Schematron, and validate_tdd_ae now
+always reports "unavailable" (no substitute for the removed peppol_ae_tdd
+Schematron) — see mcp_einvoicing_ae/validators/schematron.py and
+tools/validation.py module docstrings for why.
 """
 
 from pathlib import Path
@@ -15,7 +12,11 @@ from pathlib import Path
 import pytest
 
 from mcp_einvoicing_ae.tools import validation as validation_module
-from mcp_einvoicing_ae.tools.validation import AEDocumentValidator
+from mcp_einvoicing_ae.tools.validation import (
+    EN16931_BASE_KNOWN_LIMITATIONS_WARNING,
+    EN16931_BASE_ONLY_SCOPE_WARNING,
+    AEDocumentValidator,
+)
 
 _validator = AEDocumentValidator()
 
@@ -31,40 +32,53 @@ pytestmark = pytest.mark.skipif(
 )
 
 
-async def test_validate_invoice_ae_billing_runs_both_rulesets() -> None:
+async def test_validate_invoice_ae_billing_runs_en16931_base() -> None:
     xml = _STANDARD_INVOICE.read_text(encoding="utf-8")
     result = await _validator.validate_invoice_ae(xml=xml, variant="billing")
     assert isinstance(result["valid"], bool)
     assert isinstance(result["errors"], list)
     assert result["variant"] == "billing"
-    assert result["rulesets"] == ["pint_ubl_billing", "pint_jurisdiction_ae"]
+    assert result["rulesets_run"] == ["en16931_base"]
+    assert result["scope"] == "en16931-base-only"
+    assert any(EN16931_BASE_ONLY_SCOPE_WARNING == w for w in result["warnings"])
+    assert any(EN16931_BASE_KNOWN_LIMITATIONS_WARNING == w for w in result["warnings"])
 
 
 async def test_validate_invoice_ae_selfbilling_variant() -> None:
     xml = _SELF_BILLING_INVOICE.read_text(encoding="utf-8")
     result = await _validator.validate_invoice_ae(xml=xml, variant="selfbilling")
     assert result["variant"] == "selfbilling"
-    assert result["rulesets"] == ["pint_ubl_selfbilling", "pint_jurisdiction_ae"]
+    assert result["rulesets_run"] == ["en16931_base"]
 
 
-async def test_validate_invoice_ae_unavailable_when_stylesheets_cannot_load(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    def _raise(_key: str) -> None:
-        raise ImportError("saxonche not installed")
-
-    monkeypatch.setattr(validation_module, "SchematronValidator", _raise)
+async def test_validate_invoice_ae_flags_known_br_co_09_limitation() -> None:
+    """The bundled example's TRNs carry no ISO country prefix — BR-CO-09
+    is expected to fire; this is disclosed, not silently hidden."""
     xml = _STANDARD_INVOICE.read_text(encoding="utf-8")
     result = await _validator.validate_invoice_ae(xml=xml, variant="billing")
+    assert any("BR-CO-09" in e for e in result["errors"])
+
+
+async def test_validate_invoice_ae_unavailable_when_base_validator_cannot_load(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def _raise() -> None:
+        raise ImportError("saxonche not installed")
+
+    monkeypatch.setattr(validation_module, "en16931_base_validator", _raise)
+    validator = AEDocumentValidator()
+    xml = _STANDARD_INVOICE.read_text(encoding="utf-8")
+    result = await validator.validate_invoice_ae(xml=xml, variant="billing")
     assert result["valid"] is False
     assert any("AE-VALIDATION-UNAVAILABLE" in e for e in result["errors"])
 
 
-async def test_validate_tdd_ae_flags_xsd_not_run() -> None:
+async def test_validate_tdd_ae_always_unavailable() -> None:
     xml = _TDD_SIMPLE.read_text(encoding="utf-8")
     result = await _validator.validate_tdd_ae(xml=xml)
-    assert isinstance(result["valid"], bool)
-    assert any("TDD-XSD-NOT-RUN" in w for w in result["warnings"])
+    assert result["valid"] is False
+    assert any("TDD-VALIDATION-UNAVAILABLE" in e for e in result["errors"])
+    assert result["engine"] == "unavailable"
 
 
 def test_get_schema_version() -> None:

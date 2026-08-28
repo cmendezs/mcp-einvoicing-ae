@@ -49,7 +49,28 @@ those entries under the new version heading.
 
 ## Release history
 
-**`v0.1.0`** — published 2026-08-27 (first release). The three gates that previously blocked
+### v0.2.0 - 2026-08-28
+
+Removed five unlicensed bundled OpenPeppol-derived Schematron/XSD artifacts (`pint-ubl-billing.xslt`,
+`pint-ubl-selfbilling.xslt`, `pint-jurisdiction-ae.xslt`, `peppol-ae-tdd.xslt`,
+`peppol-tdd-1.0.0.xsd`) shipped in v0.1.0's wheel — no confirmed redistribution rights, same gap
+`context-library/decisions/peppol-schematron-artifact.md` identified for
+`mcp-einvoicing-be`/`mcp-ksef-pl`'s Peppol overlay and already fixed for `mcp-invoicenow-sg`
+v0.2.0. v0.1.0's own docstrings had argued the licensing blocker was "moot" here because the
+files were user-supplied rather than fetched — that reasoning was wrong; being user-supplied only
+avoids autonomous fetching, it does not confer redistribution rights. `validate_invoice_ae` now
+runs core's shared `en16931_base_schematron_validator()` (same artifact `mcp-einvoicing-be`
+v0.8.0 / `mcp-ksef-pl` v0.6.0 consume) — a real, licensing-clean improvement for AE since its tax
+category codes are already UNCL5305-derived and its `TaxScheme/ID` is already `"VAT"`, unlike
+`mcp-invoicenow-sg`'s blocked GST crosswalk. `BR-CO-09` is a known, permanent false positive for
+AE's non-EU TRN identifiers and is disclosed via `EN16931_BASE_KNOWN_LIMITATIONS_WARNING` on
+every result rather than filtered out. `validate_tdd_ae` now always returns an explicit
+`engine="unavailable"` result — no substitute exists for the removed TDD Schematron/XSD, and core
+provides no TDD validation capability. Full changelog: [`CHANGELOG.md`](CHANGELOG.md).
+
+### v0.1.0 - 2026-08-27 (first release)
+
+The three gates that previously blocked
 this release are now closed:
 
 1. PINT AE publication status confirmed 2026-08-26 — see `context-library/countries/ae.md`
