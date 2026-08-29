@@ -49,6 +49,18 @@ those entries under the new version heading.
 
 ## Release history
 
+### v0.3.0 - 2026-08-29
+
+Resolves the BLOCKING and now-actionable findings from the first AE compliance audit
+(`audit/2026-08-audit-ae.md`). AE-SC-1 (BLOCKING): generated invoices now emit all
+unconditionally-mandatory PINT AE elements (`cbc:UUID`, `cbc:ProfileExecutionID`, per-line
+`cac:ItemPriceExtension`) via `mcp-einvoicing-core` v1.25.0 plus a new `AEUBLSerializer`.
+AE-TC-1: the 5.00% standard VAT rate is now enforced by a model validator. AE-SC-3:
+`trade_license_number` round-trips through both generation and parsing. AE-LC-2: Peppol
+participant lookup registered. AE-LC-1 (partial): OASIS UBL 2.1 base schemas vendored. AE-AG-1:
+audit gate scan-list bug fixed and `_INTENTIONAL_OVERRIDES` populated (0 blocking / 0 warnings,
+down from 142). Core pin bumped to `>=1.25.0,<2.0.0`. Full changelog: [`CHANGELOG.md`](CHANGELOG.md).
+
 ### v0.2.0 - 2026-08-28
 
 Removed five unlicensed bundled OpenPeppol-derived Schematron/XSD artifacts (`pint-ubl-billing.xslt`,

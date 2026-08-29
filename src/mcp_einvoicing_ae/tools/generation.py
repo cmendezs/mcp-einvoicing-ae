@@ -1,19 +1,12 @@
 """UAE invoice generation — subclasses BaseDocumentGenerator from mcp-einvoicing-core.
 
-AEInvoice reuses mcp_einvoicing_core.wire_formats.EN16931UBLSerializer directly
-(see models/invoice.py's module docstring) rather than a package-local UBL
-emitter — grepped 2026-08-27: no other country package in the monorepo calls
-it directly, so AE is the first real consumer.
+Uses AEUBLSerializer (mcp_einvoicing_ae.wire_formats), which layers the
+AE-specific elements (cbc:ProfileExecutionID, PartyLegalEntity/CompanyID
+schemeAgencyID="TL") on top of core's EN16931UBLSerializer — see that
+module's docstring for the full mapping, including which elements now come
+natively from core v1.25.0 (cbc:UUID, cac:ItemPriceExtension).
 
-Known limitation: only the EN 16931 core field set is emitted.
-AEParty.trade_license_number (a genuine PINT AE field, IBT-030/IBT-047) has
-no mapping in core's generic serializer and is silently dropped from the
-output XML today. [NEED: a bespoke AE serializer override, or a core hook for
-country-specific PartyLegalEntity/CompanyID extensions] before
-trade_license_number can round-trip through generation. Documented here
-rather than fixed silently.
-
-core-state-check: [REUSE: EN16931UBLSerializer from core v1.22.0]
+core-state-check: [REUSE: EN16931UBLSerializer from core v1.25.0]
 """
 
 from __future__ import annotations
@@ -21,10 +14,10 @@ from __future__ import annotations
 from typing import Annotated, Any
 
 from mcp_einvoicing_core import BaseDocumentGenerator, DocumentGenerationError
-from mcp_einvoicing_core.wire_formats import EN16931UBLSerializer
 
 from mcp_einvoicing_ae.models.invoice import AEInvoice, AEProfileVariant
 from mcp_einvoicing_ae.standards.pint_ae import CUSTOMIZATION_IDS, PROFILE_IDS
+from mcp_einvoicing_ae.wire_formats import AEUBLSerializer
 
 
 class AEDocumentGenerator(BaseDocumentGenerator[AEInvoice]):
@@ -43,7 +36,7 @@ class AEDocumentGenerator(BaseDocumentGenerator[AEInvoice]):
 
     def generate(self, document: AEInvoice) -> str:
         """Serialize an ``AEInvoice`` to a UBL 2.1 XML string."""
-        return EN16931UBLSerializer().serialize(document).decode("utf-8")
+        return AEUBLSerializer().serialize(document).decode("utf-8")
 
     async def generate_invoice_ae(
         self,
@@ -56,10 +49,10 @@ class AEDocumentGenerator(BaseDocumentGenerator[AEInvoice]):
         """Generate a PINT AE UBL 2.1 e-invoice XML document from structured data.
 
         Applies the correct CustomizationID (BT-24) and ProfileID (BT-23) for
-        the selected variant. Only the EN 16931 core field set is emitted —
-        ``AEParty.trade_license_number`` has no bespoke mapping in core's UBL
-        serializer yet and is dropped from the output; see this module's
-        docstring.
+        the selected variant. All unconditionally-mandatory PINT AE elements
+        are emitted: ``cbc:UUID``, ``cbc:ProfileExecutionID``, per-line
+        ``cac:ItemPriceExtension``, and ``PartyLegalEntity/CompanyID``
+        (``AEParty.trade_license_number``, when set).
 
         Returns a dict with:
         - ``xml``: the generated UBL 2.1 XML string

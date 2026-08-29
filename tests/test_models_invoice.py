@@ -10,12 +10,12 @@ from decimal import Decimal
 
 import pytest
 from mcp_einvoicing_core.en16931 import EN16931Address, EN16931Tax
-from mcp_einvoicing_core.wire_formats import EN16931UBLSerializer
 from pydantic import ValidationError
 
 from mcp_einvoicing_ae.models.invoice import AE_STANDARD_VAT_RATE, AEInvoice, AEInvoiceLine
 from mcp_einvoicing_ae.models.party import AEParty
 from mcp_einvoicing_ae.standards.pint_ae import CUSTOMIZATION_IDS, PROFILE_IDS
+from mcp_einvoicing_ae.wire_formats import AEUBLSerializer
 
 _SELLER_ADDRESS = EN16931Address(
     line_one="Street Name", city="Sharjah", postcode="00000", country_code="AE"
@@ -60,6 +60,8 @@ def _base_kwargs() -> dict:
     return {
         "invoice_number": "AE-01TEST",
         "invoice_date": date(2025, 2, 6),
+        "document_uuid": "f12f329f-6430-4399-b661-7c5cd9c3a9e6",
+        "profile_execution_id": "00000000",
         "seller": _seller(),
         "buyer": _buyer(),
         "line_items": [_line()],
@@ -113,11 +115,81 @@ def test_requires_at_least_one_tax_line() -> None:
         AEInvoice(**kwargs)
 
 
-def test_serializes_via_core_ubl_serializer() -> None:
-    """AEInvoice reuses core's EN16931UBLSerializer directly (no bespoke AE serializer)."""
+def test_serializes_via_ae_ubl_serializer() -> None:
+    """AEInvoice serializes through AEUBLSerializer, which layers the AE-specific
+    elements (ProfileExecutionID, trade_license_number) on top of core's
+    EN16931UBLSerializer (document_uuid, ItemPriceExtension)."""
     invoice = AEInvoice(**_base_kwargs())
-    xml_bytes = EN16931UBLSerializer().serialize(invoice)
+    xml_bytes = AEUBLSerializer().serialize(invoice)
     xml = xml_bytes.decode("utf-8")
     assert "urn:peppol:pint:billing-1@ae-1" in xml
     assert "urn:peppol:bis:billing" in xml
     assert "198765432102003" in xml
+    assert "<cbc:UUID>f12f329f-6430-4399-b661-7c5cd9c3a9e6</cbc:UUID>" in xml
+    assert "<cbc:ProfileExecutionID>00000000</cbc:ProfileExecutionID>" in xml
+    assert "<cac:ItemPriceExtension>" in xml
+    assert 'schemeAgencyID="TL"' in xml
+    assert "112345678900003" in xml  # seller trade_license_number
+
+
+def test_profile_execution_id_required() -> None:
+    kwargs = _base_kwargs()
+    del kwargs["profile_execution_id"]
+    with pytest.raises(ValidationError, match="profile_execution_id"):
+        AEInvoice(**kwargs)
+
+
+def test_profile_execution_id_pattern_rejects_non_binary() -> None:
+    kwargs = _base_kwargs()
+    kwargs["profile_execution_id"] = "0000000A"
+    with pytest.raises(ValidationError, match="profile_execution_id"):
+        AEInvoice(**kwargs)
+
+
+def test_document_uuid_required() -> None:
+    kwargs = _base_kwargs()
+    del kwargs["document_uuid"]
+    with pytest.raises(ValidationError, match="document_uuid is mandatory"):
+        AEInvoice(**kwargs)
+
+
+def test_standard_rated_line_wrong_rate_rejected() -> None:
+    with pytest.raises(ValidationError, match="Standard-rated line"):
+        AEInvoiceLine(
+            line_id="1",
+            name="Item",
+            quantity=Decimal("1"),
+            unit_code="H87",
+            unit_price=Decimal("100"),
+            line_net_amount=Decimal("100"),
+            tax_category="S",
+            tax_rate=Decimal("10"),
+        )
+
+
+def test_zero_rated_category_nonzero_rate_rejected() -> None:
+    with pytest.raises(ValidationError, match="must carry tax_rate=0"):
+        AEInvoiceLine(
+            line_id="1",
+            name="Item",
+            quantity=Decimal("1"),
+            unit_code="H87",
+            unit_price=Decimal("100"),
+            line_net_amount=Decimal("100"),
+            tax_category="Z",
+            tax_rate=Decimal("5"),
+        )
+
+
+def test_zero_rated_category_zero_rate_accepted() -> None:
+    line = AEInvoiceLine(
+        line_id="1",
+        name="Item",
+        quantity=Decimal("1"),
+        unit_code="H87",
+        unit_price=Decimal("100"),
+        line_net_amount=Decimal("100"),
+        tax_category="Z",
+        tax_rate=Decimal("0"),
+    )
+    assert line.tax_rate == Decimal("0")

@@ -22,7 +22,7 @@ from enum import StrEnum
 from typing import Any, ClassVar, Literal
 
 from mcp_einvoicing_core.en16931 import EN16931Invoice, EN16931LineItem
-from pydantic import model_validator
+from pydantic import Field, model_validator
 
 from mcp_einvoicing_ae.models.party import AEParty
 from mcp_einvoicing_ae.standards.pint_ae import (
@@ -64,6 +64,30 @@ class AEInvoiceLine(EN16931LineItem):
 
     tax_category: AEVatCategory = AEVatCategory.STANDARD
 
+    @model_validator(mode="after")
+    def _check_tax_rate_matches_category(self) -> AEInvoiceLine:
+        """ibr-190-ae: a standard-rated line (category S) must carry exactly
+        5.00%. All other observed categories (reverse charge, exempt,
+        not-subject, zero-rated) must carry 0 — this is definitionally safe
+        per EN 16931 BR-{Z,E,AE,O}-05, already enforced independently of any
+        AE-specific citation. The statutory basis for the zero-rate
+        categories beyond the bare UNCL5305 code is `[NEED:]` per
+        context-library/countries/ae.md "Currency and VAT rates" — only the
+        standard-rate numeric value (ibr-190-ae) is sourced from there.
+        """
+        if self.tax_category == AEVatCategory.STANDARD:
+            if self.tax_rate != AE_STANDARD_VAT_RATE:
+                raise ValueError(
+                    f"Standard-rated line (category S) must carry tax_rate="
+                    f"{AE_STANDARD_VAT_RATE}, got {self.tax_rate} (ibr-190-ae)"
+                )
+        elif self.tax_rate != Decimal("0"):
+            raise ValueError(
+                f"Category {self.tax_category.value!r} lines must carry tax_rate=0, "
+                f"got {self.tax_rate}"
+            )
+        return self
+
 
 class AEInvoice(EN16931Invoice):
     """UAE e-invoice — PINT AE billing or self-billing profile.
@@ -82,10 +106,32 @@ class AEInvoice(EN16931Invoice):
     _allowed_profiles: ClassVar[frozenset[str]] = frozenset(CUSTOMIZATION_IDS.values())
 
     variant: AEProfileVariant | None = None
+    profile_execution_id: str = Field(
+        ...,
+        pattern=r"^[01]{8}$",
+        description=(
+            "8-bit invoice-type flag string (BTAE-02) — unconditionally "
+            "mandatory in PINT AE (ibr-154-ae), emitted as cbc:ProfileExecutionID. "
+            "Each position is a boolean flag per the PINT AE codelist; see "
+            "specs/pint-ae/trn-invoice/codelist/ for bit-position semantics "
+            "before relying on anything beyond the raw pattern."
+        ),
+    )
     seller: AEParty
     buyer: AEParty
     line_items: list[AEInvoiceLine]  # type: ignore[assignment]
     currency_code: str = "AED"
+
+    @model_validator(mode="after")
+    def _require_document_uuid(self) -> AEInvoice:
+        """ibr-193-ae: cbc:UUID (BTAE-07) is unconditionally mandatory in
+        PINT AE, unlike the base EN16931Invoice where document_uuid
+        (inherited from core v1.25.0) is optional."""
+        if not self.document_uuid:
+            raise ValueError(
+                "document_uuid is mandatory for PINT AE invoices (BTAE-07, ibr-193-ae)"
+            )
+        return self
 
     @model_validator(mode="before")
     @classmethod

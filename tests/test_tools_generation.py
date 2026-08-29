@@ -30,6 +30,8 @@ def _invoice_data() -> dict:
     return {
         "invoice_number": "AE-01TEST",
         "invoice_date": date(2025, 2, 6),
+        "document_uuid": "f12f329f-6430-4399-b661-7c5cd9c3a9e6",
+        "profile_execution_id": "00000000",
         "seller": AEParty(
             name="Party Trade Name",
             address=_SELLER_ADDRESS,
@@ -77,6 +79,19 @@ async def test_generate_billing_default() -> None:
     assert result["profile_id"] == PROFILE_IDS["billing"]
     assert "AE-01TEST" in result["xml"]
     assert "198765432102003" in result["xml"]
+
+
+async def test_generate_emits_ae_mandatory_elements() -> None:
+    """AE-SC-1/AE-SC-3: cbc:UUID, cbc:ProfileExecutionID, per-line
+    cac:ItemPriceExtension, and PartyLegalEntity/CompanyID (schemeAgencyID=TL)
+    must all be present in generated output."""
+    result = await _gen.generate_invoice_ae(invoice_data=_invoice_data())
+    xml = result["xml"]
+    assert "<cbc:UUID>f12f329f-6430-4399-b661-7c5cd9c3a9e6</cbc:UUID>" in xml
+    assert "<cbc:ProfileExecutionID>00000000</cbc:ProfileExecutionID>" in xml
+    assert "<cac:ItemPriceExtension>" in xml
+    assert 'schemeAgencyID="TL"' in xml
+    assert "112345678900003" in xml
 
 
 async def test_generate_selfbilling_variant() -> None:

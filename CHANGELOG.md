@@ -9,6 +9,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-08-29
+
+Resolves the BLOCKING and now-actionable findings from the first AE compliance audit
+(`audit/2026-08-audit-ae.md`, tracked in `context-library/audit-history.md`).
+
+### Fixed
+- **AE-SC-1 (BLOCKING): generated PINT AE invoices are now structurally conformant.**
+  `generate_invoice_ae` previously reused core's unmodified `EN16931UBLSerializer`, which could
+  not emit the unconditionally-mandatory `cbc:UUID` (BTAE-07), `cbc:ProfileExecutionID`
+  (BTAE-02), or per-line `cac:ItemPriceExtension` (BTAE-10/BTAE-08) — every generated invoice was
+  non-conformant, masked by v0.2.0's EN16931-base-only validation. Fixed via
+  `mcp-einvoicing-core` v1.25.0 (`document_uuid` field + `cac:ItemPriceExtension` opt-in
+  serializer flag) plus a new `AEUBLSerializer` (`mcp_einvoicing_ae/wire_formats.py`) that adds
+  `cbc:ProfileExecutionID` and the `trade_license_number` `PartyLegalEntity/CompanyID`
+  (`schemeAgencyID="TL"`). `AEInvoice.profile_execution_id` is now a required field
+  (`^[01]{8}$`), and `document_uuid` (inherited from core) is enforced via a model validator.
+- **AE-SC-3: `trade_license_number` now round-trips.** Previously accepted and validated on
+  `AEParty` but silently dropped by generation and never re-extracted on parse. Generation now
+  emits it (via `AEUBLSerializer`); `parse_invoice_ae` re-extracts it (plus `document_uuid` and
+  `profile_execution_id`) from the raw XML and re-validates the result as `AEInvoice`.
+
+### Added
+- **AE-TC-1: the 5.00% standard VAT rate is now enforced.** `AEInvoiceLine` gained a model
+  validator requiring `tax_rate == AE_STANDARD_VAT_RATE` for category `S`, and `tax_rate == 0`
+  for `AE`/`E`/`O`/`Z` (the zero-rate constraint is definitionally safe per EN 16931
+  `BR-{Z,E,AE,O}-05`, independent of any AE-specific citation).
+- **AE-LC-2: Peppol participant lookup registered.** `server.py` now mounts core's
+  `register_peppol_tools` plugin with an AE-specific TIN-based id adapter (scheme `0235`, first
+  10 digits of the TRN).
+- **AE-LC-1 (partial): OASIS UBL 2.1 base schemas vendored.** Copied from
+  `mcp-invoicenow-sg`'s identical vendored copy into `specs/shared/ubl-2.1/common/`, unblocking a
+  future XSD-level TDD validator. No XSD validation is implemented yet — the full TDD leg
+  (serialize + validate + transport) stays parked behind the transport-channel question.
+
+### Changed
+- **AE-AG-1: audit gate cleaned up.** `audit/audit_vs_core.py`'s module-scan list was missing
+  `tools/generation.py`, `tools/parsing.py`, `tools/validation.py`, and the new `wire_formats.py`
+  — CHECK 1 was reporting ~90 core symbols as "unused" that were genuinely imported, just in
+  unscanned files. Fixed the scan list and populated `_INTENTIONAL_OVERRIDES` for the remaining
+  genuinely-unused symbols. CHECK 1 now runs 0 blocking / 0 warnings (down from 142).
+- Core dependency pin bumped `>=1.23.0,<2.0.0` → `>=1.25.0,<2.0.0` (requires the new
+  `document_uuid`/`ItemPriceExtension` core capabilities).
+
 ## [0.2.0] - 2026-08-28
 
 ### Fixed

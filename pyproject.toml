@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mcp-einvoicing-ae"
-version = "0.2.0"
+version = "0.3.0"
 description = "MCP server for United Arab Emirates electronic invoicing"
 readme = "README.md"
 license = { text = "Apache-2.0" }
@@ -38,7 +38,7 @@ requires-python = ">=3.11"
 # The upper-bound pin on mcp-einvoicing-core is mandatory: uv bug #9811 strips version
 # pins from built wheel metadata, so this is the only protection downstream consumers have.
 dependencies = [
-    "mcp-einvoicing-core>=1.23.0,<2.0.0",
+    "mcp-einvoicing-core>=1.25.0,<2.0.0",
     "pydantic>=2.0.0",
     "lxml>=5.0.0",
 ]
@@ -48,7 +48,7 @@ dependencies = [
 # stylesheets (pint-ubl-billing, pint-ubl-selfbilling, pint-jurisdiction-ae,
 # peppol-ae-tdd) declare version="2.0", confirmed 2026-08-27. Chained through
 # core[xslt2] for a consistent pin, matching mcp-einvoicing-de's pattern.
-xslt2 = ["mcp-einvoicing-core[xslt2]>=1.23.0", "saxonche>=12.4.0"]
+xslt2 = ["mcp-einvoicing-core[xslt2]>=1.25.0", "saxonche>=12.4.0"]
 dev = [
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",

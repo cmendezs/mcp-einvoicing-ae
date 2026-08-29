@@ -6,12 +6,12 @@
     "url": "https://github.com/cmendezs/mcp-einvoicing-ae",
     "source": "github"
   },
-  "version": "0.2.0",
+  "version": "0.3.0",
   "packages": [
     {
       "registryType": "pypi",
       "identifier": "mcp-einvoicing-ae",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "transport": {
         "type": "stdio"
       },
