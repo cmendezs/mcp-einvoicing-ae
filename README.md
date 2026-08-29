@@ -10,12 +10,14 @@
 
 ---
 
-> **v0.2.0 published 2026-08-28.** `AEInvoice`, `AEParty`, `AETaxDataDocument`, and the
-> `generate`/`validate`/`parse` MCP tools are live on PyPI and the MCP registry.
-> `validate_invoice_ae` now checks core's shared CEN EN16931 base Schematron rather than the
-> self-compiled OpenPeppol-derived stylesheets v0.1.0 bundled without confirmed redistribution
-> rights; `validate_tdd_ae` currently reports "unavailable" — see
-> [Supported standards](#supported-standards) and [Tools](#tools) below.
+> **v0.3.0 published 2026-08-29.** Generated PINT AE invoices are now structurally conformant —
+> `cbc:UUID`, `cbc:ProfileExecutionID`, per-line `cac:ItemPriceExtension`, and
+> `trade_license_number` are all emitted (and, for the first three, round-trip back through
+> `parse_invoice_ae`). The 5.00% standard VAT rate is enforced by a model validator, and a Peppol
+> participant-lookup tool is now exposed. `validate_invoice_ae` still checks core's shared CEN
+> EN16931 base Schematron only (not the PINT AE jurisdiction overlay); `validate_tdd_ae` still
+> reports "unavailable" — see [Supported standards](#supported-standards) and
+> [Tools](#tools) below.
 
 ---
 
@@ -46,13 +48,17 @@ landed the same day, and `v0.1.0` published the same week.
 | Invoice-tree pathway | **Confirmed** — `EN16931Invoice` |
 | Supported standards and profile URNs | **Known** — see below |
 | Core-gap check (`mcp-einvoicing-core`) | **Done** — `TaxIdentifier.validate_ae_trn()`, core v1.22.0 |
-| `AEInvoice` / `AEParty` (billing + self-billing) | **Implemented** (2026-08-27) |
+| `AEInvoice` / `AEParty` (billing + self-billing) | **Implemented** (2026-08-27); `profile_execution_id` + `document_uuid` mandatory as of v0.3.0 |
 | `AETaxDataDocument` (Peppol AE TDD model) | **Implemented** — no validation available (see below) |
+| Invoice generation (`generate_invoice_ae`) | **Structurally conformant** (v0.3.0, 2026-08-29) — emits `cbc:UUID`, `cbc:ProfileExecutionID`, per-line `cac:ItemPriceExtension`, and `trade_license_number`; see [Tools](#tools) |
 | Invoice validation (`validate_invoice_ae`) | **CEN EN16931 base only** (v0.2.0, 2026-08-28) — the PINT AE jurisdiction overlay and TDD Schematron/XSD v0.1.0 bundled had no confirmed redistribution rights and were removed; see [Supported standards](#supported-standards) |
+| Standard VAT rate enforcement | **Done** (v0.3.0) — `AEInvoiceLine` requires 5.00% for category `S`, 0% otherwise |
+| Peppol participant lookup | **Done** (v0.3.0) — core's `register_peppol_tools` plugin, TIN-based id adapter |
 | `profile_registry` registration (PINT AE URNs) | **Done** |
 | MCP tools (generate / validate / parse) | **Implemented** (2026-08-27) — see [Tools](#tools) |
 | First release (`v0.1.0`) | **Published** (2026-08-27) — PyPI and MCP registry |
 | Licensing fix release (`v0.2.0`) | **Published** (2026-08-28) — see [`CHANGELOG.md`](CHANGELOG.md) |
+| Conformance fix release (`v0.3.0`) | **Published** (2026-08-29) — see [`CHANGELOG.md`](CHANGELOG.md) |
 
 ### The publication gate — resolved 2026-08-26
 
@@ -87,15 +93,19 @@ Providers, adding a tax-authority reporting leg (the TDD above) beyond the 4-cor
 elsewhere in this family. The invoice-tree pathway is confirmed `EN16931Invoice` (PINT AE is a
 UBL 2.1 CIUS of EN 16931-1:2017) — no JSON binding was found in the supplied specifications.
 
-`AEInvoice` reuses `mcp_einvoicing_core.wire_formats.EN16931UBLSerializer`/`EN16931UBLParser`
-directly rather than a bespoke serializer, since `profile`/`business_process` hold the real
-Peppol URNs. `AEParty.vat_id` carries the 15-digit TRN, format-validated via
+`AEInvoice` serializes via `mcp_einvoicing_ae.wire_formats.AEUBLSerializer`, which layers the
+AE-specific elements (`cbc:ProfileExecutionID`, `PartyLegalEntity/CompanyID` with
+`schemeAgencyID="TL"` for `trade_license_number`) on top of core's `EN16931UBLSerializer` — the
+latter now emits `cbc:UUID` (from `document_uuid`) and per-line `cac:ItemPriceExtension` natively
+(`mcp-einvoicing-core` v1.25.0), since `profile`/`business_process` already hold the real Peppol
+URNs. `AEParty.vat_id` carries the 15-digit TRN, format-validated via
 `TaxIdentifier.validate_ae_trn()` (core v1.22.0); the Peppol participant ID (TIN) is auto-derived
 as its first 10 digits. `AETaxDataDocument` models the TDD's mandatory fields but is not a UBL
-invoice and is not built on `AEInvoice`. MCP tools reuse this stack directly — see
-[Tools](#tools) for what's covered and what isn't. The TDD transport channel (same AS4 channel as
-the invoice, or a separate one) remains an open documentation question, not a code gap. Full
-detail: [`specs/README.md`](specs/README.md).
+invoice and is not built on `AEInvoice`. `parse_invoice_ae` re-extracts the AE-specific elements
+from the raw XML and re-validates the result as `AEInvoice`, so parsing re-applies the same TRN
+and tax-rate checks a fresh construction gets — see [Tools](#tools) for what's covered and what
+isn't. The TDD transport channel (same AS4 channel as the invoice, or a separate one) remains an
+open documentation question, not a code gap. Full detail: [`specs/README.md`](specs/README.md).
 
 **Validation scope, as of v0.2.0:** `validate_invoice_ae` checks the CEN EN16931 base Schematron
 only (structural + arithmetic/totals rules, shared with `mcp-einvoicing-be`/`mcp-ksef-pl`) — not
@@ -169,10 +179,20 @@ once the specification documents them. See [`.env.example`](.env.example).
 
 | Tool | Description |
 |---|---|
-| `generate_invoice_ae` | Generate a PINT AE UBL 2.1 invoice XML (billing or self-billing) from structured data. Only the EN 16931 core field set is emitted — `AEParty.trade_license_number` has no mapping in core's generic UBL serializer yet and is dropped from the output. |
+| `generate_invoice_ae` | Generate a PINT AE UBL 2.1 invoice XML (billing or self-billing) from structured data via `AEUBLSerializer`. Emits every unconditionally-mandatory PINT AE element: `cbc:UUID`, `cbc:ProfileExecutionID`, per-line `cac:ItemPriceExtension`, and `PartyLegalEntity/CompanyID` (`trade_license_number`, when set). |
 | `validate_invoice_ae` | Validate a PINT AE UBL 2.1 invoice against core's shared CEN EN16931 base Schematron (structural + arithmetic/totals rules only — not the PINT AE jurisdiction overlay). Requires the `xslt2` extra. |
 | `validate_tdd_ae` | Always returns an explicit "unavailable" result — no licensed validation artifact is currently available for the Peppol AE Tax Data Document (TDD). |
-| `parse_invoice_ae` | Parse a PINT AE UBL 2.1 invoice XML into a structured dict (EN 16931 core field set only — AE-specific extensions such as `trade_license_number` are not extracted). |
+| `parse_invoice_ae` | Parse a PINT AE UBL 2.1 invoice XML into a structured dict. Re-extracts `document_uuid`, `profile_execution_id`, and `trade_license_number` from the raw XML and re-validates the result as `AEInvoice` — TRN format and tax-rate/category checks are re-applied to parsed content, not just fresh constructions. |
+
+Peppol participant lookup (core's `register_peppol_tools` plugin, TIN-based id adapter — scheme
+`0235`, first 10 digits of the TRN):
+
+| Tool | Description |
+|---|---|
+| `peppol_lookup_participant` | Check whether a business is registered on the Peppol network; returns registration status and supported document types |
+| `peppol_get_service_endpoint` | Fetch the AS4 endpoint for a participant's document type |
+| `resolve_peppol_dns` | DNS-only (SML) diagnostic, independent of SMP reachability |
+| `peppol_send` | Transmit a UBL/CII invoice via AS4 |
 
 `generate_invoice_ae`/`validate_invoice_ae`/`parse_invoice_ae` require `mcp-einvoicing-ae[xslt2]`
 (bundles `saxonche`) for the base Schematron validator to load; without it, `validate_invoice_ae`
