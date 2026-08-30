@@ -10,17 +10,6 @@
 
 ---
 
-> **v0.3.0 published 2026-08-29.** Generated PINT AE invoices are now structurally conformant —
-> `cbc:UUID`, `cbc:ProfileExecutionID`, per-line `cac:ItemPriceExtension`, and
-> `trade_license_number` are all emitted (and, for the first three, round-trip back through
-> `parse_invoice_ae`). The 5.00% standard VAT rate is enforced by a model validator, and a Peppol
-> participant-lookup tool is now exposed. `validate_invoice_ae` still checks core's shared CEN
-> EN16931 base Schematron only (not the PINT AE jurisdiction overlay); `validate_tdd_ae` still
-> reports "unavailable" — see [Supported standards](#supported-standards) and
-> [Tools](#tools) below.
-
----
-
 ## Introduction
 
 `mcp-einvoicing-ae` is an [MCP (Model Context Protocol)](https://modelcontextprotocol.io) server
@@ -29,51 +18,17 @@ that exposes tools for United Arab Emirates electronic invoicing. It is part of 
 [`mcp-einvoicing-core`](https://github.com/cmendezs/mcp-einvoicing-core), which provides the
 shared validation engine, EN 16931 abstractions, and Peppol network utilities.
 
----
+Generated PINT AE invoices are structurally conformant: `cbc:UUID`, `cbc:ProfileExecutionID`,
+per-line `cac:ItemPriceExtension`, and `trade_license_number` are all emitted, and round-trip
+back through `parse_invoice_ae`. The 5.00% standard VAT rate is enforced by a model validator,
+and a Peppol participant-lookup tool is exposed. `validate_invoice_ae` checks core's shared CEN
+EN16931 base Schematron only, not the PINT AE jurisdiction overlay; `validate_tdd_ae` currently
+reports "unavailable" — see [Supported standards](#supported-standards) and
+[Tools](#tools) below.
 
-## Current status
-
-Normative specifications and FTA guidelines were supplied on 2026-08-26, resolving the
-publication-status gate and the invoice-tree pathway. The core-gap check (2026-08-27) added
-`TaxIdentifier.validate_ae_trn()` to `mcp-einvoicing-core` v1.22.0 and confirmed the profile-URN
-and TDD-transport questions were not core gaps at all. Model, validator, and MCP tool code all
-landed the same day, and `v0.1.0` published the same week.
-
-| Area | Status |
-|---|---|
-| Repository, CI, governance docs | Done |
-| Package skeleton (`src/` layout, server entry point) | Done |
-| PINT AE publication status | **Confirmed** (2026-08-26) |
-| Normative specifications under `specs/` | **Supplied** (2026-08-26) |
-| Invoice-tree pathway | **Confirmed** — `EN16931Invoice` |
-| Supported standards and profile URNs | **Known** — see below |
-| Core-gap check (`mcp-einvoicing-core`) | **Done** — `TaxIdentifier.validate_ae_trn()`, core v1.22.0 |
-| `AEInvoice` / `AEParty` (billing + self-billing) | **Implemented** (2026-08-27); `profile_execution_id` + `document_uuid` mandatory as of v0.3.0 |
-| `AETaxDataDocument` (Peppol AE TDD model) | **Implemented** — no validation available (see below) |
-| Invoice generation (`generate_invoice_ae`) | **Structurally conformant** (v0.3.0, 2026-08-29) — emits `cbc:UUID`, `cbc:ProfileExecutionID`, per-line `cac:ItemPriceExtension`, and `trade_license_number`; see [Tools](#tools) |
-| Invoice validation (`validate_invoice_ae`) | **CEN EN16931 base only** (v0.2.0, 2026-08-28) — the PINT AE jurisdiction overlay and TDD Schematron/XSD v0.1.0 bundled had no confirmed redistribution rights and were removed; see [Supported standards](#supported-standards) |
-| Standard VAT rate enforcement | **Done** (v0.3.0) — `AEInvoiceLine` requires 5.00% for category `S`, 0% otherwise |
-| Peppol participant lookup | **Done** (v0.3.0) — core's `register_peppol_tools` plugin, TIN-based id adapter |
-| `profile_registry` registration (PINT AE URNs) | **Done** |
-| MCP tools (generate / validate / parse) | **Implemented** (2026-08-27) — see [Tools](#tools) |
-| First release (`v0.1.0`) | **Published** (2026-08-27) — PyPI and MCP registry |
-| Licensing fix release (`v0.2.0`) | **Published** (2026-08-28) — see [`CHANGELOG.md`](CHANGELOG.md) |
-| Conformance fix release (`v0.3.0`) | **Published** (2026-08-29) — see [`CHANGELOG.md`](CHANGELOG.md) |
-
-### The publication gate — resolved 2026-08-26
-
-At the prior verification of the OpenPeppol jurisdiction PINT documentation index (2026-06-29),
-the published jurisdiction profiles were the EU, Singapore, Australia and New Zealand, Japan,
-and Malaysia; the UAE was absent. Documents supplied on 2026-08-26 resolve this: the UAE Peppol
-Authority's own release notes record PINT AE (billing) at **"Status: Final"**, version 1.0.4,
-released 2026-06-02, and the Peppol AE Tax Data Document (TDD — the 5th-corner reporting
-document) at **"Status: Final"**, version 1.0.3, released 2026-05-25. The FTA's own June 2026
-guideline states directly that the PINT-AE billing specifications *"are published on its
-website."*
-
-One caveat remains open: this is the specialization publisher's own release-status label, not an
-independently observed OpenPeppol governance-registry page — strong evidence, not full
-certainty. Full detail and citations: [`specs/README.md`](specs/README.md) and the monorepo's
+The UAE Peppol Authority's PINT AE (billing) specialization is at **Status: Final**, version
+1.0.4 (2026-06-02); the Peppol AE Tax Data Document (TDD) is at Status: Final, version 1.0.3
+(2026-05-25). Full citations: [`specs/README.md`](specs/README.md) and the monorepo's
 [`context-library/countries/ae.md`](https://github.com/cmendezs/mcp-einvoicing/blob/main/context-library/countries/ae.md).
 
 ---
