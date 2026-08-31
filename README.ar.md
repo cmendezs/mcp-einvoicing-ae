@@ -6,7 +6,7 @@
 
 [![PyPI version](https://badge.fury.io/py/mcp-einvoicing-ae.svg)](https://badge.fury.io/py/mcp-einvoicing-ae)
 [![Python](https://img.shields.io/pypi/pyversions/mcp-einvoicing-ae.svg)](https://pypi.org/project/mcp-einvoicing-ae/)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![mcp-einvoicing-ae MCP server](https://glama.ai/mcp/servers/cmendezs/mcp-einvoicing-ae/badges/score.svg)](https://glama.ai/mcp/servers/cmendezs/mcp-einvoicing-ae)
 
 ---
 
