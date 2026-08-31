@@ -74,15 +74,11 @@ def test_company_id_omitted_when_trade_license_number_unset() -> None:
     its PartyLegalEntity, while the seller (which does set it) gets one."""
     xml = AEUBLSerializer().serialize(_invoice())
     root = etree.fromstring(xml)
-    buyer_legal = root.find(
-        "cac:AccountingCustomerParty/cac:Party/cac:PartyLegalEntity", _NS
-    )
+    buyer_legal = root.find("cac:AccountingCustomerParty/cac:Party/cac:PartyLegalEntity", _NS)
     assert buyer_legal is not None
     assert buyer_legal.find("cbc:CompanyID", _NS) is None
 
-    seller_legal = root.find(
-        "cac:AccountingSupplierParty/cac:Party/cac:PartyLegalEntity", _NS
-    )
+    seller_legal = root.find("cac:AccountingSupplierParty/cac:Party/cac:PartyLegalEntity", _NS)
     company_id = seller_legal.find("cbc:CompanyID", _NS)
     assert company_id is not None
     assert company_id.text == "112345678900003"
@@ -103,14 +99,8 @@ def test_item_price_extension_math_matches_fixture() -> None:
 def test_profile_execution_id_sibling_of_profile_id() -> None:
     xml = AEUBLSerializer().serialize(_invoice())
     root = etree.fromstring(xml)
-    children = [
-        etree.QName(c.tag).localname for c in root if etree.QName(c.tag).namespace == _CBC
-    ]
-    assert (
-        children.index("ProfileID")
-        < children.index("ProfileExecutionID")
-        < children.index("ID")
-    )
+    children = [etree.QName(c.tag).localname for c in root if etree.QName(c.tag).namespace == _CBC]
+    assert children.index("ProfileID") < children.index("ProfileExecutionID") < children.index("ID")
 
 
 def test_uuid_and_profile_execution_id_values() -> None:
