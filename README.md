@@ -24,14 +24,12 @@ back through `parse_invoice_ae`. The 5.00% standard VAT rate is enforced by a mo
 and a Peppol participant-lookup tool is exposed. `validate_invoice_ae` checks core's shared CEN
 EN16931 base Schematron only, not the PINT AE jurisdiction overlay; `validate_tdd_ae` currently
 reports "unavailable" — see [Supported standards](#supported-standards) and
-[Tools](#tools) below.
+[Available tools](#available-tools) below.
 
 The UAE Peppol Authority's PINT AE (billing) specialization is at **Status: Final**, version
 1.0.4 (2026-06-02); the Peppol AE Tax Data Document (TDD) is at Status: Final, version 1.0.3
 (2026-05-25). Full citations: [`specs/README.md`](specs/README.md) and the monorepo's
 [`context-library/countries/ae.md`](https://github.com/cmendezs/mcp-einvoicing/blob/main/context-library/countries/ae.md).
-
----
 
 ## Supported standards
 
@@ -58,9 +56,10 @@ URNs. `AEParty.vat_id` carries the 15-digit TRN, format-validated via
 as its first 10 digits. `AETaxDataDocument` models the TDD's mandatory fields but is not a UBL
 invoice and is not built on `AEInvoice`. `parse_invoice_ae` re-extracts the AE-specific elements
 from the raw XML and re-validates the result as `AEInvoice`, so parsing re-applies the same TRN
-and tax-rate checks a fresh construction gets — see [Tools](#tools) for what's covered and what
-isn't. The TDD transport channel (same AS4 channel as the invoice, or a separate one) remains an
-open documentation question, not a code gap. Full detail: [`specs/README.md`](specs/README.md).
+and tax-rate checks a fresh construction gets — see [Available tools](#available-tools) for
+what's covered and what isn't. The TDD transport channel (same AS4 channel as the invoice, or a
+separate one) remains an open documentation question, not a code gap. Full detail:
+[`specs/README.md`](specs/README.md).
 
 **Validation scope, as of v0.2.0:** `validate_invoice_ae` checks the CEN EN16931 base Schematron
 only (structural + arithmetic/totals rules, shared with `mcp-einvoicing-be`/`mcp-ksef-pl`) — not
@@ -71,8 +70,6 @@ currently has no validation available at all. v0.1.0 bundled five self-compiled 
 from OpenPeppol's PINT AE and TDD Schematron/XSD sources with no confirmed redistribution
 rights — removed in v0.2.0. See [`CHANGELOG.md`](CHANGELOG.md) and this monorepo's
 [`context-library/decisions/peppol-schematron-artifact.md`](https://github.com/cmendezs/mcp-einvoicing/blob/main/context-library/decisions/peppol-schematron-artifact.md).
-
----
 
 ## Installation
 
@@ -102,11 +99,21 @@ cd mcp-einvoicing-ae
 uv sync --all-extras
 ```
 
----
-
 ## Configuration
 
-Add the server to your MCP client configuration:
+### Environment variables
+
+| Variable | Required | Default | Description |
+|---|---|---|---|
+| `LOG_LEVEL` | No | `INFO` | Logging level: `DEBUG`, `INFO`, `WARNING`, or `ERROR` |
+
+Country-specific variables (transport endpoints, credentials, environment switches) are added
+once the specification documents them. See [`.env.example`](.env.example). This server needs no
+credentials to run today.
+
+## Claude Desktop integration
+
+To use this server with Claude, add this configuration to your `claude_desktop_config.json` file:
 
 ```json
 {
@@ -119,18 +126,47 @@ Add the server to your MCP client configuration:
 }
 ```
 
-### Environment variables
+## Cursor integration
 
-| Variable | Required | Default | Description |
-|---|---|---|---|
-| `LOG_LEVEL` | No | `INFO` | Logging level: `DEBUG`, `INFO`, `WARNING`, or `ERROR` |
+Cursor supports MCP servers via stdio. Add the configuration in:
+- **Global** (all projects): `~/.cursor/mcp.json`
+- **Project** (this repository only): `.cursor/mcp.json`
 
-Country-specific variables (transport endpoints, credentials, environment switches) are added
-once the specification documents them. See [`.env.example`](.env.example).
+```json
+{
+  "mcpServers": {
+    "einvoicing-ae": {
+      "command": "uvx",
+      "args": ["mcp-einvoicing-ae"]
+    }
+  }
+}
+```
 
----
+Reload the Cursor window (`Ctrl+Shift+P` then *Reload Window*) to apply the changes.
 
-## Tools
+## Kiro integration
+
+Kiro supports MCP servers via its dedicated configuration file. Two levels are available:
+- **Global** (all projects): `~/.kiro/settings/mcp.json`
+- **Workspace** (this repository only): `.kiro/settings/mcp.json`
+
+```json
+{
+  "mcpServers": {
+    "einvoicing-ae": {
+      "command": "uvx",
+      "args": ["mcp-einvoicing-ae"],
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}
+```
+
+The file is automatically reloaded on save. You can also open the config via the command palette (`Cmd+Shift+P` / `Ctrl+Shift+P`) then *MCP*.
+
+## Available tools
 
 | Tool | Description |
 |---|---|
@@ -159,15 +195,11 @@ The tool reference in [`docs/TOOLS.md`](docs/TOOLS.md) is generated from the run
 uv run python scripts/gen_tool_reference.py
 ```
 
----
-
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, the test and lint commands, and
 the pull request checklist. Security issues follow the private disclosure process in
 [SECURITY.md](SECURITY.md).
-
----
 
 ## Other e-invoicing MCP servers
 
@@ -184,8 +216,6 @@ the pull request checklist. Security issues follow the private disclosure proces
 | 🇪🇸 Spain | [mcp-facturacion-electronica-es](https://github.com/cmendezs/mcp-facturacion-electronica-es) |
 | 🇦🇪 United Arab Emirates | [mcp-einvoicing-ae](https://github.com/cmendezs/mcp-einvoicing-ae) |
 
----
-
 ## License
 
-This project is licensed under the **Apache 2.0** license — see [LICENSE](LICENSE) for details.
+This project is licensed under the **Apache 2.0** license — see [LICENSE](LICENSE) for details. For the full version history, see [CHANGELOG.md](CHANGELOG.md).

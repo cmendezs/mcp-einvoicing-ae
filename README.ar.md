@@ -24,15 +24,13 @@
 نموذجي، كما تتوفر أداة للبحث عن مشاركي شبكة Peppol. تتحقق الأداة `validate_invoice_ae` فقط وفق
 مخطط Schematron الأساسي المشترك CEN EN16931 (وليس طبقة الولاية القضائية PINT AE)؛ وتُعيد الأداة
 `validate_tdd_ae` حالياً نتيجة "غير متاحة" — انظر [المعايير المدعومة](#المعايير-المدعومة)
-وَ[الأدوات](#الأدوات) أدناه.
+وَ[الأدوات المتاحة](#الأدوات-المتاحة) أدناه.
 
 يُصنَّف ملف PINT AE (الفوترة) لدى هيئة Peppol الإماراتية بحالة **Status: Final**، الإصدار
 1.0.4 (2026-06-02)؛ وتُصنَّف وثيقة بيانات الضريبة Peppol AE TDD بحالة Status: Final، الإصدار
 1.0.3 (2026-05-25). للاطلاع على المراجع الكاملة: [`specs/README.md`](specs/README.md) وملف
 [`context-library/countries/ae.md`](https://github.com/cmendezs/mcp-einvoicing/blob/main/context-library/countries/ae.md)
 في المستودع الرئيسي للمشروع.
-
----
 
 ## المعايير المدعومة
 
@@ -57,9 +55,9 @@
 `TaxIdentifier.validate_ae_trn()` (الإصدار 1.22.0 من المكتبة المشتركة)؛ ويُشتق معرف مشارك
 Peppol (TIN) تلقائياً من أول 10 أرقام منه. يُمثّل `AETaxDataDocument` الحقول الإلزامية لوثيقة
 TDD لكنه ليس فاتورة UBL وليس مبنياً على `AEInvoice`. تعيد أدوات MCP استخدام هذه البنية مباشرةً —
-انظر [الأدوات](#الأدوات) لمعرفة ما تغطيه وما لا تغطيه. تبقى قناة نقل TDD (القناة نفسها المستخدمة
-للفاتورة عبر AS4 أم قناة منفصلة) مسألة توثيقية مفتوحة، لا فجوة برمجية. للتفاصيل الكاملة:
-[`specs/README.md`](specs/README.md).
+انظر [الأدوات المتاحة](#الأدوات-المتاحة) لمعرفة ما تغطيه وما لا تغطيه. تبقى قناة نقل TDD (القناة
+نفسها المستخدمة للفاتورة عبر AS4 أم قناة منفصلة) مسألة توثيقية مفتوحة، لا فجوة برمجية. للتفاصيل
+الكاملة: [`specs/README.md`](specs/README.md).
 
 **نطاق التحقق اعتباراً من v0.2.0:** تتحقق الأداة `validate_invoice_ae` وفق مخطط Schematron
 الأساسي CEN EN16931 فقط (القواعد البنيوية والحسابية/الإجمالية، المشتركة مع
@@ -72,8 +70,6 @@ Schematron/XSD الخاصة بـPINT AE وTDD لدى OpenPeppol دون تأكي�
 الإصدار v0.2.0. راجع [`CHANGELOG.md`](CHANGELOG.md) وملف
 [`context-library/decisions/peppol-schematron-artifact.md`](https://github.com/cmendezs/mcp-einvoicing/blob/main/context-library/decisions/peppol-schematron-artifact.md)
 في المستودع الرئيسي للمشروع.
-
----
 
 ## التثبيت
 
@@ -103,11 +99,21 @@ cd mcp-einvoicing-ae
 uv sync --all-extras
 ```
 
----
-
 ## الإعداد
 
-أضف الخادم إلى إعدادات عميل MCP لديك:
+### متغيرات البيئة
+
+| المتغير | مطلوب | القيمة الافتراضية | الوصف |
+|---|---|---|---|
+| `LOG_LEVEL` | لا | `INFO` | مستوى السجل: `DEBUG` أو `INFO` أو `WARNING` أو `ERROR` |
+
+تُضاف المتغيرات الخاصة بالدولة (نقاط النقل، وبيانات الاعتماد، ومفاتيح تبديل البيئة) بمجرد أن
+توثّقها المواصفة. راجع [`.env.example`](.env.example). لا يحتاج هذا الخادم إلى بيانات اعتماد
+للتشغيل حالياً.
+
+## التكامل مع Claude Desktop
+
+لاستخدام هذا الخادم مع Claude، أضف هذا الإعداد إلى ملف `claude_desktop_config.json`:
 
 ```json
 {
@@ -120,18 +126,48 @@ uv sync --all-extras
 }
 ```
 
-### متغيرات البيئة
+## التكامل مع Cursor
 
-| المتغير | مطلوب | القيمة الافتراضية | الوصف |
-|---|---|---|---|
-| `LOG_LEVEL` | لا | `INFO` | مستوى السجل: `DEBUG` أو `INFO` أو `WARNING` أو `ERROR` |
+يدعم Cursor خوادم MCP عبر stdio. أضف الإعداد في:
+- **عام** (جميع المشاريع): `~/.cursor/mcp.json`
+- **المشروع** (هذا المستودع فقط): `.cursor/mcp.json`
 
-تُضاف المتغيرات الخاصة بالدولة (نقاط النقل، وبيانات الاعتماد، ومفاتيح تبديل البيئة) بمجرد أن
-توثّقها المواصفة. راجع [`.env.example`](.env.example).
+```json
+{
+  "mcpServers": {
+    "einvoicing-ae": {
+      "command": "uvx",
+      "args": ["mcp-einvoicing-ae"]
+    }
+  }
+}
+```
 
----
+أعد تحميل نافذة Cursor (`Ctrl+Shift+P` ثم *Reload Window*) لتطبيق التغييرات.
 
-## الأدوات
+## التكامل مع Kiro
+
+يدعم Kiro خوادم MCP عبر ملف إعداد مخصص. يتوفر مستويان:
+- **عام** (جميع المشاريع): `~/.kiro/settings/mcp.json`
+- **مساحة العمل** (هذا المستودع فقط): `.kiro/settings/mcp.json`
+
+```json
+{
+  "mcpServers": {
+    "einvoicing-ae": {
+      "command": "uvx",
+      "args": ["mcp-einvoicing-ae"],
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}
+```
+
+يُعاد تحميل الملف تلقائياً عند الحفظ. يمكنك أيضاً فتح الإعداد عبر لوحة الأوامر
+(`Cmd+Shift+P` / `Ctrl+Shift+P`) ثم *MCP*.
+
+## الأدوات المتاحة
 
 | الأداة | الوصف |
 |---|---|
@@ -160,15 +196,11 @@ uv sync --all-extras
 uv run python scripts/gen_tool_reference.py
 ```
 
----
-
 ## المساهمة
 
 راجع [CONTRIBUTING.md](CONTRIBUTING.md) للاطلاع على إعداد بيئة التطوير، وأوامر الاختبار
 والتدقيق، وقائمة تحقق طلبات السحب. أما المشكلات الأمنية فتتبع مسار الإفصاح الخاص الموضح في
 [SECURITY.md](SECURITY.md).
-
----
 
 ## Other e-invoicing MCP servers
 
@@ -185,8 +217,7 @@ uv run python scripts/gen_tool_reference.py
 | 🇪🇸 Spain | [mcp-facturacion-electronica-es](https://github.com/cmendezs/mcp-facturacion-electronica-es) |
 | 🇦🇪 United Arab Emirates | [mcp-einvoicing-ae](https://github.com/cmendezs/mcp-einvoicing-ae) |
 
----
-
 ## الترخيص
 
-هذا المشروع مرخَّص بموجب رخصة **Apache 2.0**، راجع [LICENSE](LICENSE) للتفاصيل.
+هذا المشروع مرخَّص بموجب رخصة **Apache 2.0**، راجع [LICENSE](LICENSE) للتفاصيل. للاطلاع على
+السجل الكامل للإصدارات، راجع [CHANGELOG.md](CHANGELOG.md).
