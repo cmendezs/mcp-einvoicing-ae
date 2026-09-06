@@ -49,6 +49,14 @@ those entries under the new version heading.
 
 ## Release history
 
+### v0.3.2 - 2026-09-06
+
+Fixes AE-SC-1: `__version__` in `src/mcp_einvoicing_ae/__init__.py` had drifted to `"0.1.0"`
+while `pyproject.toml`/`server.json` advanced to `0.3.1`, masked by a hardcoded literal in
+`tests/test_ae_scaffold.py`. `__version__` bumped to `0.3.2`; new `tests/test_metadata.py`
+reads `pyproject.toml`/`server.json` directly instead of asserting a literal. Full changelog:
+[`CHANGELOG.md`](CHANGELOG.md).
+
 ### v0.3.0 - 2026-08-29
 
 Resolves the BLOCKING and now-actionable findings from the first AE compliance audit
