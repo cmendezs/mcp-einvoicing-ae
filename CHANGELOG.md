@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-09-06
+
+### Fixed
+- **CI: `mypy` type errors resolved (no behavior change).** `AEUBLSerializer.serialize` guarded
+  the `CustomizationID` fallback lookup against `None` before calling `.addnext()`
+  (`wire_formats.py`); `_extract_ae_extensions` (`tools/parsing.py`) gained a proper
+  `etree._Element` parameter annotation and a narrowing `cast` on the XPath result (lxml's
+  `.xpath()` return type is a broad union covering string/number/boolean XPath results, not just
+  element node-sets — our XPath expressions here only ever select elements). `ci.yml`'s `mypy`
+  step has no `continue-on-error` for this package (unlike most others in the fleet), so these
+  were live CI failures, not documented pre-existing debt.
+
 ## [0.3.0] - 2026-08-29
 
 Resolves the BLOCKING and now-actionable findings from the first AE compliance audit

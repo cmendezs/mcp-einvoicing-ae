@@ -62,7 +62,8 @@ class AEUBLSerializer(EN16931UBLSerializer):
                 # always sets it via _resolve_variant, but fall back to a
                 # position right after CustomizationID if it's ever absent.
                 customization_id_el = root.find(_q("CustomizationID", _CBC))
-                customization_id_el.addnext(pe_el)
+                if customization_id_el is not None:
+                    customization_id_el.addnext(pe_el)
         return self._to_bytes(root)
 
     def _build_party(self, parent: etree._Element, wrapper: str, party: EN16931Party) -> None:

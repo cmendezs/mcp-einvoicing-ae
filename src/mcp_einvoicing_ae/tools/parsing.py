@@ -18,22 +18,31 @@ robust than duplicating that method.
 
 from __future__ import annotations
 
-from typing import Annotated
+from typing import TYPE_CHECKING, Annotated, cast
 
 from mcp_einvoicing_core.wire_formats import UBL_NSMAP, EN16931UBLParser
 from mcp_einvoicing_core.xml_utils import safe_fromstring
 
 from mcp_einvoicing_ae.models.invoice import AEInvoice
 
+if TYPE_CHECKING:
+    from lxml import etree
+
 _NSMAP = {"cbc": UBL_NSMAP["cbc"], "cac": UBL_NSMAP["cac"]}
 
 
-def _extract_ae_extensions(root) -> dict[str, str | None]:  # noqa: ANN001
+def _extract_ae_extensions(root: etree._Element) -> dict[str, str | None]:
     """Pull the AE-specific elements core's generic parser doesn't map."""
 
+    def find(xpath: str) -> etree._Element | None:
+        # These XPath expressions only ever select element nodes (no text()/@attr/count()
+        # steps), so the cast narrows lxml's overly broad _XPathObject return type honestly
+        # rather than suppressing the resulting index/union-attr errors with a blanket ignore.
+        results = cast("list[etree._Element]", root.xpath(xpath, namespaces=_NSMAP))
+        return results[0] if results else None
+
     def text(xpath: str) -> str | None:
-        results = root.xpath(xpath, namespaces=_NSMAP)
-        el = results[0] if results else None
+        el = find(xpath)
         return el.text.strip() if el is not None and el.text else None
 
     return {
