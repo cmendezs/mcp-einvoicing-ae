@@ -49,3 +49,7 @@ Thumbs.db
 
 # MCP publisher CLI binary (downloaded at release time, not part of source)
 mcp-publisher
+docs/node_modules/
+docs/dist/
+docs/.astro/
+docs/src/styles/docs-theme.css

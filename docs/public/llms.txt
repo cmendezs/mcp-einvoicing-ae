@@ -1,0 +1,17 @@
+# mcp-einvoicing-ae
+
+> MCP server for United Arab Emirates electronic invoicing
+
+## Docs
+
+- [Overview](https://cmendezs.github.io/mcp-einvoicing-ae/): the full README — what this server does, installation, configuration, available tools
+- [Tools](https://cmendezs.github.io/mcp-einvoicing-ae/tools/): full MCP tool reference
+- [Changelog](https://cmendezs.github.io/mcp-einvoicing-ae/changelog/): version history
+- [Contributing](https://cmendezs.github.io/mcp-einvoicing-ae/contributing/): dev setup and PR checklist
+- [Security](https://cmendezs.github.io/mcp-einvoicing-ae/security/): vulnerability disclosure policy
+
+## Links
+
+- [PyPI](https://pypi.org/project/mcp-einvoicing-ae/)
+- [MCP registry](https://registry.modelcontextprotocol.io/v0/servers?search=io.github.cmendezs/mcp-einvoicing-ae)
+- [GitHub](https://github.com/cmendezs/mcp-einvoicing-ae)
