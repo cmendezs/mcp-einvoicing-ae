@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-06T08:38:41.703263+00:00",
+  "generated_at": "2026-09-06T09:06:36.946929+00:00",
   "pkg_name": "mcp-einvoicing-ae",
-  "pkg_version": "0.3.0",
+  "pkg_version": "0.3.2",
   "core_version": "1.30.0",
   "core_version_compatible": true,
   "exit_code": 1,

@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-09-06
+
+### Fixed
+- **AE-SC-1: `__version__` drift (was `"0.1.0"`) aligned with `pyproject.toml` and `server.json`.**
+  `src/mcp_einvoicing_ae/__init__.py` had been left at `0.1.0` across three releases while
+  `pyproject.toml`/`server.json` advanced to `0.3.1`; the drift passed silently because
+  `tests/test_ae_scaffold.py` hardcoded the same stale literal in its assertion. Bumped
+  `__version__` to `0.3.2` and added `tests/test_metadata.py` (`test_version_slot_consistency`,
+  `test_server_json_version_matches_pyproject`), which reads `pyproject.toml`/`server.json`
+  directly instead of asserting a literal, so this class of drift cannot pass silently again.
+  Same class of bug as `mcp-nfe-br` BR-SC-1 (`context-library/launches/roadmap-archive-2026.md`).
+
 ## [0.3.1] - 2026-09-06
 
 ### Fixed
