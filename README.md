@@ -27,8 +27,8 @@ reports "unavailable" — see [Supported standards](#supported-standards) and
 [Available tools](#available-tools) below.
 
 The UAE Peppol Authority's PINT AE (billing) specialization is at **Status: Final**, version
-1.0.4 (2026-06-02); the Peppol AE Tax Data Document (TDD) is at Status: Final, version 1.0.3
-(2026-05-25). Full citations: [`specs/README.md`](specs/README.md) and the monorepo's
+1.0.4 (2026-06-02); the Peppol AE Tax Data Document (TDD) is at Status: Final, version 1.0.4
+(2026-07-23). Full citations: [`specs/README.md`](specs/README.md) and the monorepo's
 [`context-library/countries/ae.md`](https://github.com/cmendezs/mcp-einvoicing/blob/main/context-library/countries/ae.md).
 
 ## Supported standards
@@ -38,8 +38,8 @@ The UAE Peppol Authority's PINT AE (billing) specialization is at **Status: Fina
 - **PINT AE (self-billing)** — `CustomizationID: urn:peppol:pint:selfbilling-1@ae-1`,
   `ProfileID: urn:peppol:bis:selfbilling`.
 - **Peppol AE TDD** (Tax Data Document) — the 5th-corner reporting document sent to the FTA; its
-  own XML namespace (`urn:peppol:schema:taxdata:1.0`), not a UBL invoice. Version 1.0.3
-  (2026-05-25).
+  own XML namespace (`urn:peppol:schema:taxdata:1.0`), not a UBL invoice. Version 1.0.4
+  (2026-07-23).
 
 The UAE programme is a decentralized Peppol **5-corner** model routed through Accredited Service
 Providers, adding a tax-authority reporting leg (the TDD above) beyond the 4-corner exchange used

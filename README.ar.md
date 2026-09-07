@@ -28,7 +28,7 @@
 
 يُصنَّف ملف PINT AE (الفوترة) لدى هيئة Peppol الإماراتية بحالة **Status: Final**، الإصدار
 1.0.4 (2026-06-02)؛ وتُصنَّف وثيقة بيانات الضريبة Peppol AE TDD بحالة Status: Final، الإصدار
-1.0.3 (2026-05-25). للاطلاع على المراجع الكاملة: [`specs/README.md`](specs/README.md) وملف
+1.0.4 (2026-07-23). للاطلاع على المراجع الكاملة: [`specs/README.md`](specs/README.md) وملف
 [`context-library/countries/ae.md`](https://github.com/cmendezs/mcp-einvoicing/blob/main/context-library/countries/ae.md)
 في المستودع الرئيسي للمشروع.
 
@@ -40,7 +40,7 @@
   `ProfileID: urn:peppol:bis:selfbilling`.
 - **وثيقة بيانات الضريبة Peppol AE TDD** — وثيقة الإبلاغ للزاوية الخامسة المرسَلة إلى الهيئة
   الاتحادية للضرائب؛ لها مساحة اسم XML خاصة بها (`urn:peppol:schema:taxdata:1.0`)، وليست فاتورة
-  UBL. الإصدار 1.0.3 (2026-05-25).
+  UBL. الإصدار 1.0.4 (2026-07-23).
 
 البرنامج الإماراتي هو نموذج Peppol لامركزي بخمس زوايا يمر عبر مزودي خدمة معتمدين (ASPs)،
 يضيف مسار إبلاغ إلى السلطة الضريبية (وثيقة TDD أعلاه) يتجاوز التبادل رباعي الزوايا المستخدم في

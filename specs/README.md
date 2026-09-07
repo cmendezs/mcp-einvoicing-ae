@@ -15,8 +15,15 @@ follows [`context-library/decisions/specs-directory-convention.md`](../../contex
 > (`context-library/countries/be.md:81`). The documents below resolve that gate:
 > - PINT AE (billing): **"Status: Final"**, v1.0.4, released 2026-06-02
 >   (`pint-ae/common/docs/pint-ae-billing-release-notes.pdf`).
-> - PINT AE TDD (the 5th-corner tax-authority reporting document): **"Status: Final"**, v1.0.3,
->   released 2026-05-25 (`tdd/common/docs/tdd-release-notes.pdf`).
+> - PINT AE TDD (the 5th-corner tax-authority reporting document): **"Status: Final"**, v1.0.4,
+>   released 2026-07-23 — a Schematron/validation-logic correction release (`ibr-tdd-17` now
+>   independently enforces both the Receiver Endpoint Scheme identifier's presence and the SPIS
+>   value `0242`). Bumped 2026-09-07 per the `regulatory-update` watch (closes
+>   `mcp-einvoicing-ae#1`); `[Unverified against a locally-held primary source]` — the bundled
+>   `tdd/common/docs/tdd-release-notes.pdf` still documents v1.0.3 only, and this package does not
+>   execute the TDD Schematron at all (`validate_tdd_ae` reports `engine="unavailable"`, per
+>   `context-library/decisions/peppol-schematron-artifact.md`), so no runtime behavior is
+>   affected either way.
 > - The FTA's own guideline (dated 01 June 2026) states directly: *"These requirements are set
 >   out in detail within Peppol's PINT-AE billing specifications, which are **published** on
 >   its website."* (`guidelines/UAE-Electronic-Invoicing-Guidelines_V-1.1-01June2026.pdf`).
@@ -70,7 +77,7 @@ stylesheets and the billing/self-billing jurisdiction-aligned rules — see
 |---|---|---|---|
 | PINT AE (billing) | 1.0.4 (2026-06-02, "Status: Final") | https://docs.peppol.eu/poac/ae/ | 2026-08-26 (docs); URL added 2026-08-27 |
 | PINT AE self-billing | Same release train as PINT AE billing (see `pint-ae-self-billing/common/docs/pint-ae-self-billing-release-notes.pdf` for its own version history) | https://docs.peppol.eu/poac/ae/ | 2026-08-26 (docs); URL added 2026-08-27 |
-| Peppol AE TDD (tax data document, 5th-corner reporting) | 1.0.3 (2026-05-25, "Status: Final") | https://docs.peppol.eu/poac/ae/ | 2026-08-26 (docs); URL added 2026-08-27 |
+| Peppol AE TDD (tax data document, 5th-corner reporting) | 1.0.4 (2026-07-23, "Status: Final") | https://docs.peppol.eu/poac/ae/ | 2026-08-26 (docs; describes v1.0.3); version bumped 2026-09-07 per `regulatory-update`, `[Unverified against a locally-held primary source]` |
 | UAE Electronic Invoicing Guidelines | V1.1, 01 June 2026 | https://u.ae/en/information-and-services/business/important-digital-services/digital-invoicing | 2026-08-26 (docs); URL added 2026-08-27 |
 | UAE Electronic Invoice — mandatory fields | V1.0, 23 Feb 2026 | https://u.ae/en/information-and-services/business/important-digital-services/digital-invoicing | 2026-08-26 (docs); URL added 2026-08-27 |
 | Considerations for selecting an ASP | V1.0, 23 Feb 2024 | https://u.ae/en/information-and-services/business/important-digital-services/digital-invoicing | 2026-08-26 (docs); URL added 2026-08-27 |

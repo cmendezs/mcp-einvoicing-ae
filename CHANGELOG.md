@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.3] - 2026-09-07
+
+### Changed
+- **regulatory-update: Peppol AE TDD version pin 1.0.3 → 1.0.4, closes `regulatory-update` issue
+  #1.** Upstream published TDD v1.0.4 (Final, 2026-07-23), a Schematron/validation-logic
+  correction release (`ibr-tdd-17` now independently enforces both the Receiver Endpoint Scheme
+  identifier's presence and the SPIS value `0242`). Documentation-only pin refresh — `specs/tdd/`'s
+  bundled XSD/schematron are dev-reference copies only and were never compiled into the shipped
+  package (no confirmed OpenPeppol redistribution rights, see
+  `context-library/decisions/peppol-schematron-artifact.md`); `validate_tdd_ae` has reported
+  `engine="unavailable"` since v0.2.0, so no runtime behavior changes either way. Updated
+  `README.md`, `README.ar.md`, `specs/README.md`, and `context-library/countries/ae.md` at the
+  workspace root. `[Unverified against a locally-held primary source]` — the bundled
+  `tdd-release-notes.pdf` still documents v1.0.3 only.
+
 ## [0.3.2] - 2026-09-06
 
 ### Fixed
