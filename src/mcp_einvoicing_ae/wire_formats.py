@@ -12,9 +12,12 @@ adds the AE-specific elements core cannot derive on its own:
     immediately after cbc:ProfileID, mirroring how core emits cbc:UUID as a
     sibling of cbc:ID.
   - cac:PartyLegalEntity/cbc:CompanyID with schemeAgencyID="TL"
-    (AEParty.trade_license_number, BTAE-11/12/15/16) — mirrors
-    mcp_invoicenow_sg.wire_formats.SGUBLSerializer's CompanyID pattern for
-    SGParty.uen.
+    (AEParty.trade_license_number, BTAE-11/12/15/16) now comes from core's
+    opt-in _get_party_legal_entity_company_id hook (v1.32.0, CORE-6) —
+    mirrors mcp_invoicenow_sg.wire_formats.SGUBLSerializer's identical
+    override for SGParty.uen. Previously a package-local _build_party
+    override duplicating core's element traversal; see
+    audit/2026-09-audit-core.md.
 
 Placement confirmed against
 specs/pint-ae/trn-invoice/example/Standard tax invoice.xml and the UBL 2.1
@@ -66,19 +69,10 @@ class AEUBLSerializer(EN16931UBLSerializer):
                     customization_id_el.addnext(pe_el)
         return self._to_bytes(root)
 
-    def _build_party(self, parent: etree._Element, wrapper: str, party: EN16931Party) -> None:
-        super()._build_party(parent, wrapper, party)
-        if not (isinstance(party, AEParty) and party.trade_license_number):
-            return
-        wrapper_el = parent.find(_q(wrapper))
-        if wrapper_el is None:
-            return
-        party_el = wrapper_el.find(_q("Party"))
-        if party_el is None:
-            return
-        legal = party_el.find(_q("PartyLegalEntity"))
-        if legal is None:
-            return
-        company_id = etree.SubElement(legal, _q("CompanyID", _CBC))
-        company_id.text = party.trade_license_number
-        company_id.set("schemeAgencyID", "TL")
+    def _get_party_legal_entity_company_id(
+        self, party: EN16931Party
+    ) -> tuple[str, str | None] | None:
+        """AEParty.trade_license_number, schemeAgencyID="TL" (BTAE-11/12/15/16)."""
+        if isinstance(party, AEParty) and party.trade_license_number:
+            return (party.trade_license_number, "TL")
+        return None

@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-07T06:58:17.744827+00:00",
+  "generated_at": "2026-09-09T14:18:35.726920+00:00",
   "pkg_name": "mcp-einvoicing-ae",
-  "pkg_version": "0.3.2",
-  "core_version": "1.30.0",
+  "pkg_version": "0.3.4",
+  "core_version": "1.32.0",
   "core_version_compatible": true,
   "exit_code": 1,
   "total_blocking": 0,
-  "total_warnings": 5,
+  "total_warnings": 7,
   "checks": [
     {
       "check_id": "CHECK_0",
@@ -47,7 +47,7 @@
       "skipped": false,
       "skip_reason": "",
       "blocking_count": 0,
-      "warning_count": 5,
+      "warning_count": 7,
       "findings": [
         {
           "check_id": "CHECK_1",
@@ -104,6 +104,13 @@
           "severity": "OK",
           "symbol": "mcp_einvoicing_core.base_server.BasePartyValidator",
           "message": "Intentionally overridden by mcp-einvoicing-ae."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.base_server.BaseScopeInfo",
+          "message": "Core symbol 'BaseScopeInfo' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
         },
         {
           "check_id": "CHECK_1",
@@ -517,6 +524,13 @@
           "severity": "OK",
           "symbol": "mcp_einvoicing_core.exceptions.XSDValidationError",
           "message": "Intentionally overridden by mcp-einvoicing-ae."
+        },
+        {
+          "check_id": "CHECK_1",
+          "tag": "[MISSING]",
+          "severity": "WARNING",
+          "symbol": "mcp_einvoicing_core.http_client.APIKeyConfig",
+          "message": "Core symbol 'APIKeyConfig' is neither imported by mcp-einvoicing-ae nor marked as an intentional override. Add to _INTENTIONAL_OVERRIDES if this is deliberate."
         },
         {
           "check_id": "CHECK_1",
@@ -1143,7 +1157,7 @@
           "tag": "[OK]",
           "severity": "OK",
           "symbol": "mcp-einvoicing-core",
-          "message": "Installed: 1.30.0 | Declared range: >=1.25.0,<2.0.0 | Compatible: True"
+          "message": "Installed: 1.32.0 | Declared range: >=1.32.0,<2.0.0 | Compatible: True"
         }
       ]
     },
