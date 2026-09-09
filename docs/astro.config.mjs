@@ -8,7 +8,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "mcp-einvoicing-ae",
-      description: "MCP server for United Arab Emirates electronic invoicing",
+      description: "MCP server for United Arab Emirates electronic invoicing, vendor-neutral Peppol transport",
       customCss: ["./src/styles/docs-theme.css"],
       social: [
         { icon: "github", label: "GitHub", href: "https://github.com/cmendezs/mcp-einvoicing-ae" },
@@ -28,7 +28,7 @@ export default defineConfig({
       plugins: [
         starlightLlmsTxt({
           projectName: "mcp-einvoicing-ae",
-          description: "MCP server for United Arab Emirates electronic invoicing",
+          description: "MCP server for United Arab Emirates electronic invoicing, vendor-neutral Peppol transport",
           customSets: [
             {
               label: "Key links",

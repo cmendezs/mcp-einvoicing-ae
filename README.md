@@ -195,6 +195,16 @@ The tool reference in [`docs/TOOLS.md`](docs/TOOLS.md) is generated from the run
 uv run python scripts/gen_tool_reference.py
 ```
 
+## Vendor neutrality
+
+This server implements the standard itself: it builds, validates, and signs the document
+locally. It is not a client for a commercial invoicing platform, and your signing keys and
+credentials never leave your own infrastructure.
+
+A Peppol access point is required for PINT AE / Peppol AE TDD, but any accredited access point
+speaks the same AS4 profile, so switching providers is a configuration change, not a code
+change.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, the test and lint commands, and

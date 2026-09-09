@@ -1,6 +1,6 @@
 # mcp-einvoicing-ae
 
-> MCP server for United Arab Emirates electronic invoicing
+> MCP server for United Arab Emirates electronic invoicing, vendor-neutral Peppol transport
 
 ## Docs
 

@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "mcp-einvoicing-ae"
 version = "0.3.4"
-description = "MCP server for United Arab Emirates electronic invoicing"
+description = "MCP server for United Arab Emirates electronic invoicing, vendor-neutral Peppol transport"
 readme = "README.md"
 license = { text = "Apache-2.0" }
 authors = [{ name = "Christophe Mendez" }]
