@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.4] - 2026-09-09
+
+Core audit Step 3 item 3 (`audit/2026-09-audit-core.md`): CORE-6.
+
+### Changed
+- **CORE-6** — Dropped the package-local `_build_party` override (duplicating core's
+  element traversal plus a `_q()`/`_CAC`/`_CBC` helper set, identical to SG's own
+  duplicate) in favor of core's new opt-in `_get_party_legal_entity_company_id` hook
+  (core v1.32.0) on `EN16931UBLSerializer`. Pure internal refactor — output is
+  byte-identical, confirmed by the existing `test_wire_formats.py` assertions (both the
+  CompanyID-emitted and CompanyID-omitted cases) passing unchanged.
+- `mcp-einvoicing-core` floor pin bumped to `>=1.32.0,<2.0.0` (main dependency and the
+  `xslt2` optional-extra).
+
 ## [0.3.3] - 2026-09-07
 
 ### Changed
