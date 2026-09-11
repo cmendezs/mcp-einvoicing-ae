@@ -1,4 +1,4 @@
 """Validators for mcp-einvoicing-ae.
 
-Empty at scaffold stage. See context-library/countries/ae.md for the blocking [NEED:] items.
+Empty at scaffold stage. See the package's own compliance reference for the blocking [NEED:] items.
 """

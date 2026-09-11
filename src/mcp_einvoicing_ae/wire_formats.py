@@ -16,8 +16,7 @@ adds the AE-specific elements core cannot derive on its own:
     opt-in _get_party_legal_entity_company_id hook (v1.32.0, CORE-6) —
     mirrors mcp_invoicenow_sg.wire_formats.SGUBLSerializer's identical
     override for SGParty.uen. Previously a package-local _build_party
-    override duplicating core's element traversal; see
-    audit/2026-09-audit-core.md.
+    override duplicating core's element traversal.
 
 Placement confirmed against
 specs/pint-ae/trn-invoice/example/Standard tax invoice.xml and the UBL 2.1

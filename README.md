@@ -28,8 +28,7 @@ reports "unavailable" — see [Supported standards](#supported-standards) and
 
 The UAE Peppol Authority's PINT AE (billing) specialization is at **Status: Final**, version
 1.0.4 (2026-06-02); the Peppol AE Tax Data Document (TDD) is at Status: Final, version 1.0.4
-(2026-07-23). Full citations: [`specs/README.md`](specs/README.md) and the monorepo's
-[`context-library/countries/ae.md`](https://github.com/cmendezs/mcp-einvoicing/blob/main/context-library/countries/ae.md).
+(2026-07-23). Full citations: [`specs/README.md`](specs/README.md).
 
 ## Supported standards
 
@@ -68,8 +67,7 @@ the PINT AE jurisdiction overlay (`ibr-*-ae` rules). `BR-CO-09` (VAT identifier 
 country prefix; this is disclosed in every result, not a defect in your data. `validate_tdd_ae`
 currently has no validation available at all. v0.1.0 bundled five self-compiled files derived
 from OpenPeppol's PINT AE and TDD Schematron/XSD sources with no confirmed redistribution
-rights — removed in v0.2.0. See [`CHANGELOG.md`](CHANGELOG.md) and this monorepo's
-[`context-library/decisions/peppol-schematron-artifact.md`](https://github.com/cmendezs/mcp-einvoicing/blob/main/context-library/decisions/peppol-schematron-artifact.md).
+rights — removed in v0.2.0. See [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Installation
 

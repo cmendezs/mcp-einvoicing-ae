@@ -54,8 +54,8 @@ _SOURCES = _ROOT / "specs" / "README.md"
 # CHECK 1 configuration — country-specific constants
 # ---------------------------------------------------------------------------
 
-# Invoice-tree pathway, resolved 2026-08-27 (Phase D) per
-# context-library/countries/ae.md "Invoice-tree pathway": PINT AE's
+# Invoice-tree pathway, resolved 2026-08-27 (Phase D) per the package's own
+# compliance reference, "Invoice-tree pathway": PINT AE's
 # CustomizationID/ProfileID (urn:peppol:pint:billing-1@ae-1 /
 # urn:peppol:bis:billing) are a UBL 2.1 CIUS of EN 16931-1:2017 — the
 # EN16931Invoice pathway per CLAUDE.md's "any PINT-* format uses EN16931Invoice"
@@ -312,7 +312,7 @@ def run_check_0() -> CheckResult:
                 "_IS_EN16931_FAMILY",
                 (
                     "Invoice-tree pathway is unresolved. Set it from the conformance "
-                    "statement recorded in context-library/countries/ae.md, never from memory. "
+                    "statement recorded in the package's own compliance reference, never from memory. "
                     "No model code may be written while this is None."
                 ),
             )

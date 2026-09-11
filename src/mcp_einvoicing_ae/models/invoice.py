@@ -1,8 +1,8 @@
 """UAE invoice models — extend mcp-einvoicing-core EN16931 base types.
 
 PINT AE (billing + self-billing) is a UBL 2.1 CIUS of EN 16931-1:2017 (confirmed
-by CustomizationID/ProfileID inspection — see context-library/countries/ae.md
-"Invoice-tree pathway"). Unlike some country packages, AEInvoice does not need a
+by CustomizationID/ProfileID inspection — see the package's own compliance
+reference, "Invoice-tree pathway"). Unlike some country packages, AEInvoice does not need a
 bespoke serializer: PINT AE's structural fields map directly onto
 mcp_einvoicing_core.wire_formats.EN16931UBLSerializer/EN16931UBLParser (which
 read CustomizationID from `profile` and ProfileID from `business_process`), so
@@ -11,8 +11,8 @@ key. `variant` is a convenience input that resolves to the right `profile` /
 `business_process` / default `invoice_type_code` when the caller does not want
 to look up raw URNs themselves.
 
-Field/rule citations: context-library/countries/ae.md, context-library/formats/pint-ae.md
-(mcp-einvoicing monorepo), and specs/pint-ae/trn-invoice/example/Standard tax invoice.xml.
+Field/rule citations: the package's own compliance and format references,
+and specs/pint-ae/trn-invoice/example/Standard tax invoice.xml.
 """
 
 from __future__ import annotations
@@ -37,7 +37,7 @@ AEProfileVariant = Literal["billing", "selfbilling"]
 class AEVatCategory(StrEnum):
     """UNCL5305 VAT category codes observed in PINT AE examples.
 
-    Source: context-library/countries/ae.md "Currency and VAT rates" —
+    Source: the package's own compliance reference, "Currency and VAT rates" —
     category letters S, AE, E, O, Z appear in supplied example filenames
     (Doc-level-allowance-AE-category.xml, etc.), mapped against the
     Aligned-TaxCategoryCodes.gc codelist. The full semantics of each code
@@ -53,8 +53,8 @@ class AEVatCategory(StrEnum):
     ZERO_RATED = "Z"
 
 
-# Standard UAE VAT rate (ibr-190-ae): 5.00%. See context-library/countries/ae.md
-# "Currency and VAT rates" for the citation. Reduced/zero-rate statutory basis
+# Standard UAE VAT rate (ibr-190-ae): 5.00%. See the package's own compliance
+# reference, "Currency and VAT rates", for the citation. Reduced/zero-rate statutory basis
 # remains [NEED:] there — only the standard-rate numeric value is used here.
 AE_STANDARD_VAT_RATE = Decimal("5.00")
 
@@ -71,9 +71,9 @@ class AEInvoiceLine(EN16931LineItem):
         not-subject, zero-rated) must carry 0 — this is definitionally safe
         per EN 16931 BR-{Z,E,AE,O}-05, already enforced independently of any
         AE-specific citation. The statutory basis for the zero-rate
-        categories beyond the bare UNCL5305 code is `[NEED:]` per
-        context-library/countries/ae.md "Currency and VAT rates" — only the
-        standard-rate numeric value (ibr-190-ae) is sourced from there.
+        categories beyond the bare UNCL5305 code is `[NEED:]` per the
+        package's own compliance reference, "Currency and VAT rates" — only
+        the standard-rate numeric value (ibr-190-ae) is sourced from there.
         """
         if self.tax_category == AEVatCategory.STANDARD:
             if self.tax_rate != AE_STANDARD_VAT_RATE:
@@ -94,7 +94,7 @@ class AEInvoice(EN16931Invoice):
 
     `profile` (BT-24) and `business_process` (BT-23) hold the real Peppol URNs
     directly (see module docstring for why), copied verbatim from
-    context-library/formats/pint-ae.md's Profile URNs table:
+    the package's own format reference's Profile URNs table:
 
         billing:      urn:peppol:pint:billing-1@ae-1     / urn:peppol:bis:billing
         selfbilling:  urn:peppol:pint:selfbilling-1@ae-1  / urn:peppol:bis:selfbilling

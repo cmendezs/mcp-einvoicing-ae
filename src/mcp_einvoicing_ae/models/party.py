@@ -1,7 +1,8 @@
 """UAE trading party — extends mcp-einvoicing-core's EN16931Party.
 
-Field sources (context-library/countries/ae.md "Party-identifier formats",
-retrieved 2026-08-26 from specs/pint-ae/trn-invoice/example/Standard tax invoice.xml):
+Field sources (the package's own compliance reference, "Party-identifier
+formats", retrieved 2026-08-26 from specs/pint-ae/trn-invoice/example/Standard
+tax invoice.xml):
 
 - TRN (Tax Registration Number): 15-digit numeric, carried in `vat_id`
   (cac:PartyTaxScheme/cbc:CompanyID, IBT-031/IBT-048). Format-validated via

@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.4] - 2026-09-09
 
-Core audit Step 3 item 3 (`audit/2026-09-audit-core.md`): CORE-6.
+Core audit Step 3 item 3: CORE-6.
 
 ### Changed
 - **CORE-6** — Dropped the package-local `_build_party` override (duplicating core's
@@ -31,11 +31,9 @@ Core audit Step 3 item 3 (`audit/2026-09-audit-core.md`): CORE-6.
   correction release (`ibr-tdd-17` now independently enforces both the Receiver Endpoint Scheme
   identifier's presence and the SPIS value `0242`). Documentation-only pin refresh — `specs/tdd/`'s
   bundled XSD/schematron are dev-reference copies only and were never compiled into the shipped
-  package (no confirmed OpenPeppol redistribution rights, see
-  `context-library/decisions/peppol-schematron-artifact.md`); `validate_tdd_ae` has reported
+  package (no confirmed OpenPeppol redistribution rights); `validate_tdd_ae` has reported
   `engine="unavailable"` since v0.2.0, so no runtime behavior changes either way. Updated
-  `README.md`, `README.ar.md`, `specs/README.md`, and `context-library/countries/ae.md` at the
-  workspace root. `[Unverified against a locally-held primary source]` — the bundled
+  `README.md`, `README.ar.md`, and `specs/README.md`. `[Unverified against a locally-held primary source]` — the bundled
   `tdd-release-notes.pdf` still documents v1.0.3 only.
 
 ## [0.3.2] - 2026-09-06
@@ -48,7 +46,7 @@ Core audit Step 3 item 3 (`audit/2026-09-audit-core.md`): CORE-6.
   `__version__` to `0.3.2` and added `tests/test_metadata.py` (`test_version_slot_consistency`,
   `test_server_json_version_matches_pyproject`), which reads `pyproject.toml`/`server.json`
   directly instead of asserting a literal, so this class of drift cannot pass silently again.
-  Same class of bug as `mcp-nfe-br` BR-SC-1 (`context-library/launches/roadmap-archive-2026.md`).
+  Same class of bug as `mcp-nfe-br` BR-SC-1.
 
 ## [0.3.1] - 2026-09-06
 
@@ -64,8 +62,7 @@ Core audit Step 3 item 3 (`audit/2026-09-audit-core.md`): CORE-6.
 
 ## [0.3.0] - 2026-08-29
 
-Resolves the BLOCKING and now-actionable findings from the first AE compliance audit
-(`audit/2026-08-audit-ae.md`, tracked in `context-library/audit-history.md`).
+Resolves the BLOCKING and now-actionable findings from the first AE compliance audit.
 
 ### Fixed
 - **AE-SC-1 (BLOCKING): generated PINT AE invoices are now structurally conformant.**
@@ -112,8 +109,7 @@ Resolves the BLOCKING and now-actionable findings from the first AE compliance a
   v0.1.0 shipped five self-compiled files with no confirmed redistribution
   rights: `pint-ubl-billing.xslt`, `pint-ubl-selfbilling.xslt`,
   `pint-jurisdiction-ae.xslt`, `peppol-ae-tdd.xslt`, and
-  `peppol-tdd-1.0.0.xsd`. v0.1.0's docstrings argued the licensing blocker
-  in `context-library/decisions/peppol-schematron-artifact.md` was "moot"
+  `peppol-tdd-1.0.0.xsd`. v0.1.0's docstrings argued the licensing blocker was "moot"
   here because the source files were supplied directly by the user rather
   than fetched from the web — that reasoning was wrong: being user-supplied
   only avoids Claude autonomously retrieving copyrighted material, it does
@@ -153,8 +149,7 @@ Resolves the BLOCKING and now-actionable findings from the first AE compliance a
   workflows, audit directory, and a stdio MCP server entry point with no tools
   registered yet.
 - Normative specifications supplied under `specs/`; PINT AE publication-status
-  gate resolved (2026-08-26). See `specs/README.md` and
-  `context-library/countries/ae.md` in the root repo.
+  gate resolved (2026-08-26). See `specs/README.md`.
 - `AEInvoice`/`AEParty`/`AEInvoiceLine` models (billing + self-billing via a
   `variant` constructor input), reusing `mcp_einvoicing_core.wire_formats`'s
   `EN16931UBLSerializer`/`EN16931UBLParser` directly. `AETaxDataDocument` model

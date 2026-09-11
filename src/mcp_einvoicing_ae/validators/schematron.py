@@ -5,8 +5,7 @@ v0.1.0 bundled four self-compiled OpenPeppol-derived stylesheets under
 ``pint-ubl-selfbilling.xslt``, ``pint-jurisdiction-ae.xslt``,
 ``peppol-ae-tdd.xslt``, plus ``peppol-tdd-1.0.0.xsd`` for XSD-level TDD
 checks). None of the underlying ``.sch``/``.xsd`` sources under ``specs/``
-carry a redistribution grant — same finding
-``context-library/decisions/peppol-schematron-artifact.md`` already made for
+carry a redistribution grant — same finding already made for
 ``mcp-einvoicing-be``/``mcp-ksef-pl``'s Peppol BIS 3.0 overlay and
 ``mcp-invoicenow-sg``'s PINT-SG overlay. v0.1.0's own module docstring argued
 this was "moot" here because the files were supplied directly by the user
@@ -24,8 +23,8 @@ Schematron (``BR-*`` rules only) that ``mcp-einvoicing-be`` v0.8.0 and
 by an unsourced GST-category-to-UNCL5305 crosswalk), AE has no equivalent
 blocker: ``AEInvoice`` uses the ``Aligned-TaxCategoryCodes.gc`` codelist,
 which the "Aligned" name itself signals as UNCL5305-derived (confirmed by
-example values ``S``/``AE``/``E``/``O``/``Z`` — see
-``context-library/countries/ae.md``), and AE's serializer is core's own
+example values ``S``/``AE``/``E``/``O``/``Z`` — see the package's own
+compliance reference), and AE's serializer is core's own
 ``EN16931UBLSerializer`` unmodified, which already emits ``TaxScheme/ID``
 as the literal ``"VAT"`` (verified in
 ``mcp-einvoicing-core/src/mcp_einvoicing_core/wire_formats.py``) — no GST/VAT
@@ -50,13 +49,13 @@ filtering the finding out of ``errors``.
 What is NOT replaced: the PINT-AE jurisdiction overlay (the ``ibr-*-ae``
 rules removed with ``pint-jurisdiction-ae.xslt``) and Peppol AE TDD
 validation (``peppol-ae-tdd.xslt`` / ``peppol-tdd-1.0.0.xsd``) have no
-licensing-clean substitute anywhere in core or elsewhere in this monorepo —
-core provides no TDD capability at all (grepped
-``context-library/core-state.md``, no match). ``validate_tdd_ae`` in
+licensing-clean substitute anywhere in core or elsewhere in this project —
+core provides no TDD capability at all (confirmed via core's own capability
+index, no match). ``validate_tdd_ae`` in
 ``tools/validation.py`` now always returns an explicit
 ``engine="unavailable"`` result rather than silently omitting the check.
 Both gaps stay blocked on the same external OpenPeppol licensing question as
-``[CORE-PEPPOL-SCHEMATRON-1]`` in ``context-library/roadmap-2026.md``.
+``[CORE-PEPPOL-SCHEMATRON-1]``.
 """
 
 from __future__ import annotations

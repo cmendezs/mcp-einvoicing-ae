@@ -50,9 +50,7 @@ _TDD_VALIDATION_UNAVAILABLE = (
     "TDD-VALIDATION-UNAVAILABLE: v0.1.0's peppol_ae_tdd Schematron and "
     "peppol-tdd-1.0.0.xsd were removed in v0.2.0 — self-compiled OpenPeppol-"
     "derived content with no confirmed redistribution rights (see "
-    "validators/schematron.py and "
-    "context-library/decisions/peppol-schematron-artifact.md in the root "
-    "monorepo). Core provides no substitute TDD validation artifact. No "
+    "validators/schematron.py). Core provides no substitute TDD validation artifact. No "
     "Peppol AE Tax Data Document validation is currently available."
 )
 
@@ -64,8 +62,8 @@ EN16931_BASE_ONLY_SCOPE_WARNING = (
     "EN16931-BASE-ONLY-SCOPE: this validates the CEN EN16931 base rules "
     "(structural + arithmetic/totals) only. PINT-AE jurisdiction-specific "
     "rules (ibr-*-ae) are NOT checked — this is not a full PINT AE "
-    "conformance result. See "
-    "context-library/decisions/peppol-schematron-artifact.md."
+    "conformance result (no confirmed OpenPeppol redistribution rights "
+    "for the overlay rules)."
 )
 
 # Added to every validate_invoice_ae result: BR-CO-09 is expected to fire on
@@ -158,8 +156,8 @@ class AEDocumentValidator(BaseDocumentValidator):
         EN16931_BASE_KNOWN_LIMITATIONS_WARNING, always included) since UAE
         TRNs carry no ISO country prefix. This is not a full PINT AE
         conformance check; a document that passes may still be rejected by a
-        real Peppol Access Point. See
-        context-library/decisions/peppol-schematron-artifact.md for why.
+        real Peppol Access Point (no confirmed OpenPeppol redistribution
+        rights for the overlay rules).
         Returns a structured result with per-rule error and warning messages.
         The ``variant`` parameter is accepted for interface stability with
         v0.1.0 but does not change which rules run — the CEN base rules are

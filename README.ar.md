@@ -28,9 +28,7 @@
 
 يُصنَّف ملف PINT AE (الفوترة) لدى هيئة Peppol الإماراتية بحالة **Status: Final**، الإصدار
 1.0.4 (2026-06-02)؛ وتُصنَّف وثيقة بيانات الضريبة Peppol AE TDD بحالة Status: Final، الإصدار
-1.0.4 (2026-07-23). للاطلاع على المراجع الكاملة: [`specs/README.md`](specs/README.md) وملف
-[`context-library/countries/ae.md`](https://github.com/cmendezs/mcp-einvoicing/blob/main/context-library/countries/ae.md)
-في المستودع الرئيسي للمشروع.
+1.0.4 (2026-07-23). للاطلاع على المراجع الكاملة: [`specs/README.md`](specs/README.md).
 
 ## المعايير المدعومة
 
@@ -67,9 +65,7 @@ ISO 3166-1 alpha-2) في كل فاتورة إماراتية أصيلة، إذ ل
 وهذا أمر مُفصَح عنه في كل نتيجة، وليس عيباً في بياناتك. لا يتوفر حالياً أي تحقق للأداة
 `validate_tdd_ae` على الإطلاق. ضمّن الإصدار v0.1.0 خمسة ملفات مُجمَّعة ذاتياً مشتقة من مصادر
 Schematron/XSD الخاصة بـPINT AE وTDD لدى OpenPeppol دون تأكيد حقوق إعادة التوزيع — أُزيلت في
-الإصدار v0.2.0. راجع [`CHANGELOG.md`](CHANGELOG.md) وملف
-[`context-library/decisions/peppol-schematron-artifact.md`](https://github.com/cmendezs/mcp-einvoicing/blob/main/context-library/decisions/peppol-schematron-artifact.md)
-في المستودع الرئيسي للمشروع.
+الإصدار v0.2.0. راجع [`CHANGELOG.md`](CHANGELOG.md).
 
 ## التثبيت
 

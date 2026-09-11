@@ -16,7 +16,7 @@ assuming a field not listed here is unsupported by the format itself.
 
 Transport mechanism: `[NEED:]` — no supplied document states whether the TDD
 travels over the same AS4/Peppol channel as the PINT AE invoice or a separate
-channel (see context-library/countries/ae.md "Transport model"). This module
+channel (see the package's own compliance reference, "Transport model"). This module
 deliberately does not implement or assume a transport binding; pair the model
 below with `mcp_einvoicing_core.peppol.transport.PeppolTransmitter` (which
 accepts arbitrary payload bytes and an overridable `document_type_id`) once

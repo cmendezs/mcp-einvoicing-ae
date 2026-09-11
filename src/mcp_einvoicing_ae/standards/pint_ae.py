@@ -1,9 +1,8 @@
 """PINT AE profile constants and core profile-registry registration.
 
-URNs copied verbatim from supplied PINT AE example documents — see
-`context-library/formats/pint-ae.md` (mcp-einvoicing monorepo) for the full
-citation trail. Do not edit a URN here without a corresponding citation update
-in that file.
+URNs copied verbatim from supplied PINT AE example documents — see the
+package's own format reference for the full citation trail. Do not edit a
+URN here without a corresponding citation update in that file.
 """
 
 from __future__ import annotations

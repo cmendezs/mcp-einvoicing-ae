@@ -1,7 +1,7 @@
 """UAE e-invoicing Pydantic models.
 
-See context-library/countries/ae.md and context-library/formats/pint-ae.md
-(mcp-einvoicing monorepo) for field-level citations.
+See the package's own compliance reference and format reference for
+field-level citations.
 """
 
 from mcp_einvoicing_core import DocumentValidationResult

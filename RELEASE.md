@@ -66,8 +66,8 @@ reads `pyproject.toml`/`server.json` directly instead of asserting a literal. Fu
 
 ### v0.3.0 - 2026-08-29
 
-Resolves the BLOCKING and now-actionable findings from the first AE compliance audit
-(`audit/2026-08-audit-ae.md`). AE-SC-1 (BLOCKING): generated invoices now emit all
+Resolves the BLOCKING and now-actionable findings from the first AE compliance audit.
+AE-SC-1 (BLOCKING): generated invoices now emit all
 unconditionally-mandatory PINT AE elements (`cbc:UUID`, `cbc:ProfileExecutionID`, per-line
 `cac:ItemPriceExtension`) via `mcp-einvoicing-core` v1.25.0 plus a new `AEUBLSerializer`.
 AE-TC-1: the 5.00% standard VAT rate is now enforced by a model validator. AE-SC-3:
@@ -80,10 +80,9 @@ down from 142). Core pin bumped to `>=1.25.0,<2.0.0`. Full changelog: [`CHANGELO
 
 Removed five unlicensed bundled OpenPeppol-derived Schematron/XSD artifacts (`pint-ubl-billing.xslt`,
 `pint-ubl-selfbilling.xslt`, `pint-jurisdiction-ae.xslt`, `peppol-ae-tdd.xslt`,
-`peppol-tdd-1.0.0.xsd`) shipped in v0.1.0's wheel — no confirmed redistribution rights, same gap
-`context-library/decisions/peppol-schematron-artifact.md` identified for
-`mcp-einvoicing-be`/`mcp-ksef-pl`'s Peppol overlay and already fixed for `mcp-invoicenow-sg`
-v0.2.0. v0.1.0's own docstrings had argued the licensing blocker was "moot" here because the
+`peppol-tdd-1.0.0.xsd`) shipped in v0.1.0's wheel — no confirmed redistribution rights, the same gap
+identified for `mcp-einvoicing-be`/`mcp-ksef-pl`'s Peppol overlay and already fixed for
+`mcp-invoicenow-sg` v0.2.0. v0.1.0's own docstrings had argued the licensing blocker was "moot" here because the
 files were user-supplied rather than fetched — that reasoning was wrong; being user-supplied only
 avoids autonomous fetching, it does not confer redistribution rights. `validate_invoice_ae` now
 runs core's shared `en16931_base_schematron_validator()` (same artifact `mcp-einvoicing-be`
@@ -100,8 +99,7 @@ provides no TDD validation capability. Full changelog: [`CHANGELOG.md`](CHANGELO
 The three gates that previously blocked
 this release are now closed:
 
-1. PINT AE publication status confirmed 2026-08-26 — see `context-library/countries/ae.md`
-   "PINT AE publication gate".
+1. PINT AE publication status confirmed 2026-08-26.
 2. `specs/README.md`'s `[NEED:]` rows were resolved editorially: the base OASIS UBL 2.1 XSD and
    the TDD transport channel are tracked as deferred, non-blocking open items (neither affects
    what ships in v0.1.0); the OpenPeppol jurisdiction-registry page is documented as strong,
@@ -121,5 +119,4 @@ correctly on the first release.
 - The MCP registry does **not** sync automatically with PyPI or GitHub — step 3 is required for every release.
 - The `server.json` description field must be **≤ 100 characters**.
 - PyPI rejects re-uploads of the same version — always bump before tagging.
-- Publishing without a passing audit gate is prohibited. `publish.yml` enforces this, and the
-  monorepo `/audit-gate` skill is the local equivalent.
+- Publishing without a passing audit gate is prohibited. `publish.yml` enforces this.

@@ -2,17 +2,16 @@
 
 This directory holds the normative source material for the UAE's e-invoicing standard(s) —
 official PDFs, XSD/XSLT schemas, WSDL/Swagger files, and other primary documents. Values
-derived from these documents belong in
-[`context-library/countries/ae.md`](../../context-library/countries/ae.md), not in code and
+derived from these documents belong in this package's own compliance reference, not in code and
 not duplicated as a new file in this directory.
 
 Normative sources are never web-fetched for this package (per project convention). Download
 each document yourself and drop it in this directory. What gets committed versus excluded
-follows [`context-library/decisions/specs-directory-convention.md`](../../context-library/decisions/specs-directory-convention.md).
+follows this package's specs commit policy.
 
 > **Gate specific to the UAE — resolved 2026-08-26.** The last local verification (2026-06-29)
-> found PINT AE absent from the published OpenPeppol jurisdiction PINT list
-> (`context-library/countries/be.md:81`). The documents below resolve that gate:
+> found PINT AE absent from the published OpenPeppol jurisdiction PINT list.
+> The documents below resolve that gate:
 > - PINT AE (billing): **"Status: Final"**, v1.0.4, released 2026-06-02
 >   (`pint-ae/common/docs/pint-ae-billing-release-notes.pdf`).
 > - PINT AE TDD (the 5th-corner tax-authority reporting document): **"Status: Final"**, v1.0.4,
@@ -21,9 +20,8 @@ follows [`context-library/decisions/specs-directory-convention.md`](../../contex
 >   value `0242`). Bumped 2026-09-07 per the `regulatory-update` watch (closes
 >   `mcp-einvoicing-ae#1`); `[Unverified against a locally-held primary source]` — the bundled
 >   `tdd/common/docs/tdd-release-notes.pdf` still documents v1.0.3 only, and this package does not
->   execute the TDD Schematron at all (`validate_tdd_ae` reports `engine="unavailable"`, per
->   `context-library/decisions/peppol-schematron-artifact.md`), so no runtime behavior is
->   affected either way.
+>   execute the TDD Schematron at all (`validate_tdd_ae` reports `engine="unavailable"`), so no
+>   runtime behavior is affected either way.
 > - The FTA's own guideline (dated 01 June 2026) states directly: *"These requirements are set
 >   out in detail within Peppol's PINT-AE billing specifications, which are **published** on
 >   its website."* (`guidelines/UAE-Electronic-Invoicing-Guidelines_V-1.1-01June2026.pdf`).
@@ -63,8 +61,7 @@ One subdirectory per standard/system, since more than one has accumulated:
 
 **2026-08-27 (Phase D):** five compiled `.xslt` stylesheets and the TDD XSD were copied from here
 into `src/mcp_einvoicing_ae/rules/` for wheel bundling, mirroring `mcp-einvoicing-de`'s `rules/`
-pattern (`specs/` itself is dev-reference-only, never published — see
-`context-library/decisions/specs-directory-convention.md`). Only one copy per profile is bundled:
+pattern (`specs/` itself is dev-reference-only, never published). Only one copy per profile is bundled:
 `pint-ae/trn-invoice/schematron/PINT-jurisdiction-aligned-rules.xslt` and
 `pint-ae/trn-creditnote/schematron/PINT-jurisdiction-aligned-rules.xslt` are byte-identical
 (confirmed 2026-08-27), as are the two profiles' own `trn-invoice`/`trn-creditnote` UBL-validation
@@ -139,9 +136,7 @@ fetched or browsed by this assistant.
 
 None of the three items below block the v0.1.0 publish — this release ships document models,
 Schematron-based validation, and generate/validate/parse MCP tools; none of it depends on the
-missing pieces described here. Each is tracked with full detail in
-`context-library/countries/ae.md` ("Known gaps and open items") and
-`context-library/roadmap-2026.md`, and will be revisited when it becomes load-bearing for a
+missing pieces described here. Each is tracked internally and will be revisited when it becomes load-bearing for a
 future release.
 
 | Document | Status | Notes |
@@ -153,14 +148,14 @@ future release.
 ## Non-file sources
 
 Nothing pasted in chat needed retention this round — all facts below came from the documents
-themselves, cited by file and page/section in `context-library/countries/ae.md`. If future facts
-arrive by chat-paste rather than as a document, record the URL and retrieval date in the table
-above, add a note here that no local file is retained for that row, and fold the actual content
-into `context-library/countries/ae.md` rather than inventing a markdown file here to hold it.
+themselves, cited by file and page/section in this package's own compliance reference. If future
+facts arrive by chat-paste rather than as a document, record the URL and retrieval date in the
+table above, add a note here that no local file is retained for that row, and fold the actual
+content into that reference rather than inventing a markdown file here to hold it.
 
 ## Excluded sources
 
-Per `context-library/decisions/specs-directory-convention.md`, the following were deliberately
+Per this package's specs commit policy, the following were deliberately
 **not** copied into this directory:
 
 | File (in the original `Downloads/AE` drop) | Reason |
