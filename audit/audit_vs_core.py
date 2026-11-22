@@ -32,7 +32,6 @@ from pathlib import Path
 from mcp_einvoicing_core.audit import (
     SEVERITY_BLOCKING,
     SEVERITY_OK,
-    SEVERITY_WARNING,
     AuditReport,
     CheckFinding,
     CheckResult,
@@ -62,7 +61,7 @@ _SOURCES = _ROOT / "specs" / "README.md"
 # EN16931Invoice pathway per CLAUDE.md's "any PINT-* format uses EN16931Invoice"
 # rule. This is set together with the AEInvoice model class itself, per
 # CLAUDE.md: "do not change it without a corresponding model refactor."
-_IS_EN16931_FAMILY: bool | None = True
+_IS_EN16931_FAMILY: bool = True
 _PRIMARY_INVOICE_CLASS: tuple[str, str] | None = ("mcp_einvoicing_ae.models.invoice", "AEInvoice")
 
 _MODULES: list[str] = [
@@ -305,20 +304,7 @@ def run_check_0() -> CheckResult:
     """CHECK 0 — scaffold gates that block implementation and publication."""
     result = CheckResult(check_id="CHECK_0", name="Scaffold gates")
 
-    if _IS_EN16931_FAMILY is None:
-        result.findings.append(
-            _finding(
-                "[NEED]",
-                SEVERITY_BLOCKING,
-                "_IS_EN16931_FAMILY",
-                (
-                    "Invoice-tree pathway is unresolved. Set it from the conformance "
-                    "statement recorded in the package's own compliance reference, never from memory. "
-                    "No model code may be written while this is None."
-                ),
-            )
-        )
-    elif _PRIMARY_INVOICE_CLASS is None:
+    if _PRIMARY_INVOICE_CLASS is None:
         result.findings.append(
             _finding(
                 "[MISSING]",
@@ -402,20 +388,6 @@ def run_check_5() -> CheckResult:
     return result
 
 
-def _deferred(check_id: str, name: str, reason: str) -> CheckResult:
-    result = CheckResult(check_id=check_id, name=name)
-    result.findings.append(
-        CheckFinding(
-            check_id=check_id,
-            tag="[DEFERRED]",
-            severity=SEVERITY_WARNING,
-            symbol=_PACKAGE,
-            message=reason,
-        )
-    )
-    return result
-
-
 def run_audit() -> AuditReport:
     """Execute all checks and return the aggregated AuditReport. No side effects."""
     report = make_report(_PACKAGE, _PYPROJECT)
@@ -423,29 +395,15 @@ def run_audit() -> AuditReport:
     check_0 = run_check_0()
     report.checks.append(check_0)
 
-    scaffold_stage = _IS_EN16931_FAMILY is None
-    if scaffold_stage:
-        report.checks.append(
-            _deferred(
-                "CHECK_1",
-                "Core interface coverage",
-                (
-                    "Deferred while the invoice-tree pathway is unresolved (CHECK 0). "
-                    "Running coverage against a package with no models reports every core "
-                    "symbol as missing and hides the real gate."
-                ),
-            )
+    report.checks.append(
+        run_check_core_coverage(
+            package_name=_PACKAGE,
+            package_modules=_MODULES,
+            intentional_overrides=_INTENTIONAL_OVERRIDES,
+            is_en16931_family=_IS_EN16931_FAMILY,
+            primary_invoice_class=_PRIMARY_INVOICE_CLASS,
         )
-    else:
-        report.checks.append(
-            run_check_core_coverage(
-                package_name=_PACKAGE,
-                package_modules=_MODULES,
-                intentional_overrides=_INTENTIONAL_OVERRIDES,
-                is_en16931_family=_IS_EN16931_FAMILY,
-                primary_invoice_class=_PRIMARY_INVOICE_CLASS,
-            )
-        )
+    )
 
     report.checks.append(
         run_check_version_compatibility(

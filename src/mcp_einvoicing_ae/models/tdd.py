@@ -14,22 +14,25 @@ transcription of the full XSD (e.g. `ReportedDocument`'s nested party/tax
 detail and `CustomContent` are not modeled) — read the XSD directly before
 assuming a field not listed here is unsupported by the format itself.
 
-Transport mechanism: `[NEED:]` — no supplied document states whether the TDD
-travels over the same AS4/Peppol channel as the PINT AE invoice or a separate
-channel (see the package's own compliance reference, "Transport model"). This module
-deliberately does not implement or assume a transport binding; pair the model
-below with `mcp_einvoicing_core.peppol.transport.PeppolTransmitter` (which
-accepts arbitrary payload bytes and an overridable `document_type_id`) once
-that question is answered, or with a plain `BaseEInvoicingClient` REST call
-if it turns out not to be AS4.
+Transport mechanism: the TDD BIS (``specs/tdd/common/docs/tdd-bis.pdf``, section 1.2)
+states that the issuer's service provider (C2) and the receiver's service provider (C3)
+each send a TDD to the tax authority's service provider (C5) "by using the Peppol
+network", and the compliance document (``tdd-compliance.pdf``) requires the SBDH
+``Sender``/``Receiver`` identifiers to equal ``pxs:ReportingParty``/``pxs:ReceivingParty``
+``cbc:EndpointID`` (value and ``schemeID``). The TDD therefore travels over the same
+Peppol AS4 channel as a PINT AE invoice, enveloped in an SBDH, not over a separate REST
+channel. This module models and serializes the document only; submission is a
+service-provider (Peppol access point) function, and the C5-to-FTA leg uses a data
+format "agreed between them" that no supplied document specifies.
 """
 
 from __future__ import annotations
 
 from datetime import date, time
+from decimal import Decimal
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from mcp_einvoicing_ae.standards.pint_ae import (
     PEPPOL_PARTICIPANT_SCHEME,
@@ -88,6 +91,19 @@ class TDDReportedDocument(BaseModel):
     customer_trn: str | None = Field(
         default=None, description="AccountingCustomerParty/PartyTaxScheme/CompanyID"
     )
+    supplier_tax_scheme: str = Field(
+        default="VAT", description="Supplier PartyTaxScheme/TaxScheme/cbc:ID (ibr-tdd-45)"
+    )
+    customer_tax_scheme: str = Field(
+        default="VAT", description="Customer PartyTaxScheme/TaxScheme/cbc:ID"
+    )
+    tax_amount: Decimal | None = Field(
+        default=None, description="cac:TaxTotal/cbc:TaxAmount in the document currency (ibt-110)"
+    )
+    tax_exclusive_amount: Decimal | None = Field(
+        default=None,
+        description="pxs:MonetaryTotal/cbc:TaxExclusiveAmount in the document currency (ibt-109)",
+    )
 
 
 class TDDReportedTransaction(BaseModel):
@@ -132,12 +148,26 @@ class AETaxDataDocument(BaseModel):
     reporter_role: str = Field(..., description="pxs:ReporterRole, e.g. '01'")
     reporting_party: TDDParty
     receiving_party: TDDParty
-    reporters_representative_id: str | None = Field(
-        default=None,
+    reporters_representative_id: str = Field(
+        ...,
+        min_length=1,
         description=(
-            "pxs:ReportersRepresentative/cac:PartyIdentification/cbc:ID — mandatory per XSD "
-            "(minOccurs=1) but modeled as optional here pending confirmation of what value a "
-            "non-representative-using reporter supplies; do not assume None serializes validly."
+            "pxs:ReportersRepresentative/cac:PartyIdentification/cbc:ID — mandatory "
+            "(XSD minOccurs=1; Schematron ibr-tdd-19 requires exactly one)."
         ),
     )
+    reporters_representative_scheme: Literal["0242"] = Field(
+        default="0242",
+        description="schemeID of the representative ID; ibr-tdd-21 allows only '0242' (SPIS)",
+    )
     reported_transactions: list[TDDReportedTransaction] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def _receiving_party_is_spis(self) -> AETaxDataDocument:
+        """ibr-tdd-17: the receiver endpoint scheme MUST refer to an SPIS ('0242')."""
+        if self.receiving_party.endpoint_scheme != "0242":
+            raise ValueError(
+                "ibr-tdd-17: receiving_party.endpoint_scheme must be '0242' (SPIS), "
+                f"got {self.receiving_party.endpoint_scheme!r}"
+            )
+        return self

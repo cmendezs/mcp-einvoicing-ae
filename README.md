@@ -52,12 +52,15 @@ latter now emits `cbc:UUID` (from `document_uuid`) and per-line `cac:ItemPriceEx
 (`mcp-einvoicing-core` v1.25.0), since `profile`/`business_process` already hold the real Peppol
 URNs. `AEParty.vat_id` carries the 15-digit TRN, format-validated via
 `TaxIdentifier.validate_ae_trn()` (core v1.22.0); the Peppol participant ID (TIN) is auto-derived
-as its first 10 digits. `AETaxDataDocument` models the TDD's mandatory fields but is not a UBL
-invoice and is not built on `AEInvoice`. `parse_invoice_ae` re-extracts the AE-specific elements
+as its first 10 digits. `AETaxDataDocument` models the TDD's mandatory fields and `generate_tdd_ae`
+serializes it to `pxs:TaxData` XML; it is not a UBL invoice and is not built on `AEInvoice`. `parse_invoice_ae` re-extracts the AE-specific elements
 from the raw XML and re-validates the result as `AEInvoice`, so parsing re-applies the same TRN
 and tax-rate checks a fresh construction gets — see [Available tools](#available-tools) for
-what's covered and what isn't. The TDD transport channel (same AS4 channel as the invoice, or a
-separate one) remains an open documentation question, not a code gap. Full detail:
+what's covered and what isn't. Per the TDD BIS, the TDD travels over the same Peppol network as the invoice
+(service provider C2 or C3 to the tax authority's service provider C5), enveloped in an SBDH
+whose Sender and Receiver match the TDD's reporting and receiving party endpoints; submitting it
+is an access-point function, so this server builds the document and leaves the transmission to your
+Peppol access point. Full detail:
 [`specs/README.md`](specs/README.md).
 
 **Validation scope, as of v0.2.0:** `validate_invoice_ae` checks the CEN EN16931 base Schematron
@@ -170,6 +173,7 @@ The file is automatically reloaded on save. You can also open the config via the
 |---|---|
 | `generate_invoice_ae` | Generate a PINT AE UBL 2.1 invoice XML (billing or self-billing) from structured data via `AEUBLSerializer`. Emits every unconditionally-mandatory PINT AE element: `cbc:UUID`, `cbc:ProfileExecutionID`, per-line `cac:ItemPriceExtension`, and `PartyLegalEntity/CompanyID` (`trade_license_number`, when set). |
 | `validate_invoice_ae` | Validate a PINT AE UBL 2.1 invoice against core's shared CEN EN16931 base Schematron (structural + arithmetic/totals rules only — not the PINT AE jurisdiction overlay). Requires the `xslt2` extra. |
+| `generate_tdd_ae` | Generate a Peppol AE Tax Data Document (`pxs:TaxData`) from structured data via `AETDDSerializer`. Rejects an incomplete document with the list of missing items (exactly one reported transaction, reported-document identifiers and amounts, an embedded source invoice, a timezone on `issue_time`, a reporters representative, receiver scheme `0242`). Builds only; transmission is done by your Peppol access point. |
 | `validate_tdd_ae` | Always returns an explicit "unavailable" result — no licensed validation artifact is currently available for the Peppol AE Tax Data Document (TDD). |
 | `parse_invoice_ae` | Parse a PINT AE UBL 2.1 invoice XML into a structured dict. Re-extracts `document_uuid`, `profile_execution_id`, and `trade_license_number` from the raw XML and re-validates the result as `AEInvoice` — TRN format and tax-rate/category checks are re-applied to parsed content, not just fresh constructions. |
 
@@ -192,6 +196,28 @@ The tool reference in [`docs/TOOLS.md`](docs/TOOLS.md) is generated from the run
 ```bash
 uv run python scripts/gen_tool_reference.py
 ```
+
+## Architecture
+
+```
+mcp-einvoicing-core
+├── EN16931Invoice / EN16931LineItem    ← AEInvoice, AEInvoiceLine (models/invoice.py)
+├── EN16931UBLSerializer / Parser       ← AEUBLSerializer (wire_formats.py): PINT AE additions
+├── BaseDocumentGenerator               ← AEDocumentGenerator (tools/generation.py)
+├── BaseDocumentValidator               ← AEDocumentValidator (tools/validation.py)
+├── BaseStructuredValidator             ← CEN EN16931 base Schematron (validators/schematron.py)
+├── TaxIdentifier.validate_ae_trn       ← AEParty.vat_id (models/party.py)
+└── Peppol plugin (register_peppol_tools) ← participant lookup, AS4 send
+
+Package-local
+└── AETaxDataDocument + AETDDSerializer ← Tax Data Document (models/tdd.py, tdd_wire_format.py)
+```
+
+`AEInvoice` subclasses core's `EN16931Invoice`, so PINT AE invoices reuse core's EN 16931 model,
+UBL serializer and parser, and only the UAE additions (`cbc:UUID`, `cbc:ProfileExecutionID`,
+`cac:ItemPriceExtension`, `PartyLegalEntity/CompanyID`) live in this package. The Tax Data
+Document is a separate Peppol document type with its own namespace, so it has its own model and
+serializer instead of extending the invoice classes.
 
 ## Vendor neutrality
 

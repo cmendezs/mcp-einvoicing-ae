@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-22
+
+### Added
+- `generate_tdd_ae` tool and `AETDDSerializer` (`tdd_wire_format.py`): serialize an `AETaxDataDocument` to `pxs:TaxData` XML in the order of `peppol-tdd-1.0.0.xsd`. Output is checked in tests against that XSD and the TDD Schematron (both kept under `specs/`, test-only, not bundled in the wheel).
+- `TDDReportedDocument` fields `supplier_tax_scheme`, `customer_tax_scheme`, `tax_amount` and `tax_exclusive_amount`, needed for the reported-document summary.
+- README "Architecture" section (and Arabic translation).
+
+### Changed
+- **Breaking:** `AETaxDataDocument.reporters_representative_id` is now required (the XSD marks `ReportersRepresentative` `minOccurs=1`); a new `reporters_representative_scheme` field defaults to `0242`. The receiving party scheme must be `0242` (TDD Schematron ibr-tdd-17).
+- The serializer rejects a TDD that would fail the TDD Schematron cardinality rules: exactly one reported transaction, a reported document with identifiers and amounts, an embedded source document, and a timezone on `issue_time`.
+- Documented the TDD transport: it travels over the Peppol network in an SBDH (per the TDD BIS and compliance documents), not a separate channel. Submission stays with your Peppol access point. `validate_tdd_ae` still reports validation as unavailable.
+- Audit script: `_IS_EN16931_FAMILY` is typed `bool`.
+
 ## [0.3.5] - 2026-09-12
 
 ### Changed

@@ -52,9 +52,11 @@
 `AEParty.vat_id` رقم TRN المكوَّن من 15 رقماً، ويُتحقق من صيغته عبر
 `TaxIdentifier.validate_ae_trn()` (الإصدار 1.22.0 من المكتبة المشتركة)؛ ويُشتق معرف مشارك
 Peppol (TIN) تلقائياً من أول 10 أرقام منه. يُمثّل `AETaxDataDocument` الحقول الإلزامية لوثيقة
-TDD لكنه ليس فاتورة UBL وليس مبنياً على `AEInvoice`. تعيد أدوات MCP استخدام هذه البنية مباشرةً —
-انظر [الأدوات المتاحة](#الأدوات-المتاحة) لمعرفة ما تغطيه وما لا تغطيه. تبقى قناة نقل TDD (القناة
-نفسها المستخدمة للفاتورة عبر AS4 أم قناة منفصلة) مسألة توثيقية مفتوحة، لا فجوة برمجية. للتفاصيل
+TDD وتُسلسله الأداة `generate_tdd_ae` إلى XML بصيغة `pxs:TaxData`؛ وهو ليس فاتورة UBL وليس مبنياً على `AEInvoice`. تعيد أدوات MCP استخدام هذه البنية مباشرةً —
+انظر [الأدوات المتاحة](#الأدوات-المتاحة) لمعرفة ما تغطيه وما لا تغطيه. وفق مواصفة TDD BIS تنتقل وثيقة TDD عبر شبكة Peppol نفسها
+المستخدمة للفاتورة (من مزوّد الخدمة C2 أو C3 إلى مزوّد خدمة الهيئة C5)، داخل غلاف SBDH يطابق معرّفا
+المُرسِل والمستلم فيه نقطتَي النهاية للطرفين المُبلِّغ والمستلِم؛ والإرسال وظيفة نقطة الوصول، لذا يبني هذا
+الخادم الوثيقة ويترك الإرسال لنقطة وصول Peppol لديك. للتفاصيل
 الكاملة: [`specs/README.md`](specs/README.md).
 
 **نطاق التحقق اعتباراً من v0.2.0:** تتحقق الأداة `validate_invoice_ae` وفق مخطط Schematron
@@ -169,6 +171,7 @@ uv sync --all-extras
 |---|---|
 | `generate_invoice_ae` | توليد فاتورة PINT AE بصيغة UBL 2.1 (فوترة أو فوترة ذاتية) من بيانات مُهيكلة عبر `AEUBLSerializer`. يُصدر كل عنصر إلزامي غير مشروط في PINT AE: `cbc:UUID` وَ`cbc:ProfileExecutionID` وَ`cac:ItemPriceExtension` لكل بند، وَ`PartyLegalEntity/CompanyID` (`trade_license_number`، عند تحديده). |
 | `validate_invoice_ae` | التحقق من فاتورة PINT AE بصيغة UBL 2.1 وفق مخطط Schematron الأساسي المشترك CEN EN16931 (القواعد البنيوية والحسابية/الإجمالية فقط — وليس قواعد الولاية القضائية لـPINT AE). تتطلب إضافة `xslt2`. |
+| `generate_tdd_ae` | توليد وثيقة بيانات الضريبة Peppol AE (`pxs:TaxData`) من بيانات مُهيكلة عبر `AETDDSerializer`. ترفض الوثيقة غير المكتملة وتُعيد قائمة بالعناصر الناقصة (معاملة مُبلَّغ عنها واحدة بالضبط، ومعرّفات ومبالغ المستند المُبلَّغ عنه، وفاتورة مصدر مُضمَّنة، ومنطقة زمنية في `issue_time`، وممثّل المُبلِّغ، ونطاق المستلِم `0242`). تبني الوثيقة فقط؛ ويتولى الإرسال نقطة وصول Peppol لديك. |
 | `validate_tdd_ae` | تُعيد دائماً نتيجة صريحة بعدم التوفر — لا تتوفر حالياً أي أداة تحقق مرخَّصة لوثيقة بيانات الضريبة Peppol AE (TDD). |
 | `parse_invoice_ae` | تحليل فاتورة PINT AE بصيغة UBL 2.1 إلى قاموس مُهيكل. يُعيد استخراج `document_uuid` وَ`profile_execution_id` وَ`trade_license_number` من ملف XML الخام، ويُعيد التحقق من النتيجة كنموذج `AEInvoice` — بحيث تُطبَّق قواعد تنسيق TRN ومعدل/فئة الضريبة على المحتوى المُحلَّل أيضاً، لا على الفواتير المُنشأة حديثاً فقط. |
 
@@ -191,6 +194,28 @@ uv sync --all-extras
 ```bash
 uv run python scripts/gen_tool_reference.py
 ```
+
+## البنية المعمارية
+
+```
+mcp-einvoicing-core
+├── EN16931Invoice / EN16931LineItem    ← AEInvoice, AEInvoiceLine (models/invoice.py)
+├── EN16931UBLSerializer / Parser       ← AEUBLSerializer (wire_formats.py): PINT AE additions
+├── BaseDocumentGenerator               ← AEDocumentGenerator (tools/generation.py)
+├── BaseDocumentValidator               ← AEDocumentValidator (tools/validation.py)
+├── BaseStructuredValidator             ← CEN EN16931 base Schematron (validators/schematron.py)
+├── TaxIdentifier.validate_ae_trn       ← AEParty.vat_id (models/party.py)
+└── Peppol plugin (register_peppol_tools) ← participant lookup, AS4 send
+
+Package-local
+└── AETaxDataDocument + AETDDSerializer ← Tax Data Document (models/tdd.py, tdd_wire_format.py)
+```
+
+يرث `AEInvoice` من `EN16931Invoice` في المكتبة المشتركة، فتعيد فواتير PINT AE استخدام نموذج EN 16931
+ومُسلسِل UBL ومُحلِّله من المكتبة المشتركة، ولا يبقى في هذه الحزمة سوى الإضافات الإماراتية
+(`cbc:UUID` وَ`cbc:ProfileExecutionID` وَ`cac:ItemPriceExtension` وَ`PartyLegalEntity/CompanyID`).
+أما وثيقة بيانات الضريبة فهي نوع مستند Peppol مستقل بنطاق أسماء خاص، ولذلك لها نموذجها ومُسلسِلها
+الخاصان بدلاً من توسيع فئات الفاتورة.
 
 ## الحياد تجاه مقدّمي الخدمة
 

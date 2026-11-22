@@ -22,6 +22,7 @@ def test_defaults_match_observed_customization_and_profile_id() -> None:
         reporter_role="01",
         reporting_party=TDDParty(endpoint_id="dummy-sender"),
         receiving_party=TDDParty(endpoint_id="dummy-receiver", endpoint_scheme="0242"),
+        reporters_representative_id="dummy-representative",
     )
     assert tdd.customization_id == TDD_CUSTOMIZATION_ID == "urn:peppol:taxdata:ae-1"
     assert tdd.profile_id == TDD_PROFILE_ID == "urn:peppol:taxreporting"
@@ -50,6 +51,7 @@ def test_reported_transaction_with_reported_document() -> None:
         reporter_role="01",
         reporting_party=TDDParty(endpoint_id="dummy-sender"),
         receiving_party=TDDParty(endpoint_id="dummy-receiver", endpoint_scheme="0242"),
+        reporters_representative_id="dummy-representative",
         reported_transactions=[transaction],
     )
     assert len(tdd.reported_transactions) == 1

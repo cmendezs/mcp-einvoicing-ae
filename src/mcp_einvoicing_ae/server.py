@@ -31,6 +31,7 @@ def _ae_id_adapter(identifier: str) -> str:
 def _register_ae_tools(mcp: Any) -> None:
     """Register all UAE e-invoicing tools onto the shared FastMCP instance."""
     mcp.tool()(_generator.generate_invoice_ae)
+    mcp.tool()(_generator.generate_tdd_ae)
     mcp.tool()(_validator.validate_invoice_ae)
     mcp.tool()(_validator.validate_tdd_ae)
     mcp.tool()(parse_invoice_ae)
@@ -41,7 +42,7 @@ mcp = EInvoicingMCPServer(
     instructions=(
         "Tools for United Arab Emirates electronic invoicing: PINT AE "
         "(billing + self-billing) UBL 2.1 invoice generation, validation, "
-        "and parsing, Peppol AE Tax Data Document (TDD) validation, and "
+        "and parsing, Peppol AE Tax Data Document (TDD) generation and validation, and "
         "Peppol participant lookup (5-corner transport). "
         "Schematron validation requires the optional 'xslt2' extra "
         "(saxonche) — see README. TDD schema (XSD) validation is currently "

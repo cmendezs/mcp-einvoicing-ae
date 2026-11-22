@@ -16,7 +16,9 @@ from typing import Annotated, Any
 from mcp_einvoicing_core import BaseDocumentGenerator, DocumentGenerationError
 
 from mcp_einvoicing_ae.models.invoice import AEInvoice, AEProfileVariant
+from mcp_einvoicing_ae.models.tdd import AETaxDataDocument
 from mcp_einvoicing_ae.standards.pint_ae import CUSTOMIZATION_IDS, PROFILE_IDS
+from mcp_einvoicing_ae.tdd_wire_format import AETDDSerializer
 from mcp_einvoicing_ae.wire_formats import AEUBLSerializer
 
 
@@ -71,4 +73,43 @@ class AEDocumentGenerator(BaseDocumentGenerator[AEInvoice]):
             "xml": xml_string,
             "customization_id": CUSTOMIZATION_IDS[variant],
             "profile_id": PROFILE_IDS[variant],
+        }
+
+    async def generate_tdd_ae(
+        self,
+        tdd_data: Annotated[
+            dict[str, Any], "Tax Data Document fields matching the AETaxDataDocument schema"
+        ],
+    ) -> dict[str, object]:
+        """Generate a Peppol AE Tax Data Document (``pxs:TaxData``) XML from structured data.
+
+        The TDD is the 5th-corner report sent to the tax authority (via the
+        reporting service provider, C5) for each issued or received PINT AE
+        invoice. It carries its own namespace (``urn:peppol:schema:taxdata:1.0``),
+        a summary of the reported invoice, and the full source invoice embedded
+        in ``pxs:SourceDocument``. This tool builds the document only: sending it
+        is a Peppol access-point function (the TDD travels over the Peppol network
+        in an SBDH whose Sender/Receiver match ``ReportingParty``/``ReceivingParty``).
+
+        Rules enforced before emitting (TDD Schematron ibr-tdd-*): exactly one
+        reported transaction, reported-document identifiers and amounts present,
+        a source document present, a timezone on ``issue_time``, a mandatory
+        reporters representative, and receiver scheme ``0242``.
+
+        Returns a dict with:
+        - ``xml``: the generated ``pxs:TaxData`` XML string
+        - ``customization_id``: the CustomizationID applied
+        - ``profile_id``: the ProfileID applied
+        """
+        try:
+            tdd = AETaxDataDocument.model_validate(tdd_data)
+            xml_string = AETDDSerializer().serialize(tdd).decode("utf-8")
+        except DocumentGenerationError:
+            raise
+        except Exception as exc:
+            raise DocumentGenerationError(str(exc)) from exc
+        return {
+            "xml": xml_string,
+            "customization_id": tdd.customization_id,
+            "profile_id": tdd.profile_id,
         }
